@@ -23,15 +23,15 @@
 - [x] **Task 13:** Publish activity to relays, optimistic UI
 
 ## Phase 5: Activity Feed
-- [ ] **Task 14:** ActivityCard component (avatar, title, mini map, stats, reaction/comment counts)
-- [ ] **Task 15:** Feed page — fetch kind-30531 from followed users, infinite scroll with `until`/`limit` pagination
+- [x] **Task 14:** ActivityCard component (avatar, title, mini map, stats, reaction/comment counts)
+- [x] **Task 15:** Feed page — fetch kind-30531 from followed users, infinite scroll with `until`/`limit` pagination
 
 ## Phase 6: Activity Detail
-- [ ] **Task 16:** MapView component with MapLibre GL JS + OpenFreeMap tiles
-- [ ] **Task 17:** TrackLayer — render GPS track as colored polyline (pace/HR/elevation toggle)
-- [ ] **Task 18:** ElevationChart with Recharts — synced hover with map marker
-- [ ] **Task 19:** StatsGrid component
-- [ ] **Task 20:** ActivityDetail page — full map, elevation chart, stats, photos, social section
+- [x] **Task 16:** MapView component with MapLibre GL JS + OpenFreeMap tiles
+- [x] **Task 17:** TrackLayer — render GPS track as colored polyline (pace/HR/elevation toggle)
+- [x] **Task 18:** ElevationChart with Recharts — synced hover with map marker
+- [x] **Task 19:** StatsGrid component
+- [x] **Task 20:** ActivityDetail page — full map, elevation chart, stats, photos, social section
 
 ## Phase 7: GPS File Import
 - [ ] **Task 21:** GPX parser (`src/components/import/parsers/gpx.ts`)
