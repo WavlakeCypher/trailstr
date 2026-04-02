@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 import { useNostrClient } from '../hooks/useNostrClient'
 import { KINDS } from '../nostr/kinds'
+import { ActivitiesEmptyState, ReviewsEmptyState, TrailsEmptyState } from '../components/common/EmptyState'
 
 interface ProfileMetadata {
   display_name?: string
@@ -112,9 +113,9 @@ export default function Profile() {
   }
 
   return (
-    <div className="pb-20"> {/* Bottom padding for navigation */}
+    <div className="min-h-screen bg-stone-900 pb-20"> {/* Bottom padding for navigation */}
       {/* Banner */}
-      <div className="relative h-40 bg-gradient-to-r from-emerald-400 to-sky-500 overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-r from-emerald-600 to-emerald-500 overflow-hidden">
         {profile?.banner && (
           <img
             src={profile.banner}
@@ -125,7 +126,7 @@ export default function Profile() {
         <div className="absolute inset-0 bg-black bg-opacity-30"></div>
       </div>
 
-      <div className="px-4">
+      <div className="max-w-2xl mx-auto px-4">
         {/* Profile Info Section */}
         <div className="relative -mt-10 pb-6 border-b border-slate-200 dark:border-slate-700">
           {/* Avatar */}
@@ -236,54 +237,21 @@ export default function Profile() {
           {/* Tab Content */}
           <div className="min-h-[200px]">
             {activeTab === 'activities' && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">🥾</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  No activities yet
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-4">
-                  Record your first outdoor adventure to get started!
-                </p>
-                <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                  Record Activity
-                </button>
-              </div>
+              <ActivitiesEmptyState
+                isOwnProfile={true}
+                onRecordActivity={() => navigate('/record')}
+              />
             )}
 
             {activeTab === 'trails' && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">🛤️</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  No trails created
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-4">
-                  Create or discover trails for others to enjoy.
-                </p>
-                <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                  Explore Trails
-                </button>
-              </div>
+              <TrailsEmptyState onCreateTrail={() => navigate('/trail/create')} />
             )}
 
             {activeTab === 'reviews' && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-2xl">⭐</span>
-                </div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                  No reviews yet
-                </h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-4">
-                  Share your experience by reviewing trails you've explored.
-                </p>
-                <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                  Browse Trails
-                </button>
-              </div>
+              <ReviewsEmptyState
+                isOwnProfile={true}
+                onExploreTrails={() => navigate('/trails')}
+              />
             )}
 
             {activeTab === 'stats' && (

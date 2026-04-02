@@ -139,9 +139,9 @@ export default function TrailDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
+    <div className="min-h-screen bg-stone-900">
       {/* Hero Image */}
-      <div className="relative h-64 bg-gradient-to-br from-forest-500 to-forest-700">
+      <div className="relative h-80 bg-gradient-to-br from-emerald-600 to-emerald-800">
         {currentTrail.heroPhoto ? (
           <BlurhashImage
             src={currentTrail.heroPhoto}
@@ -155,23 +155,23 @@ export default function TrailDetail() {
           </div>
         )}
         
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
         
         <Link
           to="/trail-explorer"
-          className="absolute top-4 left-4 p-2 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-black/50 transition-colors"
+          className="absolute top-6 left-6 p-3 bg-stone-900/50 backdrop-blur-sm text-white rounded-full hover:bg-stone-900/70 transition-colors"
         >
           <ArrowLeft size={20} />
         </Link>
         
-        <div className="absolute top-4 right-4 flex space-x-2">
+        <div className="absolute top-6 right-6 flex space-x-3">
           {isAuthenticated && (
             <button
               onClick={handleWishlistToggle}
-              className={`p-2 backdrop-blur-sm rounded-full transition-colors ${
+              className={`p-3 backdrop-blur-sm rounded-full transition-colors ${
                 isWishlisted 
                   ? 'bg-red-500 text-white' 
-                  : 'bg-black/30 text-white hover:bg-black/50'
+                  : 'bg-stone-900/50 text-white hover:bg-stone-900/70'
               }`}
             >
               <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
@@ -179,22 +179,22 @@ export default function TrailDetail() {
           )}
           <button
             onClick={handleShare}
-            className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-black/50 transition-colors"
+            className="p-3 bg-stone-900/50 backdrop-blur-sm text-white rounded-full hover:bg-stone-900/70 transition-colors"
           >
             <Share2 size={20} />
           </button>
         </div>
 
-        <div className="absolute bottom-4 left-4 right-4">
-          <h1 className="text-2xl font-bold text-white mb-1">{currentTrail.name}</h1>
-          <div className="flex items-center space-x-3 text-white/90">
+        <div className="absolute bottom-6 left-6 right-6">
+          <h1 className="text-3xl font-bold text-white mb-2">{currentTrail.name}</h1>
+          <div className="flex items-center space-x-4 text-white/90">
             <div className="flex items-center">
-              <MapPin size={16} className="mr-1" />
+              <MapPin size={16} className="mr-2" />
               <span className="text-sm">{currentTrail.location}</span>
             </div>
-            <span className={`px-2 py-1 rounded text-xs font-medium ${
-              currentTrail.difficulty === 'easy' ? 'bg-green-500' :
-              currentTrail.difficulty === 'moderate' ? 'bg-yellow-500' :
+            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+              currentTrail.difficulty === 'easy' ? 'bg-emerald-500' :
+              currentTrail.difficulty === 'moderate' ? 'bg-amber-500' :
               currentTrail.difficulty === 'hard' ? 'bg-orange-500' :
               'bg-red-500'
             }`}>
@@ -205,37 +205,37 @@ export default function TrailDetail() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-4xl mx-auto px-4">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 -mt-8 relative z-10">
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
-            <Ruler className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{formatDistance(currentTrail.distance * 1000)}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Distance</div>
+        <div className="flex gap-4 overflow-x-auto pb-6 mb-8 -mt-10 relative z-10">
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-center min-w-[140px] flex-shrink-0">
+            <Ruler className="mx-auto mb-3 text-emerald-500" size={24} />
+            <div className="text-xl font-bold text-white">{formatDistance(currentTrail.distance * 1000)}</div>
+            <div className="text-sm text-stone-400">Distance</div>
           </div>
           
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
-            <Mountain className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{formatElevation(currentTrail.elevationGain)}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Elevation Gain</div>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-center min-w-[140px] flex-shrink-0">
+            <Mountain className="mx-auto mb-3 text-emerald-500" size={24} />
+            <div className="text-xl font-bold text-white">{formatElevation(currentTrail.elevationGain)}</div>
+            <div className="text-sm text-stone-400">Elevation Gain</div>
           </div>
           
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
-            <Star className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{currentTrail.averageRating.toFixed(1)}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Rating</div>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-center min-w-[140px] flex-shrink-0">
+            <Star className="mx-auto mb-3 text-emerald-500" size={24} />
+            <div className="text-xl font-bold text-white">{currentTrail.averageRating.toFixed(1)}</div>
+            <div className="text-sm text-stone-400">Rating</div>
           </div>
           
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
-            <Users className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{currentTrail.reviewCount}</div>
-            <div className="text-sm text-stone-600 dark:text-stone-400">Reviews</div>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-center min-w-[140px] flex-shrink-0">
+            <Users className="mx-auto mb-3 text-emerald-500" size={24} />
+            <div className="text-xl font-bold text-white">{currentTrail.reviewCount}</div>
+            <div className="text-sm text-stone-400">Reviews</div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mb-6">
-          <nav className="flex space-x-8 border-b border-stone-200 dark:border-stone-700">
+        <div className="mb-8">
+          <nav className="flex space-x-8 border-b border-stone-700/50">
             {[
               { id: 'overview', label: 'Overview' },
               { id: 'reviews', label: `Reviews (${currentTrail.reviewCount})` },
@@ -244,10 +244,10 @@ export default function TrailDetail() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
-                    ? 'border-forest-500 text-forest-600 dark:text-forest-400'
-                    : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600'
+                    ? 'border-emerald-500 text-white'
+                    : 'border-transparent text-stone-400 hover:text-stone-300 hover:border-stone-600'
                 }`}
               >
                 {tab.label}
@@ -260,30 +260,30 @@ export default function TrailDetail() {
         {activeTab === 'overview' && (
           <div className="space-y-6">
             {currentTrail.summary && (
-              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-3">About This Trail</h3>
-                <p className="text-stone-600 dark:text-stone-400 leading-relaxed">{currentTrail.summary}</p>
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+                <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">About This Trail</h3>
+                <p className="text-stone-300 leading-relaxed">{currentTrail.summary}</p>
               </div>
             )}
 
-            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-3">Map & Route</h3>
-              <div className="h-64 rounded-md overflow-hidden">
+            <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+              <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">Map & Route</h3>
+              <div className="h-64 rounded-xl overflow-hidden border border-stone-700/50">
                 <div ref={mapContainer} className="w-full h-full" />
               </div>
             </div>
 
             {currentTrail.photos && currentTrail.photos.length > 0 && (
-              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-3 flex items-center">
-                  <Camera className="mr-2" size={20} />
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+                <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3 flex items-center">
+                  <Camera className="mr-2" size={16} />
                   Photos ({currentTrail.photos.length})
                 </h3>
                 <PhotoGallery images={currentTrail.photos.map(url => ({ url }))} />
               </div>
             )}
 
-            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+            <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
               <ReactionBar eventId={currentTrail.id} authorPubkey={currentTrail.authorPubkey} />
             </div>
           </div>
@@ -317,16 +317,16 @@ export default function TrailDetail() {
         )}
 
         {activeTab === 'activities' && (
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-8 text-center">
-            <Calendar className="mx-auto mb-4 text-stone-400 dark:text-stone-600" size={48} />
-            <h3 className="text-lg font-medium text-stone-700 dark:text-stone-300 mb-2">No activities yet</h3>
-            <p className="text-stone-500 dark:text-stone-400 mb-4">Activities on this trail will appear here.</p>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-8 text-center">
+            <Calendar className="mx-auto mb-4 text-stone-600" size={48} />
+            <h3 className="text-lg font-medium text-stone-300 mb-2">No activities yet</h3>
+            <p className="text-stone-500 mb-4">Activities on this trail will appear here.</p>
           </div>
         )}
 
         {/* Comments */}
-        <div className="mt-8 bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-4">Comments</h3>
+        <div className="mt-8 bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-4">Comments</h3>
           <CommentThread eventId={currentTrail.id} authorPubkey={currentTrail.authorPubkey} />
         </div>
       </div>

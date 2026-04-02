@@ -402,45 +402,45 @@ export default function TrailExplorer() {
           {/* Trail List */}
           <div className="flex-1 overflow-y-auto">
             {isLoading ? (
-              <div className="p-4 text-center text-stone-500 dark:text-stone-400">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-forest-500 mx-auto mb-2"></div>
+              <div className="p-6 text-center text-stone-400">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500 mx-auto mb-2"></div>
                 Loading trails...
               </div>
             ) : filteredTrails.length === 0 ? (
-              <div className="p-4 text-center text-stone-500 dark:text-stone-400">
-                <Mountain className="mx-auto mb-2 text-stone-400 dark:text-stone-600" size={24} />
+              <div className="p-6 text-center text-stone-400">
+                <Mountain className="mx-auto mb-2 text-stone-600" size={24} />
                 <p>No trails found</p>
-                <p className="text-sm">Try adjusting your filters or zoom out</p>
+                <p className="text-sm text-stone-500">Try adjusting your filters or zoom out</p>
               </div>
             ) : (
               <div className="space-y-3 p-4">
                 {filteredTrails.slice(0, 50).map(trail => (
                   <div
                     key={trail.id}
-                    className="p-3 border border-stone-200 dark:border-stone-700 rounded-lg hover:bg-stone-50 dark:hover:bg-stone-700 cursor-pointer"
+                    className="bg-stone-800/50 rounded-2xl border border-stone-700/50 hover:border-emerald-500/30 p-4 cursor-pointer transition-all"
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-medium text-stone-800 dark:text-stone-100 text-sm leading-tight">
+                      <h3 className="font-medium text-white text-sm leading-tight">
                         {trail.name}
                       </h3>
-                      <span className={`text-xs px-2 py-1 rounded ${
-                        trail.difficulty === 'easy' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' :
-                        trail.difficulty === 'moderate' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400' :
-                        trail.difficulty === 'hard' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400' :
-                        'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'
+                      <span className={`text-xs px-3 py-1 rounded-full font-medium ${
+                        trail.difficulty === 'easy' ? 'bg-emerald-500/20 text-emerald-400' :
+                        trail.difficulty === 'moderate' ? 'bg-amber-500/20 text-amber-400' :
+                        trail.difficulty === 'hard' ? 'bg-orange-500/20 text-orange-400' :
+                        'bg-red-500/20 text-red-400'
                       }`}>
                         {trail.difficulty}
                       </span>
                     </div>
 
                     {trail.location && (
-                      <div className="flex items-center text-stone-600 dark:text-stone-400 mb-2">
+                      <div className="flex items-center text-stone-400 mb-3">
                         <MapPin size={12} className="mr-1" />
                         <span className="text-xs">{trail.location}</span>
                       </div>
                     )}
 
-                    <div className="flex items-center space-x-4 text-xs text-stone-600 dark:text-stone-400">
+                    <div className="flex items-center space-x-4 text-xs text-stone-400">
                       <div className="flex items-center">
                         <Ruler size={12} className="mr-1" />
                         {formatDistance(trail.distance * 1000)}

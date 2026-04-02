@@ -66,40 +66,40 @@ export default function Settings() {
   ]
 
   return (
-    <div className="min-h-screen bg-white dark:bg-stone-900 pb-20">
+    <div className="min-h-screen bg-stone-900 pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-stone-800 border-b border-stone-200 dark:border-stone-700 px-4 py-3">
-        <div className="flex items-center space-x-3">
+      <div className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur-xl border-b border-stone-800 px-4 py-4">
+        <div className="max-w-2xl mx-auto flex items-center space-x-3">
           <button
             onClick={() => navigate(-1)}
-            className="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100"
+            className="text-stone-400 hover:text-white transition-colors"
           >
             <ArrowLeft size={24} />
           </button>
-          <h1 className="text-xl font-bold text-stone-900 dark:text-stone-100">Settings</h1>
+          <h1 className="text-2xl font-bold text-white">Settings</h1>
         </div>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Theme Settings */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-          <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-4">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">
             Appearance
           </h2>
           
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-stone-700 dark:text-stone-300">
+          <div className="space-y-4">
+            <label className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
               Theme
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-4">
               {themeOptions.map((option) => (
                 <button
                   key={option.value}
                   onClick={() => handleThemeChange(option.value)}
-                  className={`flex flex-col items-center space-y-2 p-3 rounded-lg border-2 transition-all ${
+                  className={`flex flex-col items-center space-y-2 p-4 rounded-xl border-2 min-h-12 transition-all ${
                     theme === option.value
-                      ? 'border-forest-500 bg-forest-50 dark:bg-forest-900/20 text-forest-600 dark:text-forest-400'
-                      : 'border-stone-200 dark:border-stone-600 hover:border-stone-300 dark:hover:border-stone-500 text-stone-600 dark:text-stone-400'
+                      ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
+                      : 'border-stone-600 hover:border-stone-500 text-stone-400 hover:text-stone-300'
                   }`}
                 >
                   {option.icon}
@@ -111,24 +111,24 @@ export default function Settings() {
         </div>
 
         {/* Account Settings */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-          <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-4">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">
             Account
           </h2>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-stone-900 dark:text-stone-100">
+                <p className="font-medium text-white">
                   {profile?.display_name || profile?.name || 'Anonymous'}
                 </p>
-                <p className="text-sm text-stone-600 dark:text-stone-400 font-mono">
+                <p className="text-sm text-stone-500 font-mono">
                   {pubkey?.slice(0, 16)}...
                 </p>
               </div>
               <button
                 onClick={() => navigate('/profile/edit')}
-                className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-forest-600 dark:text-forest-400 hover:text-forest-800 dark:hover:text-forest-200 transition-colors"
+                className="flex items-center space-x-2 border border-stone-600 text-stone-300 hover:bg-stone-800 rounded-xl px-3 py-2 text-sm font-medium transition-colors"
               >
                 <User size={16} />
                 <span>Edit Profile</span>
@@ -138,21 +138,23 @@ export default function Settings() {
         </div>
 
         {/* Data & Storage */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-          <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-4">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">
             Data & Storage
           </h2>
           
-          <div className="space-y-4">
+          <div className="space-y-6">
             {/* Cache Stats */}
-            <div className="p-4 bg-stone-50 dark:bg-stone-700 rounded-lg">
-              <div className="flex items-center space-x-2 mb-2">
-                <Database size={16} className="text-stone-600 dark:text-stone-400" />
-                <span className="text-sm font-medium text-stone-700 dark:text-stone-300">
+            <div className="bg-stone-800/50 border border-stone-700/50 rounded-xl p-4">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Database size={16} className="text-white" />
+                </div>
+                <span className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
                   Offline Cache
                 </span>
               </div>
-              <div className="text-sm text-stone-600 dark:text-stone-400 space-y-1">
+              <div className="text-sm text-stone-400 space-y-1 mb-4">
                 <p>{cacheStats.eventCount} cached events</p>
                 <p>{cacheStats.profileCount} cached profiles</p>
                 {cacheStats.oldestEvent && (
@@ -161,7 +163,7 @@ export default function Settings() {
               </div>
               <button
                 onClick={() => setShowClearConfirm(true)}
-                className="flex items-center space-x-2 mt-3 px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200 transition-colors"
+                className="flex items-center space-x-2 border border-red-600/50 text-red-400 hover:bg-red-600/10 rounded-xl px-3 py-2 text-sm font-medium transition-colors"
               >
                 <Trash2 size={16} />
                 <span>Clear Cache</span>
@@ -171,12 +173,12 @@ export default function Settings() {
             {/* Import/Export (Future) */}
             <div className="flex items-center justify-between opacity-50">
               <div>
-                <p className="font-medium text-stone-700 dark:text-stone-300">Export Data</p>
-                <p className="text-sm text-stone-600 dark:text-stone-400">Download your activities</p>
+                <p className="font-medium text-stone-400">Export Data</p>
+                <p className="text-sm text-stone-500">Download your activities</p>
               </div>
               <button
                 disabled
-                className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-stone-400 cursor-not-allowed"
+                className="flex items-center space-x-2 border border-stone-600 text-stone-500 rounded-xl px-3 py-2 text-sm font-medium cursor-not-allowed"
               >
                 <Download size={16} />
                 <span>Soon</span>
@@ -186,20 +188,20 @@ export default function Settings() {
         </div>
 
         {/* Security */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-          <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-4">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">
             Security & Privacy
           </h2>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between opacity-50">
               <div>
-                <p className="font-medium text-stone-700 dark:text-stone-300">Backup Keys</p>
-                <p className="text-sm text-stone-600 dark:text-stone-400">Export encrypted keys</p>
+                <p className="font-medium text-stone-400">Backup Keys</p>
+                <p className="text-sm text-stone-500">Export encrypted keys</p>
               </div>
               <button
                 disabled
-                className="flex items-center space-x-2 px-3 py-1.5 text-sm font-medium text-stone-400 cursor-not-allowed"
+                className="flex items-center space-x-2 border border-stone-600 text-stone-500 rounded-xl px-3 py-2 text-sm font-medium cursor-not-allowed"
               >
                 <Key size={16} />
                 <span>Soon</span>
@@ -209,10 +211,10 @@ export default function Settings() {
         </div>
 
         {/* Logout */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+            className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-semibold rounded-xl h-12 transition-colors"
           >
             <span>Sign Out</span>
           </button>
@@ -221,24 +223,24 @@ export default function Settings() {
 
       {/* Clear Cache Confirmation Modal */}
       {showClearConfirm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-stone-800 rounded-lg w-full max-w-md p-6">
-            <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-2">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-stone-800/90 backdrop-blur-xl border border-stone-700/50 rounded-2xl w-full max-w-md p-6">
+            <h3 className="text-lg font-semibold text-white mb-3">
               Clear Cache?
             </h3>
-            <p className="text-sm text-stone-600 dark:text-stone-400 mb-6">
+            <p className="text-sm text-stone-400 mb-6">
               This will remove all cached activities and profiles. You'll need to reload them from relays.
             </p>
-            <div className="flex space-x-3">
+            <div className="flex space-x-4">
               <button
                 onClick={() => setShowClearConfirm(false)}
-                className="flex-1 px-4 py-2 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 transition-colors"
+                className="flex-1 border border-stone-600 text-stone-300 hover:bg-stone-800 rounded-xl h-12 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleClearCache}
-                className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
+                className="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-semibold rounded-xl h-12 transition-colors"
               >
                 Clear Cache
               </button>

@@ -307,31 +307,31 @@ export default function CreateTrail() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
-      <div className="max-w-4xl mx-auto p-4">
-        <h1 className="text-3xl font-bold text-forest-800 dark:text-forest-300 mb-6">Create New Trail</h1>
+    <div className="min-h-screen bg-stone-900">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-white mb-8">Create New Trail</h1>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-4">Trail Information</h2>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">Trail Information</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-sm font-medium text-stone-300 mb-2">
                   Trail Name *
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-4 py-3 h-12 bg-stone-800 border border-stone-600 rounded-xl text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-sm font-medium text-stone-300 mb-2">
                   Location
                 </label>
                 <input
@@ -339,18 +339,18 @@ export default function CreateTrail() {
                   value={formData.location}
                   onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
                   placeholder="e.g., Rocky Mountain National Park, CO"
-                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-4 py-3 h-12 bg-stone-800 border border-stone-600 rounded-xl text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-sm font-medium text-stone-300 mb-2">
                   Difficulty
                 </label>
                 <select
                   value={formData.difficulty}
                   onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-4 py-3 h-12 bg-stone-800 border border-stone-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 >
                   <option value="easy">Easy</option>
                   <option value="moderate">Moderate</option>
@@ -360,13 +360,13 @@ export default function CreateTrail() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-sm font-medium text-stone-300 mb-2">
                   Trail Type
                 </label>
                 <select
                   value={formData.trailType}
                   onChange={(e) => setFormData(prev => ({ ...prev, trailType: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-4 py-3 h-12 bg-stone-800 border border-stone-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 >
                   <option value="out-and-back">Out and Back</option>
                   <option value="loop">Loop</option>
@@ -376,21 +376,21 @@ export default function CreateTrail() {
             </div>
             
             <div className="mt-4">
-              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+              <label className="block text-sm font-medium text-stone-300 mb-2">
                 Description *
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={4}
-                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-forest-500"
+                className="w-full px-4 py-3 bg-stone-800 border border-stone-600 rounded-xl text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
                 placeholder="Describe the trail, what to expect, highlights, etc."
                 required
               />
             </div>
             
             <div className="mt-4">
-              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+              <label className="block text-sm font-medium text-stone-300 mb-2">
                 Activity Types
               </label>
               <div className="flex flex-wrap gap-2">
@@ -399,10 +399,10 @@ export default function CreateTrail() {
                     key={option.value}
                     type="button"
                     onClick={() => handleActivityTypeToggle(option.value)}
-                    className={`px-3 py-1 rounded-full text-sm border ${
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                       formData.activityTypes.includes(option.value)
-                        ? 'bg-forest-100 dark:bg-forest-900/30 border-forest-300 dark:border-forest-700 text-forest-800 dark:text-forest-300'
-                        : 'bg-white dark:bg-stone-700 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-600'
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-stone-700/50 border border-stone-600 text-stone-300 hover:border-stone-500'
                     }`}
                   >
                     {option.label}
@@ -413,72 +413,75 @@ export default function CreateTrail() {
           </div>
 
           {/* Route Drawing */}
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-4">Trail Route</h2>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">Trail Route</h2>
             
-            <div className="mb-4 flex gap-2 flex-wrap">
-              <button
-                type="button"
-                onClick={() => setIsDrawing(!isDrawing)}
-                className={`px-4 py-2 rounded-md ${
-                  isDrawing
-                    ? 'bg-forest-500 text-white'
-                    : 'bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
-                }`}
-              >
-                {isDrawing ? 'Stop Drawing' : 'Start Drawing Route'}
-              </button>
+            <div className="relative">
+              <div className="h-96 rounded-xl overflow-hidden border border-stone-700/50">
+                <div ref={mapContainer} className="w-full h-full" />
+              </div>
               
-              <button
-                type="button"
-                onClick={clearRoute}
-                className="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-md hover:bg-red-200 dark:hover:bg-red-900/50"
-              >
-                Clear Route
-              </button>
-              
-              <label className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900/50 cursor-pointer">
-                <Upload size={16} className="inline mr-1" />
-                Upload GPX
-                <input
-                  type="file"
-                  accept=".gpx"
-                  onChange={(e) => e.target.files && handleGpxUpload(e.target.files[0])}
-                  className="hidden"
-                />
-              </label>
+              {/* Floating Controls */}
+              <div className="absolute top-4 left-4 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsDrawing(!isDrawing)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm transition-all ${
+                    isDrawing
+                      ? 'bg-emerald-500 text-white shadow-lg'
+                      : 'bg-stone-800/90 text-stone-300 hover:bg-stone-700'
+                  }`}
+                >
+                  {isDrawing ? 'Stop Drawing' : 'Start Drawing'}
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={clearRoute}
+                  className="px-4 py-2 bg-red-500/80 text-white rounded-full text-sm font-medium backdrop-blur-sm hover:bg-red-500"
+                >
+                  Clear Route
+                </button>
+                
+                <label className="px-4 py-2 bg-blue-500/80 text-white rounded-full text-sm font-medium backdrop-blur-sm hover:bg-blue-500 cursor-pointer flex items-center">
+                  <Upload size={14} className="mr-1" />
+                  Upload GPX
+                  <input
+                    type="file"
+                    accept=".gpx"
+                    onChange={(e) => e.target.files && handleGpxUpload(e.target.files[0])}
+                    className="hidden"
+                  />
+                </label>
+              </div>
             </div>
             
-            <div className="h-96 rounded-md overflow-hidden border border-stone-200 dark:border-stone-700">
-              <div ref={mapContainer} className="w-full h-full" />
-            </div>
-            
-            <p className="text-sm text-stone-600 dark:text-stone-400 mt-2">
+            <p className="text-sm text-stone-500 mt-4">
               {isDrawing 
                 ? 'Click on the map to add waypoints to your trail route.'
-                : 'Click "Start Drawing Route" and then click on the map to create your trail route.'
+                : 'Click "Start Drawing" and then click on the map to create your trail route.'
               }
             </p>
           </div>
 
           {/* Photos */}
-          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-4">Photos</h2>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">Photos</h2>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-sm font-medium text-stone-300 mb-2">
                   Hero Image
                 </label>
-                <label className="block w-full p-4 border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700">
+                <label className="block w-full p-6 border-2 border-dashed border-stone-600 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
                   <div className="text-center">
                     {formData.heroImage ? (
-                      <div className="text-green-600 dark:text-green-400">
+                      <div className="text-emerald-400">
                         <Camera className="mx-auto mb-2" />
-                        <p>{formData.heroImage.name}</p>
+                        <p className="text-white">{formData.heroImage.name}</p>
                       </div>
                     ) : (
-                      <div className="text-stone-500 dark:text-stone-400">
+                      <div className="text-stone-400">
                         <Camera className="mx-auto mb-2" />
                         <p>Click to upload hero image</p>
                       </div>
@@ -494,11 +497,11 @@ export default function CreateTrail() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+                <label className="block text-sm font-medium text-stone-300 mb-2">
                   Additional Images
                 </label>
-                <label className="block w-full p-4 border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700">
-                  <div className="text-center text-stone-500 dark:text-stone-400">
+                <label className="block w-full p-6 border-2 border-dashed border-stone-600 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
+                  <div className="text-center text-stone-400">
                     <Plus className="mx-auto mb-2" />
                     <p>Click to add more images</p>
                   </div>
@@ -515,17 +518,17 @@ export default function CreateTrail() {
                   <div className="mt-4 grid grid-cols-3 gap-2">
                     {formData.additionalImages.map((file, index) => (
                       <div key={index} className="relative">
-                        <div className="aspect-square bg-stone-200 dark:bg-stone-700 rounded-md flex items-center justify-center">
-                          <span className="text-xs text-stone-600 dark:text-stone-400 text-center px-1">
+                        <div className="aspect-square bg-stone-700/50 border border-stone-600 rounded-xl flex items-center justify-center">
+                          <span className="text-xs text-stone-400 text-center px-2">
                             {file.name}
                           </span>
                         </div>
                         <button
                           type="button"
                           onClick={() => removeAdditionalImage(index)}
-                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-400 transition-colors"
                         >
-                          <X size={12} />
+                          <X size={14} />
                         </button>
                       </div>
                     ))}

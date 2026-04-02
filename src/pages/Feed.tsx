@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Filter } from 'lucide-react'
 import ActivityCard from '../components/activity/ActivityCard'
 import Skeleton from '../components/common/Skeleton'
+import { FeedEmptyState } from '../components/common/EmptyState'
 import { useFeedStore } from '../stores/feedStore'
 import { useAuthStore } from '../stores/authStore'
 import type { ActivityFeedItem, ActivityType } from '../types/activity'
 
 export default function Feed() {
+  const navigate = useNavigate()
   const {
     activities,
     isLoading,
@@ -253,20 +256,10 @@ export default function Feed() {
 
         {/* Empty State */}
         {!isLoading && feedItems.length === 0 && !error && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-stone-100 dark:bg-stone-800 rounded-full flex items-center justify-center">
-              <span className="text-2xl">🏃‍♂️</span>
-            </div>
-            <h3 className="text-lg font-medium text-stone-900 dark:text-stone-100 mb-2">
-              No activities yet
-            </h3>
-            <p className="text-stone-600 dark:text-stone-400 mb-4">
-              {followingOnly 
-                ? "Follow some people or create your first activity!"
-                : "Be the first to share an activity!"
-              }
-            </p>
-          </div>
+          <FeedEmptyState
+            followingOnly={followingOnly}
+            onCreateActivity={() => navigate('/record')}
+          />
         )}
 
         {/* Load more trigger */}

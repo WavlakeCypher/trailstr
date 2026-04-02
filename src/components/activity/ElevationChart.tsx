@@ -127,17 +127,17 @@ export default function ElevationChart({
     const data = payload[0].payload as ChartDataPoint
 
     return (
-      <div className="bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg p-3 shadow-lg">
-        <p className="text-sm font-medium text-stone-900 dark:text-stone-100 mb-2">
+      <div className="bg-stone-800/90 backdrop-blur border border-stone-600 rounded-xl p-3 shadow-lg">
+        <p className="text-sm font-medium text-white mb-2">
           Distance: {data.distanceFormatted}
         </p>
         <div className="space-y-1">
           <div className="flex items-center space-x-2">
             <div 
               className="w-3 h-3 rounded"
-              style={{ backgroundColor: colors.elevation || '#22c55e' }}
+              style={{ backgroundColor: colors.elevation || '#10b981' }}
             />
-            <span className="text-sm text-stone-700 dark:text-stone-300">
+            <span className="text-sm text-stone-300">
               Elevation: {data.elevationFormatted}
             </span>
           </div>
@@ -147,7 +147,7 @@ export default function ElevationChart({
                 className="w-3 h-3 rounded"
                 style={{ backgroundColor: colors.heartRate || '#ef4444' }}
               />
-              <span className="text-sm text-stone-700 dark:text-stone-300">
+              <span className="text-sm text-stone-300">
                 Heart Rate: {data.heartRateFormatted}
               </span>
             </div>
@@ -172,8 +172,8 @@ export default function ElevationChart({
 
   if (chartData.length === 0) {
     return (
-      <div className={`flex items-center justify-center bg-stone-50 dark:bg-stone-800 rounded-lg ${className}`} style={{ height }}>
-        <p className="text-stone-500 dark:text-stone-400 text-sm">No elevation data available</p>
+      <div className={`flex items-center justify-center bg-stone-800/50 rounded-xl ${className}`} style={{ height }}>
+        <p className="text-stone-400 text-sm">No elevation data available</p>
       </div>
     )
   }
@@ -190,7 +190,7 @@ export default function ElevationChart({
           {showGrid && (
             <CartesianGrid 
               strokeDasharray="3 3" 
-              stroke={colors.grid || '#e5e7eb'}
+              stroke={colors.grid || '#44403c'}
               className="opacity-30"
             />
           )}
@@ -203,7 +203,7 @@ export default function ElevationChart({
             tickFormatter={(value) => `${value.toFixed(1)}km`}
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: '#6b7280' }}
+            tick={{ fontSize: 12, fill: '#a8a29e' }}
           />
           
           <YAxis
@@ -213,7 +213,7 @@ export default function ElevationChart({
             tickFormatter={(value) => `${value}m`}
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: '#6b7280' }}
+            tick={{ fontSize: 12, fill: '#a8a29e' }}
           />
           
           {showHeartRate && (
@@ -230,7 +230,7 @@ export default function ElevationChart({
 
           <Tooltip 
             content={<CustomTooltip />}
-            cursor={{ strokeDasharray: '5 5', stroke: '#6b7280' }}
+            cursor={{ strokeDasharray: '5 5', stroke: '#a8a29e' }}
           />
 
           {/* Elevation area */}
@@ -238,10 +238,10 @@ export default function ElevationChart({
             yAxisId="elevation"
             type="monotone"
             dataKey="elevation"
-            stroke={colors.elevation || '#22c55e'}
+            stroke={colors.elevation || '#10b981'}
             strokeWidth={2}
-            fill={colors.elevationFill || '#22c55e'}
-            fillOpacity={0.3}
+            fill="url(#elevationGradient)"
+            fillOpacity={1}
           />
 
           {/* Heart rate line */}
@@ -261,11 +261,19 @@ export default function ElevationChart({
           {highlightIndex !== undefined && highlightIndex >= 0 && highlightIndex < chartData.length && (
             <ReferenceLine
               x={chartData[highlightIndex].distance}
-              stroke="#3b82f6"
+              stroke="#10b981"
               strokeWidth={2}
               strokeDasharray="5 5"
             />
           )}
+
+          {/* Define gradient */}
+          <defs>
+            <linearGradient id="elevationGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#10b981" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="#10b981" stopOpacity={0.1} />
+            </linearGradient>
+          </defs>
         </ComposedChart>
       </ResponsiveContainer>
     </div>

@@ -184,22 +184,22 @@ export default function Login() {
 
         {generatedKeys ? (
           // Show generated keys for copying
-          <div className="space-y-4">
-            <div className="bg-yellow-50 dark:bg-yellow-900/50 border border-yellow-400 rounded-lg p-4">
-              <h3 className="font-semibold text-yellow-800 dark:text-yellow-400 mb-2">
+          <div className="space-y-6">
+            <div className="bg-stone-800/50 border border-amber-600/50 rounded-2xl p-6">
+              <h3 className="text-xs font-semibold tracking-wider text-amber-400 uppercase mb-3">
                 ⚠️ Important: Save Your Private Key
               </h3>
-              <p className="text-yellow-700 dark:text-yellow-300 text-sm mb-3">
+              <p className="text-stone-400 text-sm mb-4">
                 This is your private key (nsec). Copy it and store it safely. You will NOT see it again!
               </p>
               
-              <div className="bg-white dark:bg-slate-700 border rounded p-3 font-mono text-xs break-all">
+              <div className="bg-stone-800 border border-stone-600 rounded-xl p-4 font-mono text-xs break-all text-white mb-4">
                 {generatedKeys.nsec}
               </div>
               
               <button
                 onClick={() => copyToClipboard(generatedKeys.nsec)}
-                className="mt-2 w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-semibold rounded-xl h-12 transition-colors"
               >
                 {keysCopied ? '✓ Copied!' : 'Copy Private Key'}
               </button>
@@ -208,76 +208,122 @@ export default function Login() {
             <button
               onClick={confirmKeysAndComplete}
               disabled={!keysCopied}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl h-12 transition-colors"
             >
               I've Saved My Keys - Continue
             </button>
           </div>
         ) : (
           <div className="space-y-6">
-            {/* Method Selection Tabs */}
-            <div className="flex space-x-1 bg-slate-100 dark:bg-slate-700 rounded-lg p-1">
-              {hasStoredNsec() && (
+            {/* Method Selection - Cards Layout */}
+            <div className="space-y-4">
+              <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
+                Choose Login Method
+              </h2>
+              
+              <div className="grid gap-4">
+                {hasStoredNsec() && (
+                  <button
+                    onClick={() => setActiveMethod('stored')}
+                    className={`bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-left transition-all ${
+                      activeMethod === 'stored'
+                        ? 'ring-2 ring-emerald-500 border-emerald-500/50'
+                        : 'hover:bg-stone-800/70'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m0 0a2 2 0 012 2m-2-2a2 2 0 00-2 2m0 0a2 2 0 01-2 2m2-2V9a2 2 0 00-2-2m2 2a2 2 0 002-2M9 5a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h4z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white">Stored Key</h3>
+                        <p className="text-sm text-stone-400">Unlock your saved account</p>
+                      </div>
+                    </div>
+                  </button>
+                )}
+                
+                {hasNip07 && (
+                  <button
+                    onClick={() => setActiveMethod('nip07')}
+                    className={`bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-left transition-all ${
+                      activeMethod === 'nip07'
+                        ? 'ring-2 ring-emerald-500 border-emerald-500/50'
+                        : 'hover:bg-stone-800/70'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
+                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-white">Browser Extension</h3>
+                        <p className="text-sm text-stone-400">Most secure option</p>
+                      </div>
+                    </div>
+                  </button>
+                )}
+                
                 <button
-                  onClick={() => setActiveMethod('stored')}
-                  className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                    activeMethod === 'stored'
-                      ? 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                  onClick={() => setActiveMethod('nsec')}
+                  className={`bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-left transition-all ${
+                    activeMethod === 'nsec'
+                      ? 'ring-2 ring-emerald-500 border-emerald-500/50'
+                      : 'hover:bg-stone-800/70'
                   }`}
                 >
-                  Stored Key
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m0 0a2 2 0 012 2m-2-2a2 2 0 00-2 2m0 0a2 2 0 01-2 2m2-2V9a2 2 0 00-2-2m2 2a2 2 0 002-2M9 5a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h4z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white">Private Key</h3>
+                      <p className="text-sm text-stone-400">Enter your nsec directly</p>
+                    </div>
+                  </div>
                 </button>
-              )}
-              
-              {hasNip07 && (
+                
                 <button
-                  onClick={() => setActiveMethod('nip07')}
-                  className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                    activeMethod === 'nip07'
-                      ? 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                  onClick={() => setActiveMethod('generate')}
+                  className={`bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-left transition-all ${
+                    activeMethod === 'generate'
+                      ? 'ring-2 ring-emerald-500 border-emerald-500/50'
+                      : 'hover:bg-stone-800/70'
                   }`}
                 >
-                  Extension
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white">New Account</h3>
+                      <p className="text-sm text-stone-400">Generate fresh keys</p>
+                    </div>
+                  </div>
                 </button>
-              )}
-              
-              <button
-                onClick={() => setActiveMethod('nsec')}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                  activeMethod === 'nsec'
-                    ? 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                }`}
-              >
-                Private Key
-              </button>
-              
-              <button
-                onClick={() => setActiveMethod('generate')}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
-                  activeMethod === 'generate'
-                    ? 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                }`}
-              >
-                New Account
-              </button>
+              </div>
             </div>
 
             {/* Stored Key Method */}
             {activeMethod === 'stored' && (
-              <div className="space-y-4">
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                    Enter your passphrase
+                  <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">
+                    Passphrase
                   </label>
                   <input
                     type="password"
                     value={storedPassphrase}
                     onChange={(e) => setStoredPassphrase(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                    className="w-full bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 h-12 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-white placeholder-stone-500"
                     placeholder="Enter passphrase to unlock"
                   />
                 </div>
@@ -285,7 +331,7 @@ export default function Login() {
                 <button
                   onClick={handleStoredLogin}
                   disabled={isLoading}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
                 >
                   {isLoading ? 'Unlocking...' : 'Unlock Account'}
                 </button>
@@ -294,11 +340,11 @@ export default function Login() {
 
             {/* NIP-07 Extension Method */}
             {activeMethod === 'nip07' && (
-              <div className="space-y-4">
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 space-y-4">
                 {hasNip07 ? (
                   <>
-                    <div className="bg-emerald-50 dark:bg-emerald-900/50 border border-emerald-400 rounded-lg p-4">
-                      <p className="text-emerald-800 dark:text-emerald-300 text-sm">
+                    <div className="bg-emerald-600/10 border border-emerald-600/30 rounded-xl p-4">
+                      <p className="text-emerald-400 text-sm">
                         ✓ Nostr extension detected. This is the recommended and most secure login method.
                       </p>
                     </div>
@@ -306,14 +352,14 @@ export default function Login() {
                     <button
                       onClick={handleNip07Login}
                       disabled={isLoading}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                      className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
                     >
                       {isLoading ? 'Connecting...' : 'Connect with Extension'}
                     </button>
                   </>
                 ) : (
-                  <div className="bg-amber-50 dark:bg-amber-900/50 border border-amber-400 rounded-lg p-4">
-                    <p className="text-amber-800 dark:text-amber-300 text-sm">
+                  <div className="bg-amber-600/10 border border-amber-600/30 rounded-xl p-4">
+                    <p className="text-amber-400 text-sm">
                       No Nostr extension found. Install a browser extension like nos2x or Alby for secure login.
                     </p>
                   </div>
@@ -323,77 +369,77 @@ export default function Login() {
 
             {/* Private Key Method */}
             {activeMethod === 'nsec' && (
-              <div className="space-y-4">
-                <div className="bg-red-50 dark:bg-red-900/50 border border-red-400 rounded-lg p-4">
-                  <h3 className="font-semibold text-red-800 dark:text-red-400 mb-1">⚠️ Security Warning</h3>
-                  <p className="text-red-700 dark:text-red-300 text-sm">
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 space-y-6">
+                <div className="bg-red-600/10 border border-red-600/30 rounded-xl p-4">
+                  <h3 className="text-xs font-semibold tracking-wider text-red-400 uppercase mb-2">⚠️ Security Warning</h3>
+                  <p className="text-stone-400 text-sm">
                     Entering your private key directly is less secure than using a browser extension.
                     Only do this if you trust this device.
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">
                     Private Key (nsec)
                   </label>
                   <textarea
                     value={nsecInput}
                     onChange={(e) => setNsecInput(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 font-mono text-sm"
+                    className="w-full bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-white placeholder-stone-500 font-mono text-sm"
                     rows={3}
                     placeholder="nsec1..."
                   />
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div className="flex items-center">
                     <input
                       type="checkbox"
                       id="save-nsec"
                       checked={saveNsec}
                       onChange={(e) => setSaveNsec(e.target.checked)}
-                      className="mr-2"
+                      className="mr-3 w-4 h-4 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500"
                     />
-                    <label htmlFor="save-nsec" className="text-sm text-slate-700 dark:text-slate-300">
+                    <label htmlFor="save-nsec" className="text-sm text-stone-400">
                       Save encrypted copy (recommended)
                     </label>
                   </div>
 
                   {saveNsec && (
-                    <>
+                    <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                        <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">
                           Encryption Passphrase (min 8 chars)
                         </label>
                         <input
                           type="password"
                           value={passphrase}
                           onChange={(e) => setPassphrase(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                          className="w-full bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 h-12 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-white placeholder-stone-500"
                           placeholder="Strong passphrase"
                         />
                       </div>
                       
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                        <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">
                           Confirm Passphrase
                         </label>
                         <input
                           type="password"
                           value={confirmPassphrase}
                           onChange={(e) => setConfirmPassphrase(e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                          className="w-full bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 h-12 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-white placeholder-stone-500"
                           placeholder="Confirm passphrase"
                         />
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
 
                 <button
                   onClick={handleNsecLogin}
                   disabled={isLoading}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
                 >
                   {isLoading ? 'Logging in...' : 'Login'}
                 </button>
@@ -402,10 +448,10 @@ export default function Login() {
 
             {/* Generate New Account Method */}
             {activeMethod === 'generate' && (
-              <div className="space-y-4">
-                <div className="bg-blue-50 dark:bg-blue-900/50 border border-blue-400 rounded-lg p-4">
-                  <h3 className="font-semibold text-blue-800 dark:text-blue-400 mb-1">Create New Account</h3>
-                  <p className="text-blue-700 dark:text-blue-300 text-sm">
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 space-y-4">
+                <div className="bg-blue-600/10 border border-blue-600/30 rounded-xl p-4">
+                  <h3 className="text-xs font-semibold tracking-wider text-blue-400 uppercase mb-2">Create New Account</h3>
+                  <p className="text-stone-400 text-sm">
                     Generate a new Nostr keypair. You'll need to copy and securely store your private key.
                   </p>
                 </div>
@@ -413,7 +459,7 @@ export default function Login() {
                 <button
                   onClick={handleGenerateLogin}
                   disabled={isLoading}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
                 >
                   {isLoading ? 'Generating...' : 'Generate New Account'}
                 </button>

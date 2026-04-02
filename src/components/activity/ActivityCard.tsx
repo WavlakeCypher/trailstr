@@ -41,21 +41,6 @@ const activityTypeLabels: Record<ActivityType, string> = {
   other: 'Activity'
 }
 
-const activityTypeColors: Record<ActivityType, string> = {
-  walk: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  hike: 'bg-forest-100 text-forest-800 dark:bg-forest-900 dark:text-forest-200',
-  run: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-  trail_run: 'bg-earth-100 text-earth-800 dark:bg-earth-900 dark:text-earth-200',
-  bike: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  mountain_bike: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-  road_bike: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  swim: 'bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200',
-  kayak: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200',
-  ski: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-  snowboard: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200',
-  climb: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  other: 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-}
 
 export default function ActivityCard({ activity }: ActivityCardProps) {
   const [miniMapUrl, setMiniMapUrl] = useState<string | null>(null)
@@ -175,9 +160,9 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
 
   return (
     <Link to={`/activity/${activity.id}`} className="block">
-      <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm border border-stone-200 dark:border-stone-700 overflow-hidden hover:shadow-md transition-shadow duration-200">
+      <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl overflow-hidden hover:border-emerald-500/30 transition-all duration-200">
         {/* Header */}
-        <div className="p-4 pb-3">
+        <div className="p-6 pb-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3 flex-1">
               <Avatar 
@@ -188,14 +173,14 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
               />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2">
-                  <p className="text-sm font-medium text-stone-900 dark:text-stone-100 truncate">
+                  <p className="text-sm font-medium text-white truncate">
                     {activity.author.displayName || activity.author.name || 'Anonymous'}
                   </p>
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${activityTypeColors[activity.type]}`}>
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-emerald-900/30 text-emerald-300">
                     {activityTypeIcons[activity.type]} {activityTypeLabels[activity.type]}
                   </span>
                 </div>
-                <p className="text-xs text-stone-500 dark:text-stone-400">
+                <p className="text-xs text-stone-400">
                   {formatDate(activity.createdAt)}
                 </p>
               </div>
@@ -203,18 +188,18 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
           </div>
           
           {/* Activity Title */}
-          <h3 className="mt-2 text-lg font-semibold text-stone-900 dark:text-stone-100 line-clamp-2">
+          <h3 className="mt-2 text-lg font-semibold text-white line-clamp-2">
             {activity.title}
           </h3>
         </div>
 
         {/* Mini Map / Track Thumbnail */}
         {(activity.hasTrack || miniMapUrl) && (
-          <div className="px-4 pb-3">
-            <div className="relative bg-stone-100 dark:bg-stone-700 rounded-lg overflow-hidden" style={{ height: '120px' }}>
+          <div className="px-6 pb-4">
+            <div className="relative bg-stone-700 rounded-xl overflow-hidden" style={{ height: '120px' }}>
               {isLoadingMap ? (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-forest-500"></div>
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500"></div>
                 </div>
               ) : miniMapUrl ? (
                 <img 
@@ -223,14 +208,14 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-stone-400 dark:text-stone-500">
+                <div className="absolute inset-0 flex items-center justify-center text-stone-500">
                   <MapPin size={24} />
                 </div>
               )}
               
               {/* Track overlay info */}
               {activity.hasTrack && (
-                <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
                   GPS Track
                 </div>
               )}
@@ -240,32 +225,32 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
 
         {/* Stats Row */}
         {activity.metrics && (
-          <div className="px-4 pb-3">
+          <div className="px-6 pb-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
               {activity.metrics.distanceMeters && (
-                <div className="flex items-center space-x-1 text-stone-600 dark:text-stone-300">
-                  <MapPin size={14} />
+                <div className="flex items-center space-x-1 text-stone-300">
+                  <MapPin size={14} className="text-emerald-400" />
                   <span>{formatDistance(activity.metrics.distanceMeters)}</span>
                 </div>
               )}
               
               {activity.metrics.movingSeconds && (
-                <div className="flex items-center space-x-1 text-stone-600 dark:text-stone-300">
-                  <Clock size={14} />
+                <div className="flex items-center space-x-1 text-stone-300">
+                  <Clock size={14} className="text-emerald-400" />
                   <span>{formatDuration(activity.metrics.movingSeconds)}</span>
                 </div>
               )}
               
               {activity.metrics.elevationGainMeters && (
-                <div className="flex items-center space-x-1 text-stone-600 dark:text-stone-300">
-                  <TrendingUp size={14} />
+                <div className="flex items-center space-x-1 text-stone-300">
+                  <TrendingUp size={14} className="text-emerald-400" />
                   <span>{Math.round(activity.metrics.elevationGainMeters)}m</span>
                 </div>
               )}
               
               {activity.metrics.avgPaceSecondsPerKm && (
-                <div className="flex items-center space-x-1 text-stone-600 dark:text-stone-300">
-                  <span className="text-xs">⚡</span>
+                <div className="flex items-center space-x-1 text-stone-300">
+                  <span className="text-xs text-emerald-400">⚡</span>
                   <span>{formatPace(activity.metrics.avgPaceSecondsPerKm, activity.type)}</span>
                 </div>
               )}
@@ -275,17 +260,17 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
 
         {/* Photo Thumbnails */}
         {activity.images && activity.images.length > 0 && (
-          <div className="px-4 pb-3">
+          <div className="px-6 pb-4">
             <div className="flex space-x-2 overflow-x-auto">
               {activity.images.slice(0, 4).map((image, index) => (
                 <div key={index} className="flex-shrink-0 relative">
                   <img
                     src={image.url}
                     alt=""
-                    className="w-16 h-16 rounded-lg object-cover"
+                    className="w-16 h-16 rounded-xl object-cover"
                   />
                   {index === 3 && activity.images!.length > 4 && (
-                    <div className="absolute inset-0 bg-black bg-opacity-60 rounded-lg flex items-center justify-center text-white text-xs">
+                    <div className="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center text-white text-xs">
                       +{activity.images!.length - 3}
                     </div>
                   )}
@@ -296,33 +281,33 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
         )}
 
         {/* Social Stats Footer */}
-        <div className="px-4 py-3 bg-stone-50 dark:bg-stone-750 border-t border-stone-200 dark:border-stone-700">
-          <div className="flex items-center justify-between text-sm text-stone-600 dark:text-stone-400">
+        <div className="px-6 py-4 bg-stone-800/30 border-t border-stone-700/50">
+          <div className="flex items-center justify-between text-sm text-stone-400">
             <div className="flex items-center space-x-4">
               {activity.reactionCount && activity.reactionCount > 0 && (
                 <div className="flex items-center space-x-1">
-                  <Heart size={14} />
+                  <Heart size={14} className="text-emerald-400" />
                   <span>{activity.reactionCount}</span>
                 </div>
               )}
               
               {activity.commentCount && activity.commentCount > 0 && (
                 <div className="flex items-center space-x-1">
-                  <MessageCircle size={14} />
+                  <MessageCircle size={14} className="text-emerald-400" />
                   <span>{activity.commentCount}</span>
                 </div>
               )}
               
               {activity.hasPhotos && (
                 <div className="flex items-center space-x-1">
-                  <Camera size={14} />
+                  <Camera size={14} className="text-emerald-400" />
                   <span>{activity.images?.length || 0}</span>
                 </div>
               )}
             </div>
             
             {activity.location && (
-              <div className="text-xs text-stone-500 dark:text-stone-400 truncate">
+              <div className="text-xs text-stone-500 truncate">
                 {activity.location}
               </div>
             )}

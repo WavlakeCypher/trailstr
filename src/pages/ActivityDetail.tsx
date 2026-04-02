@@ -157,10 +157,10 @@ export default function ActivityDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-500 mx-auto mb-4"></div>
-          <p className="text-stone-600 dark:text-stone-400">Loading activity...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+          <p className="text-stone-400">Loading activity...</p>
         </div>
       </div>
     )
@@ -168,12 +168,12 @@ export default function ActivityDetail() {
 
   if (error || !activity) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 dark:text-red-400 mb-4">{error || 'Activity not found'}</p>
+          <p className="text-red-400 mb-4">{error || 'Activity not found'}</p>
           <Link 
             to="/feed" 
-            className="text-forest-600 dark:text-forest-400 hover:underline"
+            className="text-emerald-400 hover:text-emerald-300 transition-colors"
           >
             ← Back to Feed
           </Link>
@@ -338,9 +338,9 @@ export default function ActivityDetail() {
 
         {/* Photos */}
         {activity.images && activity.images.length > 0 && (
-          <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+              <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
                 Photos ({activity.images.length})
               </h3>
             </div>
@@ -373,7 +373,7 @@ export default function ActivityDetail() {
             {!showAllPhotos && activity.images.length > 8 && (
               <button
                 onClick={() => setShowAllPhotos(true)}
-                className="mt-4 text-forest-600 dark:text-forest-400 hover:underline text-sm"
+                className="mt-4 text-emerald-400 hover:text-emerald-300 text-sm transition-colors"
               >
                 View all {activity.images.length} photos
               </button>
@@ -382,11 +382,11 @@ export default function ActivityDetail() {
         )}
 
         {/* Social Section */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
           <div className="space-y-6">
             {/* Reaction Bar */}
             <div>
-              <h4 className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-3">Reactions</h4>
+              <h4 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">Reactions</h4>
               <ReactionBar
                 eventId={activity.id}
                 authorPubkey={activity.authorPubkey}
@@ -394,13 +394,13 @@ export default function ActivityDetail() {
             </div>
             
             {/* Action Buttons */}
-            <div className="flex items-center space-x-4 py-2 border-y border-stone-200 dark:border-stone-700">
+            <div className="flex items-center space-x-4 py-2 border-y border-stone-700/50">
               <ZapButton
                 eventId={activity.id}
                 authorPubkey={activity.authorPubkey}
               />
               
-              <button className="flex items-center space-x-2 text-stone-600 dark:text-stone-400 hover:text-forest-600 dark:hover:text-forest-400 transition-colors">
+              <button className="flex items-center space-x-2 text-stone-400 hover:text-emerald-400 transition-colors">
                 <Link2 size={18} />
                 <span>Link to Trail</span>
               </button>
