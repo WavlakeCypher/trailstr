@@ -128,44 +128,60 @@ export default function Profile() {
 
       <div className="max-w-2xl mx-auto px-4">
         {/* Profile Info Section */}
-        <div className="relative -mt-10 pb-6 border-b border-slate-200 dark:border-slate-700">
+        <div className="relative -mt-12 pb-6">
           {/* Avatar */}
-          <div className="flex items-end mb-4">
+          <div className="flex items-end mb-6">
             <div className="relative">
               <img
                 src={profile?.picture || `https://robohash.org/${pubkey}.png?set=set4`}
                 alt="Profile avatar"
-                className="w-20 h-20 rounded-full border-4 border-white dark:border-slate-800 bg-white dark:bg-slate-800"
+                className="w-24 h-24 rounded-full border-4 border-emerald-500 bg-stone-800"
               />
             </div>
             
-            <div className="ml-4 flex-1 min-h-[4rem] flex flex-col justify-end">
+            <div className="ml-4 flex-1 min-h-[6rem] flex flex-col justify-end">
               <button 
                 onClick={() => navigate('/profile/edit')}
-                className="self-end bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors"
+                className="self-end bg-gradient-to-r from-emerald-600 to-emerald-500 text-white text-sm font-medium rounded-xl h-12 px-6 transition-colors"
               >
                 Edit Profile
               </button>
             </div>
           </div>
 
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="bg-stone-800/50 rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-white">0 km</div>
+              <div className="text-xs text-stone-400 uppercase">Distance</div>
+            </div>
+            <div className="bg-stone-800/50 rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-white">0</div>
+              <div className="text-xs text-stone-400 uppercase">Activities</div>
+            </div>
+            <div className="bg-stone-800/50 rounded-xl p-4 text-center">
+              <div className="text-2xl font-bold text-white">0 m</div>
+              <div className="text-xs text-stone-400 uppercase">Elevation</div>
+            </div>
+          </div>
+
           {/* Name and Details */}
-          <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <div className="space-y-3">
+            <h1 className="text-2xl font-bold text-white">
               {profile?.display_name || profile?.name || 'Anonymous'}
             </h1>
             
-            <p className="text-slate-600 dark:text-slate-400 text-sm">
+            <p className="text-stone-400 text-sm">
               {formatPubkey(pubkey || '')}
             </p>
 
             {profile?.about && (
-              <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+              <p className="text-stone-300 leading-relaxed">
                 {profile.about}
               </p>
             )}
 
-            <div className="flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-400">
+            <div className="flex flex-wrap gap-4 text-sm text-stone-400">
               {profile?.location && (
                 <div className="flex items-center">
                   <span className="mr-1">📍</span>
@@ -180,7 +196,7 @@ export default function Profile() {
                     href={profile.website} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-emerald-600 dark:text-emerald-400 hover:underline"
+                    className="text-emerald-400 hover:text-emerald-300 transition-colors"
                   >
                     {profile.website.replace(/^https?:\/\//, '')}
                   </a>
@@ -190,7 +206,7 @@ export default function Profile() {
               {profile?.nip05 && (
                 <div className="flex items-center">
                   <span className="mr-1">✓</span>
-                  <span className="text-emerald-600 dark:text-emerald-400">
+                  <span className="text-emerald-400">
                     {profile.nip05}
                   </span>
                 </div>
@@ -199,7 +215,7 @@ export default function Profile() {
               {profile?.lud16 && (
                 <div className="flex items-center">
                   <span className="mr-1">⚡</span>
-                  <span className="text-amber-600 dark:text-amber-400">
+                  <span className="text-emerald-400">
                     {profile.lud16}
                   </span>
                 </div>
@@ -209,8 +225,8 @@ export default function Profile() {
         </div>
 
         {/* Tabs */}
-        <div className="pt-4">
-          <div className="flex space-x-1 bg-slate-100 dark:bg-slate-800 rounded-lg p-1 mb-6">
+        <div className="pt-6">
+          <div className="flex space-x-1 bg-stone-800/30 rounded-xl p-1 mb-6">
             {[
               { id: 'activities', label: 'Activities', count: 0 },
               { id: 'trails', label: 'Trails', count: 0 },
@@ -220,15 +236,18 @@ export default function Profile() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as ProfileTab)}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                className={`relative flex-1 py-3 px-3 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === tab.id
-                    ? 'bg-white dark:bg-slate-700 text-emerald-700 dark:text-emerald-400 shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-stone-700 text-white'
+                    : 'text-stone-400 hover:text-white'
                 }`}
               >
                 <span>{tab.label}</span>
                 {tab.count !== null && (
                   <span className="ml-1 text-xs opacity-75">({tab.count})</span>
+                )}
+                {activeTab === tab.id && (
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-emerald-500 rounded-full"></div>
                 )}
               </button>
             ))}

@@ -139,15 +139,18 @@ export default function Feed() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-stone-900 dark:text-stone-100 mb-2">
+      <div className="flex items-center justify-center min-h-screen bg-stone-900">
+        <div className="text-center max-w-md mx-auto px-4">
+          <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center">
+            <span className="text-2xl">🏃‍♂️</span>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-3">
             Welcome to TrailStr
           </h2>
-          <p className="text-stone-600 dark:text-stone-400 mb-4">
-            Sign in to see your activity feed
+          <p className="text-stone-400 mb-6">
+            Sign in to see your activity feed and share your adventures
           </p>
-          <a href="/login" className="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">
+          <a href="/login" className="inline-block bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors">
             Sign In
           </a>
         </div>
@@ -156,68 +159,71 @@ export default function Feed() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-forest-800 dark:text-forest-200">
-            Feed
-          </h1>
-          
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center space-x-1 px-3 py-1.5 text-sm font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
-            >
-              <Filter size={16} />
-              <span>Filter</span>
-            </button>
+    <div className="bg-stone-900 min-h-screen">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur-xl border-b border-stone-800 px-4 py-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-white">
+              Feed
+            </h1>
             
-            <button
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className="flex items-center space-x-1 px-3 py-1.5 text-sm font-medium text-forest-600 dark:text-forest-400 hover:text-forest-800 dark:hover:text-forest-200 transition-colors disabled:opacity-50"
-            >
-              <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
-              <span>Refresh</span>
-            </button>
-          </div>
-        </div>
-        
-        {/* Filters */}
-        {showFilters && (
-          <div className="mt-3 pt-3 border-t border-stone-200 dark:border-stone-700">
-            <div className="flex items-center space-x-4">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  checked={followingOnly}
-                  onChange={toggleFollowingOnly}
-                  className="rounded border-stone-300 text-forest-600 focus:border-forest-500 focus:ring-forest-500"
-                />
-                <span className="text-sm text-stone-700 dark:text-stone-300">
-                  Following only
-                </span>
-              </label>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center space-x-2 border border-stone-600 text-stone-300 hover:bg-stone-800 rounded-xl px-3 py-2 text-sm font-medium transition-colors"
+              >
+                <Filter size={16} />
+                <span>Filter</span>
+              </button>
               
-              {/* Activity type filters could be added here */}
+              <button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                className="flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 text-white font-semibold rounded-xl px-3 py-2 text-sm transition-colors"
+              >
+                <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
+                <span>Refresh</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Filters */}
+          {showFilters && (
+            <div className="mt-4 pt-4 border-t border-stone-800">
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={followingOnly}
+                    onChange={toggleFollowingOnly}
+                    className="w-4 h-4 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500"
+                  />
+                  <span className="text-sm text-stone-400">
+                    Following only
+                  </span>
+                </label>
+                
+                {/* Activity type filters could be added here */}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Error State */}
+        {error && (
+          <div className="px-4 py-4">
+            <div className="bg-red-600/10 border border-red-600/30 rounded-xl p-4">
+              <p className="text-sm text-red-400 mb-3">{error}</p>
+              <button
+                onClick={() => fetchFeed(true)}
+                className="text-sm font-medium text-red-400 hover:text-red-300 underline transition-colors"
+              >
+                Try again
+              </button>
             </div>
           </div>
         )}
-      </div>
-
-      {/* Error State */}
-      {error && (
-        <div className="mx-4 mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-          <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
-          <button
-            onClick={() => fetchFeed(true)}
-            className="mt-2 text-sm font-medium text-red-600 dark:text-red-400 hover:underline"
-          >
-            Try again
-          </button>
-        </div>
-      )}
 
       {/* Content */}
       <div className="px-4 py-4">
@@ -285,6 +291,7 @@ export default function Feed() {
           </div>
         )}
       </div>
+    </div>
     </div>
   )
 }

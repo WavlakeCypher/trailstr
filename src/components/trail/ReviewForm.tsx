@@ -168,8 +168,8 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-4">Write a Review</h3>
+    <form onSubmit={handleSubmit} className={`bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 ${className}`}>
+      <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-6">Write a Review</h3>
 
       {/* Rating */}
       <div className="mb-4">

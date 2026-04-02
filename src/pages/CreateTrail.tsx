@@ -299,9 +299,9 @@ export default function CreateTrail() {
 
   if (!isAuthenticated) {
     return (
-      <div className="p-4 text-center dark:bg-stone-900 min-h-screen">
-        <h1 className="text-2xl font-bold text-forest-800 dark:text-forest-300 mb-4">Create Trail</h1>
-        <p className="text-stone-600 dark:text-stone-400">Please log in to create a trail.</p>
+      <div className="p-4 text-center bg-stone-900 min-h-screen">
+        <h1 className="text-2xl font-bold text-white mb-4">Create Trail</h1>
+        <p className="text-stone-400">Please log in to create a trail.</p>
       </div>
     )
   }
@@ -543,14 +543,14 @@ export default function CreateTrail() {
             <button
               type="button"
               onClick={() => navigate('/trail-explorer')}
-              className="px-6 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-800"
+              className="px-6 py-3 h-12 border border-stone-600 text-stone-300 rounded-xl hover:bg-stone-800 hover:border-stone-500 transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-forest-500 text-white rounded-md hover:bg-forest-600 disabled:opacity-50 flex items-center space-x-2"
+              className="px-6 py-3 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl disabled:opacity-50 flex items-center space-x-2 transition-all"
             >
               {isSubmitting ? (
                 <>
@@ -569,15 +569,15 @@ export default function CreateTrail() {
 
         {/* Upload Progress */}
         {uploadProgress && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-stone-800 rounded-lg p-6 max-w-sm w-full mx-4">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-stone-800/95 border border-stone-700/50 rounded-2xl p-8 max-w-sm w-full mx-4">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-500 mx-auto mb-4"></div>
-                <p className="text-stone-700 dark:text-stone-300 mb-2">{uploadProgress.message}</p>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+                <p className="text-white mb-2">{uploadProgress.message}</p>
                 {uploadProgress.total > 1 && (
-                  <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2 mb-2">
+                  <div className="w-full bg-stone-700 rounded-full h-2 mb-2">
                     <div
-                      className="bg-forest-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
                     ></div>
                   </div>
