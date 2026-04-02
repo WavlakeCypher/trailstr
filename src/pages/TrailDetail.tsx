@@ -18,10 +18,11 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import { useTrailStore } from '../stores/trailStore'
 import { useAuthStore } from '../stores/authStore'
 import BlurhashImage from '../components/common/BlurhashImage'
-import StarRating from '../components/common/StarRating'
 import PhotoGallery from '../components/activity/PhotoGallery'
 import { ReactionBar } from '../components/social/ReactionBar'
 import { CommentThread } from '../components/social/CommentThread'
+import { ReviewForm } from '../components/trail/ReviewForm'
+import { ReviewList } from '../components/trail/ReviewList'
 
 export default function TrailDetail() {
   const { id } = useParams<{ id: string }>()
@@ -310,49 +311,32 @@ export default function TrailDetail() {
         )}
 
         {activeTab === 'reviews' && (
-          <div className="space-y-4">
-            {currentTrailReviews.length === 0 ? (
-              <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-                <Star className="mx-auto mb-4 text-gray-400" size={48} />
-                <h3 className="text-lg font-medium text-gray-700 mb-2">No reviews yet</h3>
-                <p className="text-gray-500 mb-4">Be the first to share your experience on this trail!</p>
-                {isAuthenticated && (
-                  <button className="px-4 py-2 bg-forest-500 text-white rounded-md hover:bg-forest-600">
-                    Write a Review
-                  </button>
-                )}
-              </div>
-            ) : (
-              <>
-                {/* Add Review Button */}
-                {isAuthenticated && (
-                  <div className="bg-white rounded-lg shadow-sm p-4">
-                    <button className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">
-                      Write a Review
-                    </button>
-                  </div>
-                )}
+          <div className="space-y-6">
+            {/* Review Form */}
+            <ReviewForm
+              trailAuthorPubkey={currentTrail.authorPubkey}
+              trailSlug={currentTrail.dTag}
+              onSubmit={() => {
+                // Refresh reviews after submission
+                fetchTrailReviews(currentTrail.id)
+              }}
+            />
 
-                {/* Reviews List */}
-                {currentTrailReviews.map((review) => (
-                  <div key={review.id} className="bg-white rounded-lg shadow-sm p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
-                        <div>
-                          <div className="font-medium text-gray-800">Hiker</div>
-                          <div className="text-sm text-gray-500">
-                            {new Date(review.createdAt * 1000).toLocaleDateString()}
-                          </div>
-                        </div>
-                      </div>
-                      <StarRating rating={review.rating} interactive={false} />
-                    </div>
-                    <p className="text-gray-600">{review.comment}</p>
-                  </div>
-                ))}
-              </>
-            )}
+            {/* Reviews List */}
+            <ReviewList
+              reviews={currentTrailReviews.map(review => ({
+                id: review.id,
+                authorPubkey: review.authorPubkey,
+                rating: review.rating,
+                comment: review.comment,
+                createdAt: review.createdAt,
+                hikedOn: review.hikedOn,
+                conditions: review.conditions,
+                images: review.images
+              }))}
+              hasMore={false} // TODO: Implement pagination
+              isLoading={false}
+            />
           </div>
         )}
 

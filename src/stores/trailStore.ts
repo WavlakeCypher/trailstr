@@ -46,9 +46,9 @@ interface StoreReview {
   trailId: string
   rating: number
   comment: string
-  difficulty?: string
-  conditions?: string
-  photos: string[]
+  hikedOn?: number
+  conditions?: string[]
+  images?: Array<{url: string, blurhash?: string}>
   rawEvent: Event
 }
 
@@ -208,15 +208,43 @@ function parseReviewEvent(event: Event): StoreReview | null {
       }
     }
     
-    // Extract trail reference from tags
+    // Extract data from tags
     let trailId = ''
     let rating = 0
+    let hikedOn: number | undefined
+    const conditions: string[] = []
+    const images: Array<{url: string, blurhash?: string}> = []
     
     for (const tag of event.tags) {
-      if (tag[0] === 'e' && tag[1]) {
-        trailId = tag[1] // Trail event ID being reviewed
-      } else if (tag[0] === 'rating' && tag[1]) {
-        rating = parseInt(tag[1]) || 0
+      switch (tag[0]) {
+        case 'a': // Trail reference (kind:pubkey:d-tag format)
+          if (tag[1] && tag[1].includes(':')) {
+            // Extract trail reference - we'll use the full a-tag reference as trailId
+            trailId = tag[1]
+          }
+          break
+        case 'e': // Legacy direct event reference
+          if (tag[1] && !trailId) {
+            trailId = tag[1]
+          }
+          break
+        case 'rating':
+          rating = parseInt(tag[1]) || 0
+          break
+        case 'hiked_on':
+          hikedOn = parseInt(tag[1]) || undefined
+          break
+        case 'conditions':
+          if (tag[1]) conditions.push(tag[1])
+          break
+        case 'image':
+          if (tag[1]) {
+            images.push({
+              url: tag[1],
+              blurhash: tag[2] || undefined
+            })
+          }
+          break
       }
     }
     
@@ -231,10 +259,10 @@ function parseReviewEvent(event: Event): StoreReview | null {
       createdAt: event.created_at,
       trailId,
       rating: rating || content.rating || 0,
-      comment: content.comment || content.review || '',
-      difficulty: content.difficulty || undefined,
-      conditions: content.conditions || undefined,
-      photos: content.photos || [],
+      comment: content || '',
+      hikedOn,
+      conditions: conditions.length > 0 ? conditions : undefined,
+      images: images.length > 0 ? images : undefined,
       rawEvent: event
     }
     

@@ -59,12 +59,12 @@
 - [x] **Task 37:** TrailDetail page — hero image, map, stats, reviews tab, activities tab
 
 ## Phase 11: Trail Reviews
-- [ ] **Task 38:** ReviewForm + ReviewList components
-- [ ] **Task 39:** Kind-30532 review events — one per user per trail, rating aggregation
+- [x] **Task 38:** ReviewForm + ReviewList components
+- [x] **Task 39:** Kind-30532 review events — one per user per trail, rating aggregation
 
 ## Phase 12: Notifications
-- [ ] **Task 40:** Real-time subscription for `#p` tagged events (reactions, comments, follows, zaps)
-- [ ] **Task 41:** Notification bell with unread count + dropdown list
+- [x] **Task 40:** Real-time subscription for `#p` tagged events (reactions, comments, follows, zaps)
+- [x] **Task 41:** Notification bell with unread count + dropdown list
 
 ## Phase 13: Offline & Caching
 - [ ] **Task 42:** IndexedDB cache with Dexie — cache own + followed users' events

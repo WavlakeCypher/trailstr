@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { NotificationBell } from '../notifications/NotificationBell'
 
 export default function TopNav() {
   const location = useLocation()
@@ -61,6 +62,9 @@ export default function TopNav() {
             >
               Profile
             </Link>
+            
+            {/* Notification Bell */}
+            <NotificationBell />
           </div>
         </div>
       </div>
