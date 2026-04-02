@@ -63,14 +63,11 @@ export default function CreateTrail() {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: 'https://tiles.openfreemap.org/styles/bright',
-        center: [-106.3468, 39.7392], // Default to Colorado
+        center: [-106.3468, 39.7392],
         zoom: 10
       })
 
-      // Add click handler for route drawing
       map.current.on('click', handleMapClick)
-      
-      // Add drawing controls
       map.current.addControl(new maplibregl.NavigationControl(), 'top-right')
     }
 
@@ -87,7 +84,6 @@ export default function CreateTrail() {
 
     const coords: [number, number] = [e.lngLat.lng, e.lngLat.lat]
     
-    // Add marker
     const marker = new maplibregl.Marker()
       .setLngLat(coords)
       .addTo(map.current)
@@ -98,7 +94,6 @@ export default function CreateTrail() {
       routeCoordinates: [...prev.routeCoordinates, coords]
     }))
 
-    // Update route line
     updateRouteLine([...formData.routeCoordinates, coords])
   }
 
@@ -109,10 +104,7 @@ export default function CreateTrail() {
       (map.current.getSource('route') as maplibregl.GeoJSONSource).setData({
         type: 'Feature',
         properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates
-        }
+        geometry: { type: 'LineString', coordinates }
       })
     } else {
       map.current.addSource('route', {
@@ -120,10 +112,7 @@ export default function CreateTrail() {
         data: {
           type: 'Feature',
           properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates
-          }
+          geometry: { type: 'LineString', coordinates }
         }
       })
 
@@ -131,14 +120,8 @@ export default function CreateTrail() {
         id: 'route',
         type: 'line',
         source: 'route',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#22c55e',
-          'line-width': 4
-        }
+        layout: { 'line-join': 'round', 'line-cap': 'round' },
+        paint: { 'line-color': '#22c55e', 'line-width': 4 }
       })
     }
   }
@@ -156,9 +139,7 @@ export default function CreateTrail() {
 
   const handleGpxUpload = async (file: File) => {
     try {
-      // For now, just store the file - in a real app we'd parse GPX
       setFormData(prev => ({ ...prev, gpxFile: file }))
-      // TODO: Parse GPX and extract coordinates
       alert('GPX upload functionality will be implemented')
     } catch (error) {
       alert('Failed to process GPX file')
@@ -167,7 +148,6 @@ export default function CreateTrail() {
 
   const handleImageUpload = (files: FileList | null, isHero: boolean = false) => {
     if (!files) return
-
     const fileArray = Array.from(files)
     
     if (isHero && fileArray.length > 0) {
@@ -204,13 +184,12 @@ export default function CreateTrail() {
       return { distance: 0, elevationGain: 0 }
     }
     
-    // Simple distance calculation (in reality we'd use more sophisticated methods)
     let distance = 0
     for (let i = 1; i < formData.routeCoordinates.length; i++) {
       const [lon1, lat1] = formData.routeCoordinates[i - 1]
       const [lon2, lat2] = formData.routeCoordinates[i]
       
-      const R = 6371000 // Earth radius in meters
+      const R = 6371000
       const φ1 = lat1 * Math.PI / 180
       const φ2 = lat2 * Math.PI / 180
       const Δφ = (lat2 - lat1) * Math.PI / 180
@@ -223,7 +202,6 @@ export default function CreateTrail() {
       distance += R * c
     }
     
-    // TODO: Calculate elevation gain from elevation service
     return { distance, elevationGain: 0 }
   }
 
@@ -255,7 +233,6 @@ export default function CreateTrail() {
       let heroImageData
       let additionalImagesData: Array<{url: string, blurhash?: string}> = []
       
-      // Upload hero image
       if (formData.heroImage) {
         setUploadProgress({ current: 0, total: 1, message: 'Processing hero image...' })
         const resized = await resizeImageAndGenerateBlurhash(formData.heroImage)
@@ -263,7 +240,6 @@ export default function CreateTrail() {
         heroImageData = { url, blurhash: resized.blurhash }
       }
       
-      // Upload additional images
       if (formData.additionalImages.length > 0) {
         for (let i = 0; i < formData.additionalImages.length; i++) {
           setUploadProgress({ 
@@ -278,7 +254,6 @@ export default function CreateTrail() {
         }
       }
       
-      // Get center point for geohash
       let centerLat = 0, centerLon = 0
       if (formData.routeCoordinates.length > 0) {
         centerLat = formData.routeCoordinates.reduce((sum, coord) => sum + coord[1], 0) / formData.routeCoordinates.length
@@ -287,7 +262,6 @@ export default function CreateTrail() {
       
       setUploadProgress({ current: 1, total: 1, message: 'Publishing trail...' })
       
-      // Build and publish trail event
       const trailData = {
         d: uuidv4(),
         name: formData.name,
@@ -309,7 +283,6 @@ export default function CreateTrail() {
       const trailEvent = buildTrailEvent(trailData, pubkey || '')
       const signedEvent = await signer.signEvent(trailEvent)
       
-      // TODO: Publish to relays
       console.log('Trail event created:', signedEvent)
       
       alert('Trail created successfully!')
@@ -326,39 +299,39 @@ export default function CreateTrail() {
 
   if (!isAuthenticated) {
     return (
-      <div className="p-4 text-center">
-        <h1 className="text-2xl font-bold text-forest-800 mb-4">Create Trail</h1>
-        <p>Please log in to create a trail.</p>
+      <div className="p-4 text-center dark:bg-stone-900 min-h-screen">
+        <h1 className="text-2xl font-bold text-forest-800 dark:text-forest-300 mb-4">Create Trail</h1>
+        <p className="text-stone-600 dark:text-stone-400">Please log in to create a trail.</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
       <div className="max-w-4xl mx-auto p-4">
-        <h1 className="text-3xl font-bold text-forest-800 mb-6">Create New Trail</h1>
+        <h1 className="text-3xl font-bold text-forest-800 dark:text-forest-300 mb-6">Create New Trail</h1>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Trail Information</h2>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-4">Trail Information</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Trail Name *
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
                   required
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Location
                 </label>
                 <input
@@ -366,18 +339,18 @@ export default function CreateTrail() {
                   value={formData.location}
                   onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
                   placeholder="e.g., Rocky Mountain National Park, CO"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-forest-500"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Difficulty
                 </label>
                 <select
                   value={formData.difficulty}
                   onChange={(e) => setFormData(prev => ({ ...prev, difficulty: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
                 >
                   <option value="easy">Easy</option>
                   <option value="moderate">Moderate</option>
@@ -387,13 +360,13 @@ export default function CreateTrail() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Trail Type
                 </label>
                 <select
                   value={formData.trailType}
                   onChange={(e) => setFormData(prev => ({ ...prev, trailType: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+                  className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
                 >
                   <option value="out-and-back">Out and Back</option>
                   <option value="loop">Loop</option>
@@ -403,21 +376,21 @@ export default function CreateTrail() {
             </div>
             
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                 Description *
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+                className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-forest-500"
                 placeholder="Describe the trail, what to expect, highlights, etc."
                 required
               />
             </div>
             
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                 Activity Types
               </label>
               <div className="flex flex-wrap gap-2">
@@ -428,8 +401,8 @@ export default function CreateTrail() {
                     onClick={() => handleActivityTypeToggle(option.value)}
                     className={`px-3 py-1 rounded-full text-sm border ${
                       formData.activityTypes.includes(option.value)
-                        ? 'bg-forest-100 border-forest-300 text-forest-800'
-                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                        ? 'bg-forest-100 dark:bg-forest-900/30 border-forest-300 dark:border-forest-700 text-forest-800 dark:text-forest-300'
+                        : 'bg-white dark:bg-stone-700 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-600'
                     }`}
                   >
                     {option.label}
@@ -440,8 +413,8 @@ export default function CreateTrail() {
           </div>
 
           {/* Route Drawing */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Trail Route</h2>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-4">Trail Route</h2>
             
             <div className="mb-4 flex gap-2 flex-wrap">
               <button
@@ -450,7 +423,7 @@ export default function CreateTrail() {
                 className={`px-4 py-2 rounded-md ${
                   isDrawing
                     ? 'bg-forest-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-stone-100 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600'
                 }`}
               >
                 {isDrawing ? 'Stop Drawing' : 'Start Drawing Route'}
@@ -459,12 +432,12 @@ export default function CreateTrail() {
               <button
                 type="button"
                 onClick={clearRoute}
-                className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200"
+                className="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-md hover:bg-red-200 dark:hover:bg-red-900/50"
               >
                 Clear Route
               </button>
               
-              <label className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 cursor-pointer">
+              <label className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900/50 cursor-pointer">
                 <Upload size={16} className="inline mr-1" />
                 Upload GPX
                 <input
@@ -476,11 +449,11 @@ export default function CreateTrail() {
               </label>
             </div>
             
-            <div className="h-96 rounded-md overflow-hidden border">
+            <div className="h-96 rounded-md overflow-hidden border border-stone-200 dark:border-stone-700">
               <div ref={mapContainer} className="w-full h-full" />
             </div>
             
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-stone-600 dark:text-stone-400 mt-2">
               {isDrawing 
                 ? 'Click on the map to add waypoints to your trail route.'
                 : 'Click "Start Drawing Route" and then click on the map to create your trail route.'
@@ -489,24 +462,23 @@ export default function CreateTrail() {
           </div>
 
           {/* Photos */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Photos</h2>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+            <h2 className="text-xl font-semibold text-stone-800 dark:text-stone-100 mb-4">Photos</h2>
             
             <div className="space-y-4">
-              {/* Hero Image */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Hero Image
                 </label>
-                <label className="block w-full p-4 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+                <label className="block w-full p-4 border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700">
                   <div className="text-center">
                     {formData.heroImage ? (
-                      <div className="text-green-600">
+                      <div className="text-green-600 dark:text-green-400">
                         <Camera className="mx-auto mb-2" />
                         <p>{formData.heroImage.name}</p>
                       </div>
                     ) : (
-                      <div className="text-gray-500">
+                      <div className="text-stone-500 dark:text-stone-400">
                         <Camera className="mx-auto mb-2" />
                         <p>Click to upload hero image</p>
                       </div>
@@ -521,13 +493,12 @@ export default function CreateTrail() {
                 </label>
               </div>
               
-              {/* Additional Images */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
                   Additional Images
                 </label>
-                <label className="block w-full p-4 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
-                  <div className="text-center text-gray-500">
+                <label className="block w-full p-4 border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700">
+                  <div className="text-center text-stone-500 dark:text-stone-400">
                     <Plus className="mx-auto mb-2" />
                     <p>Click to add more images</p>
                   </div>
@@ -544,8 +515,8 @@ export default function CreateTrail() {
                   <div className="mt-4 grid grid-cols-3 gap-2">
                     {formData.additionalImages.map((file, index) => (
                       <div key={index} className="relative">
-                        <div className="aspect-square bg-gray-200 rounded-md flex items-center justify-center">
-                          <span className="text-xs text-gray-600 text-center px-1">
+                        <div className="aspect-square bg-stone-200 dark:bg-stone-700 rounded-md flex items-center justify-center">
+                          <span className="text-xs text-stone-600 dark:text-stone-400 text-center px-1">
                             {file.name}
                           </span>
                         </div>
@@ -569,7 +540,7 @@ export default function CreateTrail() {
             <button
               type="button"
               onClick={() => navigate('/trail-explorer')}
-              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              className="px-6 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:hover:bg-stone-800"
             >
               Cancel
             </button>
@@ -596,12 +567,12 @@ export default function CreateTrail() {
         {/* Upload Progress */}
         {uploadProgress && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+            <div className="bg-white dark:bg-stone-800 rounded-lg p-6 max-w-sm w-full mx-4">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-500 mx-auto mb-4"></div>
-                <p className="text-gray-700 mb-2">{uploadProgress.message}</p>
+                <p className="text-stone-700 dark:text-stone-300 mb-2">{uploadProgress.message}</p>
                 {uploadProgress.total > 1 && (
-                  <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                  <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2 mb-2">
                     <div
                       className="bg-forest-500 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}

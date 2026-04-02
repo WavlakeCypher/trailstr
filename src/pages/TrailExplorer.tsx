@@ -50,12 +50,25 @@ export default function TrailExplorer() {
   // Initialize map
   useEffect(() => {
     if (mapContainer.current && !map.current) {
-      map.current = new maplibregl.Map({
-        container: mapContainer.current,
-        style: 'https://tiles.openfreemap.org/styles/bright',
-        center: [-106.3468, 39.7392], // Default to Colorado
-        zoom: 8
-      })
+      // Fetch style and ensure projection is set (maplibre-gl v5 requires it)
+      fetch('https://tiles.openfreemap.org/styles/bright')
+        .then(r => r.json())
+        .then(style => {
+          if (!style.projection) style.projection = { type: 'mercator' }
+          if (!mapContainer.current) return
+          map.current = new maplibregl.Map({
+            container: mapContainer.current,
+            style,
+            center: [-106.3468, 39.7392],
+            zoom: 8
+          })
+          setupMapEvents()
+        })
+        .catch(err => console.error('Failed to load map style:', err))
+    }
+
+    function setupMapEvents() {
+      if (!map.current) return
 
       // Add controls
       map.current.addControl(new maplibregl.NavigationControl(), 'top-right')

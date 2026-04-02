@@ -46,12 +46,14 @@ export default function TrailDetail() {
     if (currentTrail && mapContainer.current && !map.current) {
       const coordinates = currentTrail.startCoordinates || [0, 0]
       
-      map.current = new maplibregl.Map({
-        container: mapContainer.current,
-        style: 'https://tiles.openfreemap.org/styles/bright',
-        center: [coordinates[0], coordinates[1]],
-        zoom: 13
-      })
+      import('../utils/mapStyle').then(({ loadMapStyle }) => loadMapStyle('https://tiles.openfreemap.org/styles/bright')).then(style => {
+        if (!mapContainer.current) return
+        map.current = new maplibregl.Map({
+          container: mapContainer.current,
+          style,
+          center: [coordinates[0], coordinates[1]],
+          zoom: 13
+        })
 
       // Add controls
       map.current.addControl(new maplibregl.NavigationControl(), 'top-right')
@@ -68,6 +70,7 @@ export default function TrailDetail() {
         // TODO: Add route polyline visualization
         console.log('Route data available for visualization:', currentTrail.routeData)
       }
+      })
     }
 
     return () => {

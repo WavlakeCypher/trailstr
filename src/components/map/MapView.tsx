@@ -75,17 +75,39 @@ export default function MapView({
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return
 
-    const map = new maplibregl.Map({
-      container: mapContainerRef.current,
-      style: getMapStyle(),
-      center,
-      zoom,
-      bearing,
-      pitch,
-      interactive,
-      // Add attribution
-      attributionControl: false // We'll add custom attribution
-    })
+    let cancelled = false
+    const styleUrl = getMapStyle()
+
+    // Fetch style and patch projection for maplibre-gl v5
+    const initMap = async () => {
+      let resolvedStyle: any = styleUrl
+      if (typeof styleUrl === 'string') {
+        try {
+          const { loadMapStyle } = await import('../../utils/mapStyle')
+          resolvedStyle = await loadMapStyle(styleUrl)
+        } catch (e) {
+          console.warn('Failed to pre-fetch map style, using URL directly', e)
+        }
+      }
+      if (cancelled || !mapContainerRef.current) return
+      const map = new maplibregl.Map({
+        container: mapContainerRef.current,
+        style: resolvedStyle,
+        center,
+        zoom,
+        bearing,
+        pitch,
+        interactive,
+        attributionControl: false
+      })
+      setupMap(map)
+    }
+    initMap()
+    return () => { cancelled = true; if (mapRef.current) { mapRef.current.remove(); mapRef.current = null } }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  function setupMap(map: maplibregl.Map) {
 
     // Add custom attribution
     map.addControl(
@@ -121,15 +143,7 @@ export default function MapView({
       map.on('click', onClick)
     }
 
-    // Cleanup on unmount
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove()
-        mapRef.current = null
-      }
-      setIsMapLoaded(false)
-    }
-  }, []) // Empty dependency array - only run on mount
+  }
 
   // Update map center when prop changes
   useEffect(() => {

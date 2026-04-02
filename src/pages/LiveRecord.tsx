@@ -475,12 +475,15 @@ export default function LiveRecord() {
   // Initialize map
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return
-    const map = new maplibregl.Map({
-      container: mapContainerRef.current,
-      style: 'https://tiles.openfreemap.org/styles/liberty',
-      center: [-122.4, 37.8],
-      zoom: 16
-    })
+    let cancelled = false
+    import('../utils/mapStyle').then(({ loadMapStyle }) => loadMapStyle()).then(style => {
+      if (cancelled || !mapContainerRef.current || mapRef.current) return
+      const map = new maplibregl.Map({
+        container: mapContainerRef.current,
+        style,
+        center: [-122.4, 37.8],
+        zoom: 16
+      })
     map.on('load', () => {
       map.addSource('track', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
       map.addLayer({ id: 'track-line', type: 'line', source: 'track', paint: { 'line-color': '#059669', 'line-width': 4, 'line-opacity': 0.8 } })
@@ -488,7 +491,8 @@ export default function LiveRecord() {
       map.addLayer({ id: 'current-location-circle', type: 'circle', source: 'current-location', paint: { 'circle-radius': 8, 'circle-color': '#059669', 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff' } })
     })
     mapRef.current = map
-    return () => { map.remove(); mapRef.current = null }
+    })
+    return () => { cancelled = true; if (mapRef.current) { mapRef.current.remove(); mapRef.current = null } }
   }, [])
 
   // Update map when location/track changes
