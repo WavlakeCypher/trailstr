@@ -169,10 +169,10 @@ export function FileDropZone({ onActivitiesParsed, className = '' }: FileDropZon
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`
-          relative border-2 border-dashed rounded-lg p-8 text-center transition-colors
+          relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-200
           ${isDragOver 
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
-            : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+            ? 'border-emerald-500 bg-emerald-500/10' 
+            : 'border-stone-600 hover:border-emerald-500'
           }
         `}
       >
@@ -187,20 +187,20 @@ export function FileDropZone({ onActivitiesParsed, className = '' }: FileDropZon
         
         <div className="space-y-4">
           <div className="flex justify-center">
-            <Upload className="h-12 w-12 text-gray-400" />
+            <Upload className={`h-12 w-12 transition-colors ${isDragOver ? 'text-emerald-400' : 'text-stone-400'}`} />
           </div>
           
           <div>
-            <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <p className="text-lg font-medium text-white">
               Drop activity files here, or click to select
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-stone-400">
               Supports GPX, FIT, TCX, and ZIP files
             </p>
           </div>
           
-          <div className="text-xs text-gray-400 dark:text-gray-500">
-            <p>Supported sources:</p>
+          <div className="text-xs text-stone-500">
+            <p className="text-stone-400 mb-1">Supported sources:</p>
             <p>Garmin Export • Strava Export • Apple Health • Fitbit • Generic files</p>
           </div>
         </div>

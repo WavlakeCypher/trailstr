@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { RefreshCw, Filter } from 'lucide-react'
 import ActivityCard from '../components/activity/ActivityCard'
 import Skeleton from '../components/common/Skeleton'
-import { FeedEmptyState } from '../components/common/EmptyState'
 import { useFeedStore } from '../stores/feedStore'
 import { useAuthStore } from '../stores/authStore'
 import type { ActivityFeedItem, ActivityType } from '../types/activity'
 
 export default function Feed() {
-  const navigate = useNavigate()
   const {
     activities,
     isLoading,

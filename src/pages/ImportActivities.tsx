@@ -391,5 +391,6 @@ export default function ImportActivities() {
         </div>
       )}
     </div>
+    </div>
   )
 }
