@@ -46,6 +46,46 @@ body {
   outline: none;
 }
 
+/* Mobile touch UX */
+@media (hover: none) and (pointer: coarse) {
+  /* Minimum 48px tap targets on touch devices */
+  button, a, [role="button"], [role="menuitem"], input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scrolling with momentum */
+  .overflow-y-auto, .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Touch feedback for interactive elements */
+  button:active, a:active, [role="button"]:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+
+  /* Disable text selection on interactive elements */
+  nav a, button {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Smooth scroll globally */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Safe area insets for notched devices */
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
 /* Ensure reduced motion preferences are respected */
 @media (prefers-reduced-motion: reduce) {
   *,

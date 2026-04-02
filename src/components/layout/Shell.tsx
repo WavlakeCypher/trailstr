@@ -21,7 +21,7 @@ export default function Shell({ children }: ShellProps) {
       <TopNav />
       
       {/* Main Content */}
-      <main id="main-content" className="pb-16 md:pb-4 pt-0 md:pt-16" role="main">
+      <main id="main-content" className="pb-20 md:pb-4 pt-0 md:pt-16" role="main" style={{ paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }}>
         {children}
       </main>
       

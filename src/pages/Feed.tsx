@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import { RefreshCw, Filter } from 'lucide-react'
 import ActivityCard from '../components/activity/ActivityCard'
 import Skeleton from '../components/common/Skeleton'
+import BottomSheet from '../components/mobile/BottomSheet'
+import { usePullToRefresh } from '../hooks/usePullToRefresh'
 import { useFeedStore } from '../stores/feedStore'
 import { useAuthStore } from '../stores/authStore'
 import type { ActivityFeedItem, ActivityType } from '../types/activity'
@@ -64,7 +66,7 @@ export default function Feed() {
     return () => observer.disconnect()
   }, [hasMore, isLoading, isLoadingMore, handleLoadMore])
 
-  // Pull to refresh
+  // Pull to refresh (touch gesture)
   const handleRefresh = async () => {
     setIsRefreshing(true)
     try {
@@ -73,6 +75,10 @@ export default function Feed() {
       setIsRefreshing(false)
     }
   }
+
+  const { containerRef: pullRefreshRef, pullDistance, isRefreshing: isPtrRefreshing } = usePullToRefresh({
+    onRefresh: async () => { await fetchFeed(true) }
+  })
 
   // Convert feed activities to ActivityFeedItem format
   const feedItems: ActivityFeedItem[] = activities.map(activity => ({
@@ -185,24 +191,41 @@ export default function Feed() {
             </div>
           </div>
           
-          {/* Filters */}
-          {showFilters && (
-            <div id="feed-filters" className="mt-4 pt-4 border-t border-stone-800" role="region" aria-label="Feed filters">
-              <div className="flex items-center space-x-4">
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={followingOnly}
-                    onChange={toggleFollowingOnly}
-                    className="w-4 h-4 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500 focus:ring-2"
-                  />
-                  <span className="text-sm text-stone-300">
-                    Following only
-                  </span>
-                </label>
+          {/* Filters - inline on desktop, bottom sheet on mobile */}
+          <div className="hidden md:block">
+            {showFilters && (
+              <div id="feed-filters" className="mt-4 pt-4 border-t border-stone-800" role="region" aria-label="Feed filters">
+                <div className="flex items-center space-x-4">
+                  <label className="flex items-center space-x-3 cursor-pointer min-h-[44px]">
+                    <input
+                      type="checkbox"
+                      checked={followingOnly}
+                      onChange={toggleFollowingOnly}
+                      className="w-5 h-5 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500 focus:ring-2"
+                    />
+                    <span className="text-sm text-stone-300">
+                      Following only
+                    </span>
+                  </label>
+                </div>
               </div>
+            )}
+          </div>
+          <BottomSheet isOpen={showFilters} onClose={() => setShowFilters(false)} title="Feed Filters" snapPoints={[0.35]}>
+            <div className="md:hidden">
+              <label className="flex items-center space-x-3 cursor-pointer min-h-[48px] active:bg-stone-700/50 rounded-xl px-3 -mx-3 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={followingOnly}
+                  onChange={toggleFollowingOnly}
+                  className="w-5 h-5 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500 focus:ring-2"
+                />
+                <span className="text-base text-stone-300">
+                  Following only
+                </span>
+              </label>
             </div>
-          )}
+          </BottomSheet>
         </header>
 
         {/* Error State */}
@@ -220,8 +243,22 @@ export default function Feed() {
           </div>
         )}
 
+        {/* Pull-to-refresh indicator */}
+        {(pullDistance > 0 || isPtrRefreshing) && (
+          <div
+            className="flex justify-center items-center overflow-hidden transition-all"
+            style={{ height: `${pullDistance}px` }}
+            role="status"
+            aria-label={isPtrRefreshing ? 'Refreshing' : 'Pull to refresh'}
+          >
+            <div className={`text-emerald-500 ${isPtrRefreshing ? 'animate-spin' : ''}`} style={{ transform: `rotate(${pullDistance * 3}deg)` }}>
+              <RefreshCw size={22} />
+            </div>
+          </div>
+        )}
+
         {/* Content */}
-        <div className="px-4 py-6">
+        <div ref={pullRefreshRef} className="px-4 py-6 overflow-y-auto overscroll-y-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           {/* Loading skeletons for initial load */}
           {isLoading && feedItems.length === 0 && (
             <div className="space-y-6" role="status" aria-label="Loading activities">

@@ -55,7 +55,7 @@ export default function BottomNav() {
   
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900/95 backdrop-blur-xl border-t border-stone-800 z-50" aria-label="Mobile navigation">
-      <div className="grid grid-cols-5 h-16" role="menubar">
+      <div className="grid grid-cols-5 h-16 safe-area-pb" role="menubar" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
         {navItems.map((item) => (
           <Link
             key={item.path}
@@ -63,7 +63,7 @@ export default function BottomNav() {
             role="menuitem"
             aria-label={item.label}
             aria-current={isActive(item.path) ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center space-y-1 min-h-12 transition-all duration-200 relative focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-500 ${
+            className={`flex flex-col items-center justify-center space-y-1 min-h-[48px] min-w-[48px] transition-all duration-200 relative focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-500 active:scale-90 active:opacity-80 select-none touch-manipulation ${
               isActive(item.path)
                 ? 'text-emerald-500'
                 : 'text-stone-500 hover:text-stone-300'

@@ -151,8 +151,8 @@ export default function ActivityCard({ activity }: ActivityCardProps) {
   }
 
   return (
-    <Link to={`/activity/${activity.id}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl">
-      <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl overflow-hidden hover:border-emerald-500/30 transition-all duration-200">
+    <Link to={`/activity/${activity.id}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl touch-manipulation">
+      <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl overflow-hidden hover:border-emerald-500/30 active:scale-[0.98] active:bg-stone-800/70 transition-all duration-200">
         {/* Header */}
         <div className="p-6 pb-4">
           <div className="flex items-start justify-between">
