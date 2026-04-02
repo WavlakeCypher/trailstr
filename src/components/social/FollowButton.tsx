@@ -97,11 +97,11 @@ export function FollowButton({ targetPubkey, className = '', size = 'md' }: Foll
       onClick={toggleFollow}
       disabled={isLoading}
       className={`
-        inline-flex items-center rounded-full font-medium transition-colors
+        inline-flex items-center rounded-xl font-medium transition-all
         ${sizeClasses}
         ${isFollowing
-          ? 'bg-stone-200 dark:bg-stone-700 text-stone-700 dark:text-stone-300 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400'
-          : 'bg-forest-500 text-white hover:bg-forest-600'
+          ? 'border border-stone-600 text-stone-300 hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10'
+          : 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white'
         }
         disabled:opacity-50
         ${className}
