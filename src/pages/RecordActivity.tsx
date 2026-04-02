@@ -223,6 +223,20 @@ export default function RecordActivity() {
       </div>
 
       <div className="p-4 space-y-6">
+        {/* Live Recording Option */}
+        <div className="bg-gradient-to-r from-forest-500 to-forest-600 rounded-lg p-4 text-white">
+          <h3 className="font-semibold mb-2">Want to track your activity live?</h3>
+          <p className="text-sm text-forest-100 mb-3">
+            Record your GPS track in real-time with live stats and a real-time map.
+          </p>
+          <button
+            onClick={() => navigate('/record/live')}
+            className="bg-white text-forest-600 hover:bg-forest-50 font-medium px-4 py-2 rounded-lg transition-colors"
+          >
+            🏃‍♂️ Start Live Recording
+          </button>
+        </div>
+
         {/* Messages */}
         {error && (
           <div className="p-3 bg-red-100 dark:bg-red-900/50 border border-red-400 rounded-lg">

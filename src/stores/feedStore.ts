@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { type Event } from 'nostr-tools'
 import { KINDS } from '../nostr/kinds'
 import { useAuthStore } from './authStore'
+import { useCacheStore, cacheHelpers } from './cacheStore'
 
 // Simplified Activity interface for feed purposes
 interface FeedActivity {
@@ -50,6 +51,7 @@ export interface FeedState {
   
   // Actions
   fetchFeed: (refresh?: boolean) => Promise<void>
+  loadCachedFeed: () => Promise<void>
   loadMore: () => Promise<void>
   addActivity: (activity: FeedActivity, optimistic?: boolean) => void
   updateActivity: (id: string, updates: Partial<FeedActivity>) => void
@@ -158,6 +160,63 @@ export const useFeedStore = create<FeedState>()(
       followingOnly: true,
       activityTypes: [],
 
+      // Load cached feed data immediately (for offline-first experience)
+      loadCachedFeed: async () => {
+        const authStore = useAuthStore.getState()
+        if (!authStore.isAuthenticated) return
+
+        try {
+          set({ isLoading: true })
+
+          // Get followed pubkeys from contact list (cached if available)
+          let authors: string[] = [authStore.pubkey!]
+          
+          const { followingOnly } = get()
+          if (followingOnly) {
+            // Try to get cached contact events first
+            const { getCachedEvents } = useCacheStore.getState()
+            const contactEvents = await getCachedEvents({
+              kinds: [KINDS.CONTACT_LIST],
+              authors: [authStore.pubkey!],
+              limit: 1
+            })
+
+            if (contactEvents.length > 0) {
+              const contactEvent = contactEvents[0]
+              const followedPubkeys = contactEvent.tags
+                .filter(tag => tag[0] === 'p')
+                .map(tag => tag[1])
+              
+              authors = [...authors, ...followedPubkeys]
+            }
+          }
+
+          // Get cached activities
+          const cachedEvents = await cacheHelpers.getCachedFeedData(authStore.pubkey!, authors.slice(1))
+          
+          if (cachedEvents.length > 0) {
+            // Parse cached events into activities
+            const cachedActivities = cachedEvents
+              .map(parseActivityEvent)
+              .filter(Boolean) as FeedActivity[]
+            
+            // Sort by date (newest first)
+            cachedActivities.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+            set({
+              activities: cachedActivities,
+              events: cachedEvents,
+              isLoading: false
+            })
+          } else {
+            set({ isLoading: false })
+          }
+        } catch (error) {
+          console.error('Failed to load cached feed:', error)
+          set({ isLoading: false })
+        }
+      },
+
       // Fetch feed from relays
       fetchFeed: async (refresh = false) => {
         const authStore = useAuthStore.getState()
@@ -232,6 +291,11 @@ export const useFeedStore = create<FeedState>()(
           // }
 
           const events = await client.query(filter, 10000)
+          
+          // Cache the new events for offline access
+          if (events.length > 0) {
+            await cacheHelpers.cacheEvents(events)
+          }
           
           // Parse events into activities
           const newActivities = events

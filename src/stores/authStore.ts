@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import { type SignerInterface, type SignerType, NsecSigner, signerManager } from '../nostr/signer'
 import { nostrClient } from '../nostr/client'
 import { KINDS } from '../nostr/kinds'
+import { useCacheStore } from './cacheStore'
 
 export interface UserProfile {
   name?: string
@@ -173,6 +174,15 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoadingProfile: true })
         
         try {
+          // First try to get cached profile
+          const { getCachedProfile, cacheProfile, cacheEvent } = useCacheStore.getState()
+          const cachedProfile = await getCachedProfile(pubkey)
+          
+          if (cachedProfile) {
+            set({ profile: cachedProfile })
+          }
+
+          // Then fetch from relays to ensure fresh data
           const events = await nostrClient.query([
             {
               kinds: [KINDS.SET_METADATA],
@@ -184,6 +194,10 @@ export const useAuthStore = create<AuthState>()(
           if (events.length > 0) {
             const profileEvent = events[0]
             const profile = JSON.parse(profileEvent.content)
+            
+            // Cache the profile and event
+            await cacheProfile(pubkey, profile)
+            await cacheEvent(profileEvent)
             
             set({ profile })
           }

@@ -14,6 +14,7 @@ export default function Feed() {
     error,
     followingOnly,
     fetchFeed,
+    loadCachedFeed,
     loadMore,
     toggleFollowingOnly
   } = useFeedStore()
@@ -24,12 +25,16 @@ export default function Feed() {
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const [isLoadingMore, setIsLoadingMore] = React.useState(false)
 
-  // Initial feed load
+  // Initial feed load - cache first, then sync
   useEffect(() => {
-    if (isAuthenticated && activities.length === 0) {
-      fetchFeed(true)
+    if (isAuthenticated) {
+      // First load cached data for immediate display
+      loadCachedFeed().then(() => {
+        // Then sync with relays in background
+        fetchFeed(false)
+      })
     }
-  }, [isAuthenticated, activities.length, fetchFeed])
+  }, [isAuthenticated, loadCachedFeed, fetchFeed])
 
   // Infinite scroll handler
   const handleLoadMore = useCallback(async () => {
