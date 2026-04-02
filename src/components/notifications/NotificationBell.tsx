@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Bell, BellRing, Heart, MessageCircle, UserPlus, Zap } from 'lucide-react'
 import { useNotificationStore } from '../../stores/notificationStore'
 import { useAuthStore } from '../../stores/authStore'
@@ -29,16 +29,16 @@ function NotificationItem({ notification, onClick }: NotificationItemProps) {
   const getIcon = () => {
     switch (notification.type) {
       case 'reaction':
-        return <Heart className="text-red-500" size={16} />
+        return <Heart className="text-red-500" size={16} aria-hidden="true" />
       case 'comment':
       case 'mention':
-        return <MessageCircle className="text-blue-500" size={16} />
+        return <MessageCircle className="text-blue-500" size={16} aria-hidden="true" />
       case 'follow':
-        return <UserPlus className="text-green-500" size={16} />
+        return <UserPlus className="text-green-500" size={16} aria-hidden="true" />
       case 'zap':
-        return <Zap className="text-yellow-500" size={16} />
+        return <Zap className="text-yellow-500" size={16} aria-hidden="true" />
       default:
-        return <Bell className="text-gray-500" size={16} />
+        return <Bell className="text-gray-500" size={16} aria-hidden="true" />
     }
   }
 
@@ -82,12 +82,23 @@ function NotificationItem({ notification, onClick }: NotificationItemProps) {
     onClick?.()
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleClick()
+    }
+  }
+
   return (
     <div
-      className={`flex items-start space-x-3 p-3 hover:bg-stone-50 dark:hover:bg-stone-700 cursor-pointer transition-colors ${
+      className={`flex items-start space-x-3 p-3 hover:bg-stone-50 dark:hover:bg-stone-700 cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-500 ${
         !notification.isRead ? 'bg-forest-50 dark:bg-forest-900/20 border-l-2 border-l-forest-500' : ''
       }`}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`${getMessage()}, ${formatTime(notification.createdAt)}${!notification.isRead ? ', unread' : ''}`}
     >
       <Avatar
         src={notification.fromProfile?.picture}
@@ -110,7 +121,7 @@ function NotificationItem({ notification, onClick }: NotificationItemProps) {
           </span>
           
           {!notification.isRead && (
-            <div className="w-2 h-2 bg-forest-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-forest-500 rounded-full" aria-hidden="true"></div>
           )}
         </div>
       </div>
@@ -133,6 +144,13 @@ export function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  // Close on Escape
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape' && isOpen) {
+      setIsOpen(false)
+    }
+  }, [isOpen])
+
   // Auto-close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -143,9 +161,13 @@ export function NotificationBell() {
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener('keydown', handleKeyDown)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+        document.removeEventListener('keydown', handleKeyDown)
+      }
     }
-  }, [isOpen])
+  }, [isOpen, handleKeyDown])
 
   // Subscribe to notifications when authenticated
   useEffect(() => {
@@ -165,7 +187,7 @@ export function NotificationBell() {
     
     const interval = setInterval(() => {
       fetchNotifications(pubkey)
-    }, 30000) // Refresh every 30 seconds
+    }, 30000)
     
     return () => clearInterval(interval)
   }, [isAuthenticated, pubkey])
@@ -187,17 +209,20 @@ export function NotificationBell() {
       {/* Bell Button */}
       <button
         onClick={handleToggle}
-        className="relative p-2 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors"
+        className="relative p-2 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
       >
         {unreadCount > 0 ? (
-          <BellRing className="text-forest-600" size={20} />
+          <BellRing className="text-forest-600" size={20} aria-hidden="true" />
         ) : (
-          <Bell size={20} />
+          <Bell size={20} aria-hidden="true" />
         )}
         
         {/* Unread Badge */}
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-medium min-w-[18px] h-[18px] rounded-full flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-medium min-w-[18px] h-[18px] rounded-full flex items-center justify-center" aria-hidden="true">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -205,7 +230,11 @@ export function NotificationBell() {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-stone-800 rounded-lg shadow-xl border border-stone-200 dark:border-stone-700 z-50 max-h-96 overflow-hidden">
+        <div
+          className="absolute right-0 mt-2 w-80 bg-white dark:bg-stone-800 rounded-lg shadow-xl border border-stone-200 dark:border-stone-700 z-50 max-h-96 overflow-hidden"
+          role="dialog"
+          aria-label="Notifications"
+        >
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-stone-100 dark:border-stone-700">
             <h3 className="font-medium text-stone-900 dark:text-stone-100">Notifications</h3>
@@ -213,7 +242,7 @@ export function NotificationBell() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-sm text-forest-600 hover:text-forest-700 font-medium"
+                className="text-sm text-forest-600 hover:text-forest-700 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-1"
               >
                 Mark all read
               </button>
@@ -221,14 +250,15 @@ export function NotificationBell() {
           </div>
 
           {/* Notifications List */}
-          <div className="max-h-80 overflow-y-auto">
+          <div className="max-h-80 overflow-y-auto" role="list" aria-live="polite">
             {isLoading ? (
-              <div className="flex items-center justify-center p-8">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-forest-500"></div>
+              <div className="flex items-center justify-center p-8" role="status">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-forest-500" aria-hidden="true"></div>
+                <span className="sr-only">Loading notifications</span>
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center p-8 text-stone-500 dark:text-stone-400">
-                <Bell className="mx-auto mb-3 text-stone-400 dark:text-stone-600" size={32} />
+                <Bell className="mx-auto mb-3 text-stone-400 dark:text-stone-600" size={32} aria-hidden="true" />
                 <p className="text-sm">No notifications yet</p>
                 <p className="text-xs text-stone-400 dark:text-stone-500 mt-1">
                   You'll see notifications here when others interact with your content
@@ -241,7 +271,6 @@ export function NotificationBell() {
                     key={notification.id}
                     notification={notification}
                     onClick={() => {
-                      // TODO: Navigate to the relevant content
                       console.log('Navigate to:', notification.targetEventId)
                       setIsOpen(false)
                     }}
@@ -254,7 +283,7 @@ export function NotificationBell() {
           {/* Footer */}
           {notifications.length > 0 && (
             <div className="border-t border-stone-100 dark:border-stone-700 p-3">
-              <button className="w-full text-center text-sm text-forest-600 hover:text-forest-700 font-medium">
+              <button className="w-full text-center text-sm text-forest-600 hover:text-forest-700 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-1 py-1">
                 View All Notifications
               </button>
             </div>

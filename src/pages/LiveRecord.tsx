@@ -581,6 +581,7 @@ export default function LiveRecord() {
             <button
               onClick={startRecording}
               disabled={!currentLocation}
+              aria-label="Start recording"
               className="flex items-center justify-center w-16 h-16 bg-green-500 hover:bg-green-600 disabled:bg-stone-300 disabled:text-stone-500 text-white rounded-full transition-colors"
             >
               <Play size={24} fill="currentColor" />
@@ -590,6 +591,7 @@ export default function LiveRecord() {
           {recordingState === 'recording' && (
             <button
               onClick={pauseRecording}
+              aria-label="Pause recording"
               className="flex items-center justify-center w-16 h-16 bg-yellow-500 hover:bg-yellow-600 text-white rounded-full transition-colors"
             >
               <Pause size={24} fill="currentColor" />
@@ -600,12 +602,14 @@ export default function LiveRecord() {
             <>
               <button
                 onClick={resumeRecording}
+                aria-label="Resume recording"
                 className="flex items-center justify-center w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors"
               >
                 <Play size={20} fill="currentColor" />
               </button>
               <button
                 onClick={stopAndSave}
+                aria-label="Stop and save recording"
                 className="flex items-center justify-center w-14 h-14 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors"
               >
                 <Square size={20} fill="currentColor" />
@@ -616,6 +620,7 @@ export default function LiveRecord() {
           {recordingState === 'recording' && (
             <button
               onClick={stopAndSave}
+              aria-label="Stop and save recording"
               className="flex items-center justify-center w-12 h-12 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors ml-4"
             >
               <Square size={16} fill="currentColor" />
@@ -635,15 +640,16 @@ export default function LiveRecord() {
 
       {/* Save Modal */}
       {showSaveModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-label="Save activity">
           <div className="bg-white dark:bg-stone-800 rounded-lg w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">Save Activity</h2>
               <button
                 onClick={() => setShowSaveModal(false)}
-                className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200"
+                className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
+                aria-label="Close save dialog"
               >
-                <X size={24} />
+                <X size={24} aria-hidden="true" />
               </button>
             </div>
 
@@ -672,10 +678,11 @@ export default function LiveRecord() {
             {/* Save Form */}
             <form onSubmit={(e) => { e.preventDefault(); saveActivity(); }} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                <label htmlFor="save-title" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                   Title
                 </label>
                 <input
+                  id="save-title"
                   type="text"
                   value={saveForm.title}
                   onChange={(e) => setSaveForm(prev => ({ ...prev, title: e.target.value }))}
@@ -685,10 +692,11 @@ export default function LiveRecord() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                <label htmlFor="save-type" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                   Activity Type
                 </label>
                 <select
+                  id="save-type"
                   value={saveForm.type}
                   onChange={(e) => setSaveForm(prev => ({ ...prev, type: e.target.value }))}
                   className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-forest-500 dark:bg-stone-700 dark:text-stone-100"
@@ -703,10 +711,11 @@ export default function LiveRecord() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
+                <label htmlFor="save-notes" className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1">
                   Notes (optional)
                 </label>
                 <textarea
+                  id="save-notes"
                   value={saveForm.notes}
                   onChange={(e) => setSaveForm(prev => ({ ...prev, notes: e.target.value }))}
                   placeholder="How was your activity?"

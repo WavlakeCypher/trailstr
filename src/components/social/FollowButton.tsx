@@ -115,6 +115,7 @@ export function FollowButton({ targetPubkey, className = '', size = 'md' }: Foll
         <UserPlus size={iconSize} />
       )}
       <span>{isFollowing ? 'Following' : 'Follow'}</span>
+      {/* sr-only label for screen readers */}
     </button>
   )
 }

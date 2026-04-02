@@ -201,12 +201,13 @@ export default function RecordActivity() {
   return (
     <div className="min-h-screen bg-stone-900 pb-20">
       {/* Header */}
-      <div className="bg-stone-900 px-4 py-6">
+      <header className="bg-stone-900 px-4 py-6">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-center relative">
             <button
               onClick={handleCancel}
-              className="absolute left-0 text-stone-400 hover:text-white transition-colors"
+              className="absolute left-0 text-stone-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
+              aria-label="Go back"
             >
               ← Back
             </button>
@@ -215,7 +216,7 @@ export default function RecordActivity() {
             </h1>
           </div>
         </div>
-      </div>
+      </header>
 
       <div className="max-w-2xl mx-auto px-4 space-y-6">
         {/* Featured Live Recording Block */}
@@ -239,17 +240,19 @@ export default function RecordActivity() {
         </div>
 
         {/* Messages */}
-        {error && (
-          <div className="bg-red-900/50 border border-red-700/50 rounded-2xl p-4">
-            <p className="text-red-300 text-sm">{error}</p>
-          </div>
-        )}
+        <div aria-live="polite">
+          {error && (
+            <div className="bg-red-900/50 border border-red-700/50 rounded-2xl p-4" role="alert">
+              <p className="text-red-300 text-sm">{error}</p>
+            </div>
+          )}
 
-        {successMessage && (
-          <div className="bg-emerald-900/50 border border-emerald-700/50 rounded-2xl p-4">
-            <p className="text-emerald-300 text-sm">{successMessage}</p>
-          </div>
-        )}
+          {successMessage && (
+            <div className="bg-emerald-900/50 border border-emerald-700/50 rounded-2xl p-4" role="status">
+              <p className="text-emerald-300 text-sm">{successMessage}</p>
+            </div>
+          )}
+        </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -262,10 +265,11 @@ export default function RecordActivity() {
             <div className="space-y-6">
               {/* Title */}
               <div>
-                <label className="block text-sm font-medium text-white mb-3">
+                <label htmlFor="activity-title" className="block text-sm font-medium text-white mb-3">
                   Activity Title *
                 </label>
                 <input
+                  id="activity-title"
                   type="text"
                   value={formData.title}
                   onChange={(e) => updateField('title', e.target.value)}
@@ -302,10 +306,11 @@ export default function RecordActivity() {
               {/* Date and Time */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-white mb-3">
+                  <label htmlFor="activity-date" className="block text-sm font-medium text-white mb-3">
                     Date *
                   </label>
                   <input
+                    id="activity-date"
                     type="date"
                     value={formData.date}
                     onChange={(e) => updateField('date', e.target.value)}
@@ -315,10 +320,11 @@ export default function RecordActivity() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-3">
+                  <label htmlFor="activity-time" className="block text-sm font-medium text-white mb-3">
                     Start Time
                   </label>
                   <input
+                    id="activity-time"
                     type="time"
                     value={formData.time}
                     onChange={(e) => updateField('time', e.target.value)}
@@ -338,10 +344,11 @@ export default function RecordActivity() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Distance */}
               <div>
-                <label className="block text-sm font-medium text-white mb-3">
+                <label htmlFor="activity-distance" className="block text-sm font-medium text-white mb-3">
                   Distance (km)
                 </label>
                 <input
+                  id="activity-distance"
                   type="number"
                   step="0.1"
                   value={formData.distance}
@@ -353,10 +360,11 @@ export default function RecordActivity() {
 
               {/* Duration */}
               <div>
-                <label className="block text-sm font-medium text-white mb-3">
+                <label htmlFor="activity-duration" className="block text-sm font-medium text-white mb-3">
                   Duration (hours)
                 </label>
                 <input
+                  id="activity-duration"
                   type="number"
                   step="0.1"
                   value={formData.duration}
@@ -371,10 +379,11 @@ export default function RecordActivity() {
 
               {/* Elevation Gain */}
               <div>
-                <label className="block text-sm font-medium text-white mb-3">
+                <label htmlFor="activity-elevation" className="block text-sm font-medium text-white mb-3">
                   Elevation (m)
                 </label>
                 <input
+                  id="activity-elevation"
                   type="number"
                   value={formData.elevationGain}
                   onChange={(e) => updateField('elevationGain', e.target.value)}
@@ -394,10 +403,11 @@ export default function RecordActivity() {
             <div className="space-y-4">
               {/* Start Location */}
               <div>
-                <label className="block text-sm font-medium text-white mb-3">
+                <label htmlFor="activity-start-location" className="block text-sm font-medium text-white mb-3">
                   Start Location
                 </label>
                 <input
+                  id="activity-start-location"
                   type="text"
                   value={formData.startLocation}
                   onChange={(e) => updateField('startLocation', e.target.value)}
@@ -408,10 +418,11 @@ export default function RecordActivity() {
 
               {/* End Location */}
               <div>
-                <label className="block text-sm font-medium text-white mb-3">
+                <label htmlFor="activity-end-location" className="block text-sm font-medium text-white mb-3">
                   End Location
                 </label>
                 <input
+                  id="activity-end-location"
                   type="text"
                   value={formData.endLocation}
                   onChange={(e) => updateField('endLocation', e.target.value)}
@@ -432,10 +443,11 @@ export default function RecordActivity() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white mb-3">
+              <label htmlFor="activity-notes" className="block text-sm font-medium text-white mb-3">
                 Activity Notes
               </label>
               <textarea
+                id="activity-notes"
                 value={formData.notes}
                 onChange={(e) => updateField('notes', e.target.value)}
                 rows={6}

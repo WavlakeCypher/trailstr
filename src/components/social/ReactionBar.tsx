@@ -189,6 +189,7 @@ export function ReactionBar({ eventId, authorPubkey, className = '' }: ReactionB
             disabled={isLoading}
             className="p-1 rounded-full hover:bg-stone-800/50 transition-colors disabled:opacity-50"
             title={`React with ${emoji}`}
+            aria-label={`React with ${emoji}`}
           >
             <span className="text-lg">{emoji}</span>
           </button>
@@ -202,13 +203,15 @@ export function ReactionBar({ eventId, authorPubkey, className = '' }: ReactionB
           disabled={isLoading}
           className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-stone-800/50 transition-colors disabled:opacity-50"
           title="More reactions"
+          aria-label="More reactions"
+          aria-expanded={showEmojiPicker}
         >
           <Plus className="h-4 w-4 text-stone-400" />
         </button>
 
         {/* Simple emoji picker */}
         {showEmojiPicker && (
-          <div className="absolute top-full left-0 mt-1 p-2 bg-stone-800/95 backdrop-blur-xl border border-stone-700/50 rounded-2xl shadow-lg z-10">
+          <div className="absolute top-full left-0 mt-1 p-2 bg-stone-800/95 backdrop-blur-xl border border-stone-700/50 rounded-2xl shadow-lg z-10" role="dialog" aria-label="Emoji picker">
             <div className="grid grid-cols-6 gap-1">
               {['😀', '😂', '🤩', '😍', '🤯', '😱', '💪', '👍', '👎', '🙌', '👌', '✊', '🚀', '💯', '⭐', '💝', '🎉', '🎊'].map(emoji => (
                 <button

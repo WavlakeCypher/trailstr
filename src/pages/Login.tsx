@@ -163,9 +163,9 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-stone-900 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full mx-auto px-4">
-        <div className="text-center mb-12">
+        <header className="text-center mb-12">
           <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center" aria-hidden="true">
               <span className="text-white font-bold text-2xl">T</span>
             </div>
             <h1 className="text-4xl font-bold text-white">
@@ -175,10 +175,10 @@ export default function Login() {
           <p className="text-stone-400 text-lg">
             Your adventures on the Nostr protocol
           </p>
-        </div>
+        </header>
 
         {error && (
-          <div className="mb-6 bg-stone-800/50 border border-red-600/50 rounded-2xl p-6">
+          <div className="mb-6 bg-stone-800/50 border border-red-600/50 rounded-2xl p-6" role="alert">
             <p className="text-red-400 text-sm">{error}</p>
           </div>
         )}
@@ -200,7 +200,7 @@ export default function Login() {
               
               <button
                 onClick={() => copyToClipboard(generatedKeys.nsec)}
-                className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-semibold rounded-xl h-12 transition-colors"
+                className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-semibold rounded-xl h-12 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
               >
                 {keysCopied ? '✓ Copied!' : 'Copy Private Key'}
               </button>
@@ -218,11 +218,11 @@ export default function Login() {
           <div className="space-y-6">
             {/* Method Selection - Cards Layout */}
             <div className="space-y-4">
-              <h2 className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
+              <h2 id="login-method-heading" className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
                 Choose Login Method
               </h2>
               
-              <div className="grid gap-4">
+              <div className="grid gap-4" role="radiogroup" aria-labelledby="login-method-heading">
                 {hasStoredNsec() && (
                   <button
                     onClick={() => setActiveMethod('stored')}
@@ -332,7 +332,7 @@ export default function Login() {
                 <button
                   onClick={handleStoredLogin}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
                 >
                   {isLoading ? 'Unlocking...' : 'Unlock Account'}
                 </button>
@@ -353,7 +353,7 @@ export default function Login() {
                     <button
                       onClick={handleNip07Login}
                       disabled={isLoading}
-                      className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
+                      className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
                     >
                       {isLoading ? 'Connecting...' : 'Connect with Extension'}
                     </button>
@@ -440,7 +440,7 @@ export default function Login() {
                 <button
                   onClick={handleNsecLogin}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
                 >
                   {isLoading ? 'Logging in...' : 'Login'}
                 </button>
@@ -460,7 +460,7 @@ export default function Login() {
                 <button
                   onClick={handleGenerateLogin}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:bg-stone-600 text-white font-semibold rounded-xl h-12 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
                 >
                   {isLoading ? 'Generating...' : 'Generate New Account'}
                 </button>

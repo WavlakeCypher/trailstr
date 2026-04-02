@@ -67,14 +67,11 @@ export default function ActivityDetail() {
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null)
   const [showAllPhotos, setShowAllPhotos] = useState(false)
 
-  // Find activity from the feed store first, then fall back to fetching from relays
   useEffect(() => {
     if (!id) return
 
-    // First try to find in feed store
     const foundActivity = activities.find(a => a.id === id)
     if (foundActivity) {
-      // Convert feed activity to full Activity format
       const fullActivity: Activity = {
         id: foundActivity.id,
         authorPubkey: foundActivity.authorPubkey,
@@ -114,13 +111,10 @@ export default function ActivityDetail() {
       return
     }
 
-    // If not found in feed, we would fetch from relays here
-    // For now, show error
     setError('Activity not found')
     setLoading(false)
   }, [id, activities])
 
-  // Calculate map bounds and center from track
   const { mapCenter, mapZoom } = useMemo(() => {
     if (!activity?.track?.points || activity.track.points.length === 0) {
       return { mapCenter: [0, 0] as [number, number], mapZoom: 2 }
@@ -139,7 +133,6 @@ export default function ActivityDetail() {
       (bounds.minLat + bounds.maxLat) / 2
     ]
 
-    // Calculate appropriate zoom level
     const latDiff = bounds.maxLat - bounds.minLat
     const lngDiff = bounds.maxLng - bounds.minLng
     const maxDiff = Math.max(latDiff, lngDiff)
@@ -152,14 +145,13 @@ export default function ActivityDetail() {
     return { mapCenter: center, mapZoom: zoom }
   }, [activity?.track])
 
-  // Check if current user owns this activity
   const isOwner = currentUserPubkey === activity?.authorPubkey
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center" role="status">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4" aria-hidden="true"></div>
           <p className="text-stone-400">Loading activity...</p>
         </div>
       </div>
@@ -168,12 +160,12 @@ export default function ActivityDetail() {
 
   if (error || !activity) {
     return (
-      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center" role="alert">
         <div className="text-center">
           <p className="text-red-400 mb-4">{error || 'Activity not found'}</p>
           <Link 
             to="/feed" 
-            className="text-emerald-400 hover:text-emerald-300 transition-colors"
+            className="text-emerald-400 hover:text-emerald-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-1"
           >
             ← Back to Feed
           </Link>
@@ -183,19 +175,20 @@ export default function ActivityDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-900">
+    <article className="min-h-screen bg-stone-900" aria-labelledby="activity-title">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur border-b border-stone-700/50">
+      <header className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur border-b border-stone-700/50">
         <div className="max-w-2xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Link 
                 to="/feed"
-                className="text-stone-400 hover:text-white transition-colors"
+                className="text-stone-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded p-1"
+                aria-label="Back to feed"
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={20} aria-hidden="true" />
               </Link>
-              <h1 className="text-xl font-semibold text-white truncate">
+              <h1 id="activity-title" className="text-xl font-semibold text-white truncate">
                 {activity.title}
               </h1>
             </div>
@@ -203,25 +196,34 @@ export default function ActivityDetail() {
             <div className="flex items-center space-x-2">
               {isOwner && (
                 <>
-                  <button className="p-2 text-stone-400 hover:text-white transition-colors">
-                    <Edit size={18} />
+                  <button
+                    className="p-2 text-stone-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
+                    aria-label="Edit activity"
+                  >
+                    <Edit size={18} aria-hidden="true" />
                   </button>
-                  <button className="p-2 text-stone-400 hover:text-red-400 transition-colors">
-                    <Trash2 size={18} />
+                  <button
+                    className="p-2 text-stone-400 hover:text-red-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded"
+                    aria-label="Delete activity"
+                  >
+                    <Trash2 size={18} aria-hidden="true" />
                   </button>
                 </>
               )}
-              <button className="p-2 text-stone-400 hover:text-white transition-colors">
-                <Share size={18} />
+              <button
+                className="p-2 text-stone-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
+                aria-label="Share activity"
+              >
+                <Share size={18} aria-hidden="true" />
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       <div className="max-w-2xl mx-auto px-4 space-y-6">
         {/* Activity Header */}
-        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+        <section className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6" aria-label="Activity details">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-3">
               <Avatar 
@@ -236,20 +238,20 @@ export default function ActivityDetail() {
                 </h2>
                 <div className="flex items-center space-x-2 text-sm text-stone-400">
                   <span className="flex items-center space-x-1">
-                    <span>{activityTypeIcons[activity.type]}</span>
+                    <span aria-hidden="true">{activityTypeIcons[activity.type]}</span>
                     <span>{activityTypeLabels[activity.type]}</span>
                   </span>
-                  <span>•</span>
+                  <span aria-hidden="true">•</span>
                   <span className="flex items-center space-x-1">
-                    <Calendar size={14} />
-                    <span>{formatActivityDate(activity.startedAt)}</span>
-                    <span>at {formatActivityTime(activity.startedAt)}</span>
+                    <Calendar size={14} aria-hidden="true" />
+                    <time dateTime={new Date(activity.startedAt * 1000).toISOString()}>
+                      {formatActivityDate(activity.startedAt)} at {formatActivityTime(activity.startedAt)}
+                    </time>
                   </span>
                 </div>
               </div>
             </div>
             
-            {/* Follow Button */}
             {!isOwner && (
               <FollowButton 
                 targetPubkey={activity.authorPubkey}
@@ -263,24 +265,24 @@ export default function ActivityDetail() {
               <p className="text-stone-300">{activity.content}</p>
             </div>
           )}
-        </div>
+        </section>
 
         {/* Map and Track */}
         {activity.track && activity.track.points.length > 0 && (
-          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl overflow-hidden">
+          <section className="bg-stone-800/50 border border-stone-700/50 rounded-2xl overflow-hidden" aria-label="Route map">
             <div className="p-6 border-b border-stone-700/50">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
                   Route Map
                 </h3>
                 
-                {/* Color mode toggle */}
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs text-stone-400">Color by:</span>
+                  <label htmlFor="color-mode-select" className="text-xs text-stone-400">Color by:</label>
                   <select
+                    id="color-mode-select"
                     value={mapColorMode}
                     onChange={(e) => setMapColorMode(e.target.value as ColorMode)}
-                    className="text-sm bg-stone-800 border border-stone-600 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-emerald-500"
+                    className="text-sm bg-stone-800 border border-stone-600 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                   >
                     <option value="default">Default</option>
                     <option value="pace">Pace</option>
@@ -291,7 +293,7 @@ export default function ActivityDetail() {
               </div>
             </div>
             
-            <div className="h-80">
+            <div className="h-80" role="img" aria-label="Activity route displayed on map">
               <MapView
                 center={mapCenter}
                 zoom={mapZoom}
@@ -309,20 +311,20 @@ export default function ActivityDetail() {
                 />
               </MapView>
             </div>
-          </div>
+          </section>
         )}
 
         {/* Stats Grid */}
-        <div>
+        <section aria-label="Activity statistics">
           <StatsGrid 
             metrics={activity.metrics}
             activityType={activity.type}
           />
-        </div>
+        </section>
 
         {/* Elevation Chart */}
         {activity.track && activity.track.points.length > 0 && (
-          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <section className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6" aria-label="Elevation profile">
             <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-4">
               Elevation Profile
             </h3>
@@ -333,12 +335,12 @@ export default function ActivityDetail() {
               onHover={setHighlightIndex}
               height={200}
             />
-          </div>
+          </section>
         )}
 
         {/* Photos */}
         {activity.images && activity.images.length > 0 && (
-          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+          <section className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6" aria-label="Activity photos">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
                 Photos ({activity.images.length})
@@ -348,9 +350,7 @@ export default function ActivityDetail() {
               images={activity.images}
               maxPreview={showAllPhotos ? activity.images.length : 8}
               onPhotoClick={(image, _) => {
-                // If photo has GPS coordinates, highlight it on the map
                 if (image.latitude && image.longitude && activity.track?.points) {
-                  // Find the closest point on the track to this photo
                   const photoPoint = { latitude: image.latitude, longitude: image.longitude }
                   let closestIndex = 0
                   let closestDistance = Infinity
@@ -373,16 +373,16 @@ export default function ActivityDetail() {
             {!showAllPhotos && activity.images.length > 8 && (
               <button
                 onClick={() => setShowAllPhotos(true)}
-                className="mt-4 text-emerald-400 hover:text-emerald-300 text-sm transition-colors"
+                className="mt-4 text-emerald-400 hover:text-emerald-300 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
               >
                 View all {activity.images.length} photos
               </button>
             )}
-          </div>
+          </section>
         )}
 
         {/* Social Section */}
-        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+        <section className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6" aria-label="Social interactions">
           <div className="space-y-6">
             {/* Reaction Bar */}
             <div>
@@ -400,20 +400,23 @@ export default function ActivityDetail() {
                 authorPubkey={activity.authorPubkey}
               />
               
-              <button className="flex items-center space-x-2 text-stone-400 hover:text-emerald-400 transition-colors">
-                <Link2 size={18} />
+              <button className="flex items-center space-x-2 text-stone-400 hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded px-1">
+                <Link2 size={18} aria-hidden="true" />
                 <span>Link to Trail</span>
               </button>
             </div>
             
             {/* Comment Thread */}
-            <CommentThread
-              eventId={activity.id}
-              authorPubkey={activity.authorPubkey}
-            />
+            <div>
+              <h4 className="sr-only">Comments</h4>
+              <CommentThread
+                eventId={activity.id}
+                authorPubkey={activity.authorPubkey}
+              />
+            </div>
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </article>
   )
 }

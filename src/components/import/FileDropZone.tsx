@@ -181,6 +181,7 @@ export function FileDropZone({ onActivitiesParsed, className = '' }: FileDropZon
           multiple
           accept=".gpx,.fit,.tcx,.zip"
           onChange={handleFileSelect}
+          aria-label="Upload activity files (GPX, FIT, TCX, or ZIP)"
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           disabled={isProcessing}
         />
@@ -270,8 +271,9 @@ export function FileDropZone({ onActivitiesParsed, className = '' }: FileDropZon
                 <button
                   onClick={() => removeFile(index)}
                   className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  aria-label={`Remove ${parsedFile.file.name}`}
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             ))}

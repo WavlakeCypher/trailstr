@@ -28,9 +28,7 @@ export default function Feed() {
   // Initial feed load - cache first, then sync
   useEffect(() => {
     if (isAuthenticated) {
-      // First load cached data for immediate display
       loadCachedFeed().then(() => {
-        // Then sync with relays in background
         fetchFeed(false)
       })
     }
@@ -78,7 +76,6 @@ export default function Feed() {
 
   // Convert feed activities to ActivityFeedItem format
   const feedItems: ActivityFeedItem[] = activities.map(activity => ({
-    // Basic activity data
     id: activity.id,
     authorPubkey: activity.authorPubkey,
     createdAt: activity.createdAt,
@@ -87,7 +84,6 @@ export default function Feed() {
     title: activity.title,
     startedAt: new Date(activity.date).getTime() / 1000,
     
-    // Metrics
     metrics: {
       distanceMeters: activity.distance,
       movingSeconds: activity.duration,
@@ -97,10 +93,8 @@ export default function Feed() {
         : undefined
     },
     
-    // Content
     content: activity.notes,
     
-    // Author info - try to populate from userProfile or use fallback
     author: {
       pubkey: activity.authorPubkey,
       displayName: activity.authorPubkey === currentUserPubkey 
@@ -114,17 +108,14 @@ export default function Feed() {
         : undefined
     },
     
-    // Social stats
     reactionCount: activity.reactionCount,
     commentCount: activity.commentCount,
     zapAmount: activity.zapAmount,
     
-    // Media flags
     hasPhotos: activity.photos.length > 0,
     hasTrack: !!activity.gpxData,
     images: activity.photos.map(url => ({ url })),
     
-    // Track data if available
     track: activity.gpxData ? {
       points: activity.gpxData.coordinates?.map((coord: [number, number, number?]) => ({
         longitude: coord[0],
@@ -136,55 +127,59 @@ export default function Feed() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-stone-900">
+      <section className="flex items-center justify-center min-h-screen bg-stone-900" aria-labelledby="welcome-heading">
         <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center" aria-hidden="true">
             <span className="text-2xl">🏃‍♂️</span>
           </div>
-          <h2 className="text-2xl font-bold text-white mb-3">
+          <h2 id="welcome-heading" className="text-2xl font-bold text-white mb-3">
             Welcome to TrailStr
           </h2>
           <p className="text-stone-400 mb-6">
             Sign in to see your activity feed and share your adventures
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="/login" className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors">
+            <a href="/login" className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900">
               Sign In
             </a>
-            <a href="/login?signup=1" className="w-full sm:w-auto border border-stone-600 text-stone-300 hover:bg-stone-800 font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors">
+            <a href="/login?signup=1" className="w-full sm:w-auto border border-stone-600 text-stone-300 hover:bg-stone-800 font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900">
               Create Account
             </a>
           </div>
         </div>
-      </div>
+      </section>
     )
   }
 
   return (
-    <div className="bg-stone-900 min-h-screen">
+    <section className="bg-stone-900 min-h-screen" aria-labelledby="feed-heading">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur-xl border-b border-stone-800 px-4 py-4">
+        <header className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur-xl border-b border-stone-800 px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-white">
+            <h1 id="feed-heading" className="text-2xl font-bold text-white">
               Feed
             </h1>
             
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center space-x-2 border border-stone-600 text-stone-300 hover:bg-stone-800 rounded-xl px-3 py-2 text-sm font-medium transition-colors"
+                className="flex items-center space-x-2 border border-stone-600 text-stone-300 hover:bg-stone-800 rounded-xl px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                aria-expanded={showFilters}
+                aria-controls="feed-filters"
+                aria-label="Toggle feed filters"
               >
-                <Filter size={16} />
+                <Filter size={16} aria-hidden="true" />
                 <span>Filter</span>
               </button>
               
               <button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
-                className="flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 text-white font-semibold rounded-xl px-3 py-2 text-sm transition-colors"
+                className="flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:opacity-50 text-white font-semibold rounded-xl px-3 py-2 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                aria-label={isRefreshing ? 'Refreshing feed' : 'Refresh feed'}
               >
-                <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
+                <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} aria-hidden="true" />
                 <span>Refresh</span>
               </button>
             </div>
@@ -192,34 +187,32 @@ export default function Feed() {
           
           {/* Filters */}
           {showFilters && (
-            <div className="mt-4 pt-4 border-t border-stone-800">
+            <div id="feed-filters" className="mt-4 pt-4 border-t border-stone-800" role="region" aria-label="Feed filters">
               <div className="flex items-center space-x-4">
-                <label className="flex items-center space-x-3">
+                <label className="flex items-center space-x-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={followingOnly}
                     onChange={toggleFollowingOnly}
-                    className="w-4 h-4 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500"
+                    className="w-4 h-4 text-emerald-600 bg-stone-700 border-stone-600 rounded focus:ring-emerald-500 focus:ring-2"
                   />
-                  <span className="text-sm text-stone-400">
+                  <span className="text-sm text-stone-300">
                     Following only
                   </span>
                 </label>
-                
-                {/* Activity type filters could be added here */}
               </div>
             </div>
           )}
-        </div>
+        </header>
 
         {/* Error State */}
         {error && (
-          <div className="px-4 py-4">
+          <div className="px-4 py-4" role="alert">
             <div className="bg-red-600/10 border border-red-600/30 rounded-xl p-4">
               <p className="text-sm text-red-400 mb-3">{error}</p>
               <button
                 onClick={() => fetchFeed(true)}
-                className="text-sm font-medium text-red-400 hover:text-red-300 underline transition-colors"
+                className="text-sm font-medium text-red-400 hover:text-red-300 underline transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded"
               >
                 Try again
               </button>
@@ -231,7 +224,7 @@ export default function Feed() {
         <div className="px-4 py-6">
           {/* Loading skeletons for initial load */}
           {isLoading && feedItems.length === 0 && (
-            <div className="space-y-6">
+            <div className="space-y-6" role="status" aria-label="Loading activities">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
                   <div className="flex items-start space-x-3 mb-4">
@@ -250,14 +243,17 @@ export default function Feed() {
                   </div>
                 </div>
               ))}
+              <span className="sr-only">Loading activities...</span>
             </div>
           )}
 
           {/* Activity Cards */}
           {feedItems.length > 0 && (
-            <div className="space-y-6">
+            <div className="space-y-6" role="feed" aria-label="Activity feed" aria-busy={isLoading}>
               {feedItems.map((activity) => (
-                <ActivityCard key={activity.id} activity={activity} />
+                <article key={activity.id} aria-label={activity.title}>
+                  <ActivityCard activity={activity} />
+                </article>
               ))}
             </div>
           )}
@@ -265,7 +261,7 @@ export default function Feed() {
           {/* Empty State */}
           {!isLoading && feedItems.length === 0 && !error && (
             <div className="text-center py-16">
-              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center">
+              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center" aria-hidden="true">
                 <span className="text-3xl">🏃‍♂️</span>
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">
@@ -279,7 +275,7 @@ export default function Feed() {
               </p>
               <button 
                 onClick={() => window.location.href = '/record'}
-                className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 inline-flex items-center justify-center transition-colors"
+                className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 inline-flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               >
                 Record Activity
               </button>
@@ -290,9 +286,9 @@ export default function Feed() {
           {hasMore && feedItems.length > 0 && (
             <div ref={loadMoreRef} className="py-6">
               {isLoadingMore && (
-                <div className="text-center">
+                <div className="text-center" role="status">
                   <div className="inline-flex items-center space-x-2 text-sm text-stone-400">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"></div>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500" aria-hidden="true"></div>
                     <span>Loading more activities...</span>
                   </div>
                 </div>
@@ -310,6 +306,6 @@ export default function Feed() {
           )}
         </div>
       </div>
-    </div>
+    </section>
   )
 }

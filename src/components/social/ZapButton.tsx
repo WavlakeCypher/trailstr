@@ -206,7 +206,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
 
       {/* Zap Modal */}
       {showZapModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-label="Send zap">
           <div className="bg-stone-800/95 backdrop-blur-xl border border-stone-700/50 rounded-2xl p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -218,7 +218,8 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                     setShowZapModal(false)
                     setZapInvoice(null)
                   }}
-                  className="text-stone-400 hover:text-white"
+                  className="text-stone-400 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
+                  aria-label="Close zap dialog"
                 >
                   ✕
                 </button>
@@ -228,7 +229,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                 <>
                   {/* Amount Selection */}
                   <div>
-                    <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-2">
+                    <label id="zap-amount-label" className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-2">
                       Amount (sats)
                     </label>
                     <div className="grid grid-cols-3 gap-2 mb-3">

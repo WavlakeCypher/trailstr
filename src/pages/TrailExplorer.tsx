@@ -300,7 +300,7 @@ export default function TrailExplorer() {
   return (
     <div className="relative h-screen overflow-hidden bg-stone-900">
       {/* Map Container */}
-      <div ref={mapContainer} className="w-full h-full" />
+      <div ref={mapContainer} className="w-full h-full" role="application" aria-label="Interactive trail map" />
 
       {/* Search and Controls Overlay */}
       <div className="absolute top-4 left-4 right-4 z-10 flex gap-4">
@@ -308,6 +308,7 @@ export default function TrailExplorer() {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400" size={20} />
           <input
             type="text"
+            aria-label="Search trails"
             placeholder="Search trails..."
             value={filter.search}
             onChange={(e) => setFilter(prev => ({ ...prev, search: e.target.value }))}
@@ -317,6 +318,8 @@ export default function TrailExplorer() {
 
         <button
           onClick={() => setShowSidebar(!showSidebar)}
+          aria-label="Toggle filters"
+          aria-expanded={showSidebar}
           className="px-4 py-3 h-12 bg-stone-800/90 backdrop-blur-sm rounded-2xl border border-stone-700/50 hover:border-emerald-500/30 flex items-center space-x-2 text-stone-300 hover:text-white transition-all"
         >
           <Filter size={20} />
@@ -325,6 +328,7 @@ export default function TrailExplorer() {
 
         <Link
           to="/create-trail"
+          aria-label="Add new trail"
           className="px-4 py-3 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 rounded-2xl text-white flex items-center space-x-2 transition-all shadow-lg"
         >
           <Plus size={20} />
@@ -337,7 +341,7 @@ export default function TrailExplorer() {
         showSidebar
           ? 'translate-x-0 translate-y-0'
           : 'lg:-translate-x-full translate-y-full lg:translate-y-0'
-      } bottom-0 left-0 lg:top-20 w-full lg:w-80 h-64 lg:h-[calc(100vh-5rem)] rounded-t-2xl lg:rounded-r-2xl lg:rounded-t-none`}>
+      } bottom-0 left-0 lg:top-20 w-full lg:w-80 h-64 lg:h-[calc(100vh-5rem)] rounded-t-2xl lg:rounded-r-2xl lg:rounded-t-none`} role="complementary" aria-label="Trail list and filters">
         
         <div className="h-full flex flex-col">
           <div className="p-6 border-b border-stone-700/50">
@@ -347,7 +351,8 @@ export default function TrailExplorer() {
               </h2>
               <button
                 onClick={() => setShowSidebar(false)}
-                className="lg:hidden text-stone-400 hover:text-white transition-colors"
+                className="lg:hidden text-stone-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded"
+                aria-label="Close sidebar"
               >
                 ✕
               </button>

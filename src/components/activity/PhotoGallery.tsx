@@ -126,8 +126,9 @@ export default function PhotoGallery({
                 onClick={(e) => handleGeotaggedClick(e, image)}
                 className="absolute top-2 right-2 bg-black bg-opacity-60 hover:bg-opacity-80 text-white p-1 rounded transition-all duration-200 transform hover:scale-110"
                 title="Show on map"
+                aria-label="Show photo location on map"
               >
-                <MapPin size={12} />
+                <MapPin size={12} aria-hidden="true" />
               </button>
             )}
           </div>
@@ -139,6 +140,9 @@ export default function PhotoGallery({
         <div
           ref={lightboxRef}
           className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo lightbox"
           onClick={() => setLightboxOpen(false)}
           onKeyDown={handleKeyDown}
           onTouchStart={handleTouchStart}
@@ -148,9 +152,10 @@ export default function PhotoGallery({
           {/* Close button */}
           <button
             onClick={() => setLightboxOpen(false)}
-            className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors"
+            className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+            aria-label="Close lightbox"
           >
-            <X size={24} />
+            <X size={24} aria-hidden="true" />
           </button>
 
           {/* Navigation buttons */}
@@ -161,9 +166,10 @@ export default function PhotoGallery({
                   e.stopPropagation()
                   handlePrevious()
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white hover:text-gray-300 transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white hover:text-gray-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+                aria-label="Previous photo"
               >
-                <ChevronLeft size={32} />
+                <ChevronLeft size={32} aria-hidden="true" />
               </button>
               
               <button
@@ -171,9 +177,10 @@ export default function PhotoGallery({
                   e.stopPropagation()
                   handleNext()
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white hover:text-gray-300 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white hover:text-gray-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
+                aria-label="Next photo"
               >
-                <ChevronRight size={32} />
+                <ChevronRight size={32} aria-hidden="true" />
               </button>
             </>
           )}
