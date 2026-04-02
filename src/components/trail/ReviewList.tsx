@@ -80,7 +80,7 @@ function ReviewItem({
   }
 
   return (
-    <div className="border-b border-stone-100 dark:border-stone-700 last:border-b-0 py-6">
+    <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 mb-4">
       {/* Review Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-3">
@@ -92,12 +92,12 @@ function ReviewItem({
           />
           <div>
             <div className="flex items-center space-x-2">
-              <h4 className="font-medium text-stone-900 dark:text-stone-100">{displayName}</h4>
+              <h4 className="font-medium text-white">{displayName}</h4>
               {profile?.nip05 && (
-                <span className="text-sm text-green-600">✓</span>
+                <span className="text-sm text-emerald-500">✓</span>
               )}
             </div>
-            <div className="flex items-center space-x-3 text-sm text-stone-500 dark:text-stone-400">
+            <div className="flex items-center space-x-3 text-sm text-stone-400">
               <span>{formatDate(review.createdAt)}</span>
               {review.hikedOn && (
                 <>

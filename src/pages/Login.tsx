@@ -15,7 +15,8 @@ export default function Login() {
     hasStoredNsec 
   } = useAuthStore()
   
-  const [activeMethod, setActiveMethod] = useState<AuthMethod>('nip07')
+  const searchParams = new URLSearchParams(window.location.search)
+  const [activeMethod, setActiveMethod] = useState<AuthMethod>(searchParams.get('signup') ? 'generate' : 'nip07')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   

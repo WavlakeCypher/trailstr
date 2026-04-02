@@ -78,34 +78,55 @@ export default function Profile() {
 
   if (!isAuthenticated) {
     return (
-      <div className="p-4 text-center">
-        <p className="text-slate-600 dark:text-slate-400">Please login to view your profile</p>
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-stone-400">Please login to view your profile</p>
+        </div>
       </div>
     )
   }
 
   if (isLoading) {
     return (
-      <div className="p-4">
-        {/* Loading skeleton */}
+      <div className="min-h-screen bg-stone-900">
         <div className="animate-pulse">
           {/* Banner skeleton */}
-          <div className="h-40 bg-slate-300 dark:bg-slate-700 rounded-lg mb-4"></div>
+          <div className="h-48 bg-stone-700 mb-4"></div>
           
-          {/* Avatar and info skeleton */}
-          <div className="flex items-center mb-6">
-            <div className="w-20 h-20 bg-slate-300 dark:bg-slate-700 rounded-full mr-4"></div>
-            <div className="flex-1">
-              <div className="h-6 bg-slate-300 dark:bg-slate-700 rounded w-48 mb-2"></div>
-              <div className="h-4 bg-slate-300 dark:bg-slate-700 rounded w-32"></div>
+          <div className="max-w-2xl mx-auto px-4">
+            {/* Avatar and info skeleton */}
+            <div className="relative -mt-12 mb-6">
+              <div className="flex items-end mb-6">
+                <div className="w-24 h-24 bg-stone-700 rounded-full mr-4"></div>
+                <div className="flex-1">
+                  <div className="h-12 bg-stone-700 rounded-xl w-32 ml-auto"></div>
+                </div>
+              </div>
+              
+              {/* Stats skeleton */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {[1,2,3].map((i) => (
+                  <div key={i} className="bg-stone-800/50 rounded-xl p-4">
+                    <div className="h-8 bg-stone-700 rounded mb-2"></div>
+                    <div className="h-4 bg-stone-700 rounded w-16"></div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="space-y-3">
+                <div className="h-6 bg-stone-700 rounded w-48"></div>
+                <div className="h-4 bg-stone-700 rounded w-32"></div>
+              </div>
             </div>
-          </div>
 
-          {/* Tabs skeleton */}
-          <div className="flex space-x-1 bg-slate-200 dark:bg-slate-700 rounded-lg p-1 mb-6">
-            {['activities', 'trails', 'reviews', 'stats'].map((tab) => (
-              <div key={tab} className="flex-1 h-10 bg-slate-300 dark:bg-slate-600 rounded"></div>
-            ))}
+            {/* Tabs skeleton */}
+            <div className="pt-6">
+              <div className="flex space-x-1 bg-stone-800/30 rounded-xl p-1 mb-6">
+                {['activities', 'trails', 'reviews', 'stats'].map((tab) => (
+                  <div key={tab} className="flex-1 h-12 bg-stone-700 rounded-lg"></div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -274,30 +295,30 @@ export default function Profile() {
             )}
 
             {activeTab === 'stats' && (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">0</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Total Distance</div>
+                  <div className="bg-stone-800/50 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-white">0 km</div>
+                    <div className="text-xs text-stone-400 uppercase">Total Distance</div>
                   </div>
                   
-                  <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">0</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Activities</div>
+                  <div className="bg-stone-800/50 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-white">0</div>
+                    <div className="text-xs text-stone-400 uppercase">Activities</div>
                   </div>
                   
-                  <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">0h</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Total Time</div>
+                  <div className="bg-stone-800/50 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-white">0h</div>
+                    <div className="text-xs text-stone-400 uppercase">Total Time</div>
                   </div>
                   
-                  <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
-                    <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">0m</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Elevation Gain</div>
+                  <div className="bg-stone-800/50 rounded-xl p-4">
+                    <div className="text-2xl font-bold text-white">0m</div>
+                    <div className="text-xs text-stone-400 uppercase">Elevation Gain</div>
                   </div>
                 </div>
 
-                <div className="text-center text-slate-500 dark:text-slate-400 text-sm">
+                <div className="text-center text-stone-400 text-sm">
                   Stats will be calculated from your recorded activities
                 </div>
               </div>
@@ -307,8 +328,10 @@ export default function Profile() {
       </div>
 
       {error && (
-        <div className="mx-4 mt-4 p-3 bg-red-100 dark:bg-red-900/50 border border-red-400 rounded-lg">
-          <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+        <div className="max-w-2xl mx-auto px-4 mt-4">
+          <div className="bg-red-900/50 border border-red-700/50 rounded-2xl p-4">
+            <p className="text-red-400 text-sm">{error}</p>
+          </div>
         </div>
       )}
     </div>

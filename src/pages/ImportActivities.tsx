@@ -170,24 +170,25 @@ export default function ImportActivities() {
   const errorCount = importResults.filter(r => r.status === 'error').length
   
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Link
-          to="/feed"
-          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Import Activities
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Import your GPS activities from Garmin, Strava, Apple Health, Fitbit, and more
-          </p>
+    <div className="min-h-screen bg-stone-900">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <Link
+            to="/feed"
+            className="p-2 text-stone-400 hover:text-white rounded-xl transition-colors"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold text-white">
+              Import Activities
+            </h1>
+            <p className="text-stone-400">
+              Import your GPS activities from Garmin, Strava, Apple Health, Fitbit, and more
+            </p>
+          </div>
         </div>
-      </div>
       
       {!showResults ? (
         <div className="space-y-6">
@@ -205,25 +206,27 @@ export default function ImportActivities() {
               />
               
               {/* Import Button */}
-              <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {selectedCount} activities selected for import
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    onClick={resetImport}
-                    className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-                  >
-                    Clear All
-                  </button>
-                  <button
-                    onClick={handleImportSelected}
-                    disabled={selectedCount === 0 || !pubkey}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                  >
-                    <Upload className="h-4 w-4" />
-                    Import Selected ({selectedCount})
-                  </button>
+              <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-stone-400">
+                    {selectedCount} activities selected for import
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={resetImport}
+                      className="px-4 py-2 text-sm font-medium text-stone-400 hover:text-white transition-colors"
+                    >
+                      Clear All
+                    </button>
+                    <button
+                      onClick={handleImportSelected}
+                      disabled={selectedCount === 0 || !pubkey}
+                      className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl h-12 px-6 font-medium hover:from-emerald-700 hover:to-emerald-600 disabled:from-stone-600 disabled:to-stone-500 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+                    >
+                      <Upload className="h-4 w-4" />
+                      Import Selected ({selectedCount})
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -231,25 +234,25 @@ export default function ImportActivities() {
           
           {/* Instructions */}
           {parsedActivities.length === 0 && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-              <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">
+            <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+              <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-4">
                 Import from Popular Sources
               </h3>
-              <div className="space-y-3 text-sm text-blue-800 dark:text-blue-200">
+              <div className="space-y-4 text-sm text-stone-300">
                 <div>
-                  <strong>Garmin Connect:</strong> Go to Settings → Data Export → "Export Your Data" → Download the ZIP file
+                  <strong className="text-emerald-400">Garmin Connect:</strong> Go to Settings → Data Export → "Export Your Data" → Download the ZIP file
                 </div>
                 <div>
-                  <strong>Strava:</strong> Go to Settings → Privacy Controls → "Download or Delete Your Account" → Request archive
+                  <strong className="text-emerald-400">Strava:</strong> Go to Settings → Privacy Controls → "Download or Delete Your Account" → Request archive
                 </div>
                 <div>
-                  <strong>Apple Health:</strong> Export workout as GPX, or use HealthFit app to export as FIT files
+                  <strong className="text-emerald-400">Apple Health:</strong> Export workout as GPX, or use HealthFit app to export as FIT files
                 </div>
                 <div>
-                  <strong>Fitbit:</strong> Go to Data Export in your account settings → Download your archive (contains TCX files)
+                  <strong className="text-emerald-400">Fitbit:</strong> Go to Data Export in your account settings → Download your archive (contains TCX files)
                 </div>
                 <div>
-                  <strong>Individual files:</strong> Upload any .gpx, .fit, or .tcx file from any fitness app or device
+                  <strong className="text-emerald-400">Individual files:</strong> Upload any .gpx, .fit, or .tcx file from any fitness app or device
                 </div>
               </div>
             </div>
@@ -261,10 +264,10 @@ export default function ImportActivities() {
           {/* Results Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+              <h2 className="text-xl font-semibold text-white">
                 Import Results
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-stone-400">
                 {successCount} successful, {errorCount} failed out of {importResults.length} activities
               </p>
             </div>
@@ -272,14 +275,14 @@ export default function ImportActivities() {
               <button
                 onClick={() => setShowResults(false)}
                 disabled={isImporting}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium text-stone-400 hover:text-white disabled:opacity-50 transition-colors"
               >
                 Back to Import
               </button>
               <button
                 onClick={resetImport}
                 disabled={isImporting}
-                className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl hover:from-emerald-700 hover:to-emerald-600 disabled:from-stone-600 disabled:to-stone-500 transition-colors"
               >
                 Import More
               </button>
@@ -288,9 +291,9 @@ export default function ImportActivities() {
           
           {/* Progress Bar */}
           {isImporting && (
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-stone-700 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-emerald-600 to-emerald-500 h-2 rounded-full transition-all duration-300"
                 style={{
                   width: `${(importResults.filter(r => r.status !== 'pending').length / importResults.length) * 100}%`
                 }}
@@ -304,42 +307,42 @@ export default function ImportActivities() {
               <div
                 key={result.activity.id}
                 className={`
-                  flex items-center gap-4 p-4 rounded-lg border
-                  ${result.status === 'success' ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' :
-                    result.status === 'error' ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800' :
-                    result.status === 'uploading' ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800' :
-                    'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  bg-stone-800/50 border rounded-2xl p-4 flex items-center gap-4
+                  ${result.status === 'success' ? 'border-emerald-700/50' :
+                    result.status === 'error' ? 'border-red-700/50' :
+                    result.status === 'uploading' ? 'border-yellow-700/50' :
+                    'border-stone-700/50'
                   }
                 `}
               >
                 {/* Status Icon */}
                 <div className="flex-shrink-0">
                   {result.status === 'success' && (
-                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <CheckCircle className="h-5 w-5 text-emerald-500" />
                   )}
                   {result.status === 'error' && (
-                    <XCircle className="h-5 w-5 text-red-600" />
+                    <XCircle className="h-5 w-5 text-red-500" />
                   )}
                   {result.status === 'uploading' && (
-                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-yellow-600 border-t-transparent" />
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-emerald-500 border-t-transparent" />
                   )}
                   {result.status === 'pending' && (
-                    <AlertCircle className="h-5 w-5 text-gray-400" />
+                    <AlertCircle className="h-5 w-5 text-stone-400" />
                   )}
                 </div>
                 
                 {/* Activity Info */}
                 <div className="flex-1">
-                  <div className="font-medium text-gray-900 dark:text-gray-100">
+                  <div className="font-medium text-white">
                     {result.activity.editedName || result.activity.name}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-stone-400">
                     {result.activity.editedType || result.activity.type} •{' '}
                     {(result.activity.totalDistance / 1000).toFixed(1)} km •{' '}
                     {Math.floor(result.activity.movingTime / 60)} min
                   </div>
                   {result.error && (
-                    <div className="text-sm text-red-600 dark:text-red-400 mt-1">
+                    <div className="text-sm text-red-400 mt-1">
                       Error: {result.error}
                     </div>
                   )}
@@ -348,16 +351,16 @@ export default function ImportActivities() {
                 {/* Status Text */}
                 <div className="flex-shrink-0 text-sm font-medium">
                   {result.status === 'success' && (
-                    <span className="text-green-600">Imported</span>
+                    <span className="text-emerald-400">Imported</span>
                   )}
                   {result.status === 'error' && (
-                    <span className="text-red-600">Failed</span>
+                    <span className="text-red-400">Failed</span>
                   )}
                   {result.status === 'uploading' && (
-                    <span className="text-yellow-600">Importing...</span>
+                    <span className="text-emerald-400">Importing...</span>
                   )}
                   {result.status === 'pending' && (
-                    <span className="text-gray-400">Waiting</span>
+                    <span className="text-stone-400">Waiting</span>
                   )}
                 </div>
               </div>
@@ -366,17 +369,17 @@ export default function ImportActivities() {
           
           {/* Final Summary */}
           {!isImporting && importResults.length > 0 && (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 text-center">
-              <div className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+            <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-center">
+              <div className="text-lg font-semibold text-white mb-2">
                 Import Complete!
               </div>
-              <div className="text-blue-800 dark:text-blue-200">
+              <div className="text-stone-300">
                 {successCount} activities successfully imported to your Nostr profile.
                 {successCount > 0 && (
-                  <div className="mt-3">
+                  <div className="mt-4">
                     <Link
                       to="/feed"
-                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700"
+                      className="inline-flex items-center bg-gradient-to-r from-emerald-600 to-emerald-500 text-white rounded-xl h-12 px-6 font-medium hover:from-emerald-700 hover:to-emerald-600 transition-colors"
                     >
                       View in Feed
                     </Link>

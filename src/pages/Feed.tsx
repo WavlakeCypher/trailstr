@@ -150,9 +150,14 @@ export default function Feed() {
           <p className="text-stone-400 mb-6">
             Sign in to see your activity feed and share your adventures
           </p>
-          <a href="/login" className="inline-block bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors">
-            Sign In
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="/login" className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors">
+              Sign In
+            </a>
+            <a href="/login?signup=1" className="w-full sm:w-auto border border-stone-600 text-stone-300 hover:bg-stone-800 font-semibold rounded-xl h-12 px-6 flex items-center justify-center transition-colors">
+              Create Account
+            </a>
+          </div>
         </div>
       </div>
     )
@@ -225,73 +230,89 @@ export default function Feed() {
           </div>
         )}
 
-      {/* Content */}
-      <div className="px-4 py-4">
-        {/* Loading skeletons for initial load */}
-        {isLoading && feedItems.length === 0 && (
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white dark:bg-stone-800 rounded-lg p-4 border border-stone-200 dark:border-stone-700">
-                <div className="flex items-start space-x-3 mb-3">
-                  <Skeleton className="w-10 h-10 rounded-full" />
-                  <div className="flex-1">
-                    <Skeleton className="h-4 w-32 mb-1" />
-                    <Skeleton className="h-3 w-20" />
+        {/* Content */}
+        <div className="px-4 py-6">
+          {/* Loading skeletons for initial load */}
+          {isLoading && feedItems.length === 0 && (
+            <div className="space-y-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+                  <div className="flex items-start space-x-3 mb-4">
+                    <Skeleton className="w-12 h-12 rounded-xl bg-stone-700" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-32 mb-2 bg-stone-700" />
+                      <Skeleton className="h-3 w-20 bg-stone-700" />
+                    </div>
+                  </div>
+                  <Skeleton className="h-5 w-3/4 mb-4 bg-stone-700" />
+                  <Skeleton className="h-32 w-full mb-4 rounded-xl bg-stone-700" />
+                  <div className="flex space-x-4">
+                    <Skeleton className="h-4 w-16 bg-stone-700" />
+                    <Skeleton className="h-4 w-16 bg-stone-700" />
+                    <Skeleton className="h-4 w-16 bg-stone-700" />
                   </div>
                 </div>
-                <Skeleton className="h-5 w-3/4 mb-3" />
-                <Skeleton className="h-32 w-full mb-3 rounded-lg" />
-                <div className="flex space-x-4">
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-16" />
-                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Activity Cards */}
+          {feedItems.length > 0 && (
+            <div className="space-y-6">
+              {feedItems.map((activity) => (
+                <ActivityCard key={activity.id} activity={activity} />
+              ))}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && feedItems.length === 0 && !error && (
+            <div className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center">
+                <span className="text-3xl">🏃‍♂️</span>
               </div>
-            ))}
-          </div>
-        )}
+              <h3 className="text-xl font-semibold text-white mb-3">
+                No activities yet
+              </h3>
+              <p className="text-stone-400 mb-6 max-w-md mx-auto">
+                {followingOnly 
+                  ? "Follow some people or create your first activity to see content here!"
+                  : "Be the first to share an outdoor adventure!"
+                }
+              </p>
+              <button 
+                onClick={() => window.location.href = '/record'}
+                className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-semibold rounded-xl h-12 px-6 inline-flex items-center justify-center transition-colors"
+              >
+                Record Activity
+              </button>
+            </div>
+          )}
 
-        {/* Activity Cards */}
-        {feedItems.length > 0 && (
-          <div className="space-y-4">
-            {feedItems.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
-            ))}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!isLoading && feedItems.length === 0 && !error && (
-          <FeedEmptyState
-            followingOnly={followingOnly}
-            onCreateActivity={() => navigate('/record')}
-          />
-        )}
-
-        {/* Load more trigger */}
-        {hasMore && feedItems.length > 0 && (
-          <div ref={loadMoreRef} className="py-4">
-            {isLoadingMore && (
-              <div className="text-center">
-                <div className="inline-flex items-center space-x-2 text-sm text-stone-500 dark:text-stone-400">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-forest-500"></div>
-                  <span>Loading more activities...</span>
+          {/* Load more trigger */}
+          {hasMore && feedItems.length > 0 && (
+            <div ref={loadMoreRef} className="py-6">
+              {isLoadingMore && (
+                <div className="text-center">
+                  <div className="inline-flex items-center space-x-2 text-sm text-stone-400">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"></div>
+                    <span>Loading more activities...</span>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
-        {/* End of feed */}
-        {!hasMore && feedItems.length > 0 && (
-          <div className="text-center py-8">
-            <p className="text-sm text-stone-500 dark:text-stone-400">
-              That's all for now! 🎉
-            </p>
-          </div>
-        )}
+          {/* End of feed */}
+          {!hasMore && feedItems.length > 0 && (
+            <div className="text-center py-8">
+              <p className="text-sm text-stone-500">
+                That's all for now! 🎉
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   )
 }

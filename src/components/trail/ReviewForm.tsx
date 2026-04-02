@@ -157,10 +157,10 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
   if (!isAuthenticated) {
     return (
-      <div className={`bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg p-6 text-center ${className}`}>
-        <Star className="mx-auto mb-3 text-stone-400 dark:text-stone-500" size={24} />
-        <p className="text-stone-600 dark:text-stone-400 mb-3">Sign in to write a review</p>
-        <button className="text-forest-600 hover:text-forest-700 font-medium">
+      <div className={`bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6 text-center ${className}`}>
+        <Star className="mx-auto mb-3 text-stone-500" size={24} />
+        <p className="text-stone-400 mb-3">Sign in to write a review</p>
+        <button className="text-emerald-400 hover:text-emerald-300 font-medium">
           Sign In
         </button>
       </div>
@@ -173,7 +173,7 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
       {/* Rating */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+        <label className="block text-sm font-medium text-stone-300 mb-2">
           Your Rating *
         </label>
         <div className="flex items-center space-x-1">
@@ -186,13 +186,13 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
             >
               <Star
                 size={24}
-                fill={star <= reviewData.rating ? '#F59E0B' : 'none'}
-                stroke={star <= reviewData.rating ? '#F59E0B' : '#D1D5DB'}
+                fill={star <= reviewData.rating ? '#10b981' : 'none'}
+                stroke={star <= reviewData.rating ? '#10b981' : '#6b7280'}
                 className="transition-colors"
               />
             </button>
           ))}
-          <span className="ml-3 text-sm text-stone-600 dark:text-stone-400">
+          <span className="ml-3 text-sm text-stone-400">
             {reviewData.rating > 0 && (
               ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][reviewData.rating - 1]
             )}
@@ -202,7 +202,7 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
       {/* Review Text */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+        <label className="block text-sm font-medium text-stone-300 mb-2">
           Your Review *
         </label>
         <textarea
@@ -210,18 +210,18 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
           onChange={(e) => setReviewData(prev => ({ ...prev, comment: e.target.value }))}
           rows={4}
           placeholder="Share your experience on this trail..."
-          className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500 resize-none"
+          className="w-full px-4 py-3 bg-stone-800 border border-stone-600 rounded-xl text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none"
           required
         />
       </div>
 
       {/* Hike Date */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+        <label className="block text-sm font-medium text-stone-300 mb-2">
           When did you hike this trail?
         </label>
         <div className="relative">
-          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400 dark:text-stone-500" size={16} />
+          <Calendar className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400" size={16} />
           <input
             type="date"
             value={reviewData.hikedOn ? reviewData.hikedOn.toISOString().split('T')[0] : ''}
@@ -229,14 +229,14 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
               ...prev, 
               hikedOn: e.target.value ? new Date(e.target.value) : undefined 
             }))}
-            className="w-full pl-10 pr-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
+            className="w-full pl-12 pr-4 py-3 h-12 bg-stone-800 border border-stone-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
           />
         </div>
       </div>
 
       {/* Trail Conditions */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+        <label className="block text-sm font-medium text-stone-300 mb-2">
           Trail Conditions
         </label>
         <div className="flex flex-wrap gap-2">
@@ -249,10 +249,10 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
                 key={condition.value}
                 type="button"
                 onClick={() => handleConditionToggle(condition.value)}
-                className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border text-sm transition-colors ${
+                className={`flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   isSelected
-                    ? 'bg-forest-100 border-forest-300 text-forest-700'
-                    : 'bg-white border-gray-300 text-gray-600 hover:bg-stone-50 dark:hover:bg-stone-700'
+                    ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-400'
+                    : 'bg-stone-700/50 border border-stone-600 text-stone-300 hover:border-stone-500'
                 }`}
               >
                 <Icon size={14} className={condition.color} />
@@ -265,14 +265,14 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
       {/* Photo Upload */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+        <label className="block text-sm font-medium text-stone-300 mb-2">
           Photos (optional)
         </label>
         
-        <label className="block w-full p-4 border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700">
+        <label className="block w-full p-4 border-2 border-dashed border-stone-600 rounded-xl cursor-pointer hover:border-emerald-500/50 transition-colors">
           <div className="text-center">
-            <Upload className="mx-auto mb-2 text-stone-400 dark:text-stone-500" size={24} />
-            <p className="text-sm text-stone-600 dark:text-stone-400">Click to add photos (max 5)</p>
+            <Upload className="mx-auto mb-2 text-stone-500" size={24} />
+            <p className="text-sm text-stone-400">Click to add photos (max 5)</p>
           </div>
           <input
             type="file"
@@ -289,15 +289,15 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
           <div className="mt-3 grid grid-cols-3 gap-2">
             {reviewData.images.map((file, index) => (
               <div key={index} className="relative">
-                <div className="aspect-square bg-stone-200 dark:bg-stone-700 rounded-md flex items-center justify-center">
-                  <span className="text-xs text-stone-600 dark:text-stone-400 text-center px-1">
+                <div className="aspect-square bg-stone-700/50 border border-stone-600 rounded-xl flex items-center justify-center">
+                  <span className="text-xs text-stone-400 text-center px-1">
                     {file.name}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => removeImage(index)}
-                  className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                  className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-400 transition-colors"
                 >
                   <X size={12} />
                 </button>
@@ -312,7 +312,7 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
         <button
           type="submit"
           disabled={isSubmitting || reviewData.rating === 0 || !reviewData.comment.trim()}
-          className="flex items-center space-x-2 px-6 py-2 bg-forest-500 text-white rounded-md hover:bg-forest-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center space-x-2 px-6 py-3 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
         >
           {isSubmitting ? (
             <>
@@ -330,15 +330,15 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
       {/* Upload Progress Modal */}
       {uploadProgress && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-stone-800/95 border border-stone-700/50 rounded-2xl p-8 max-w-sm w-full mx-4">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-500 mx-auto mb-4"></div>
-              <p className="text-gray-700 mb-2">{uploadProgress.message}</p>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+              <p className="text-white mb-2">{uploadProgress.message}</p>
               {uploadProgress.total > 1 && (
-                <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                <div className="w-full bg-stone-700 rounded-full h-2 mb-2">
                   <div
-                    className="bg-forest-500 h-2 rounded-full transition-all duration-300"
+                    className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${(uploadProgress.current / uploadProgress.total) * 100}%` }}
                   ></div>
                 </div>
