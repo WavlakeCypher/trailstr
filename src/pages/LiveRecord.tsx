@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Play, Pause, Square, MapPin, Clock, Zap, TrendingUp, Save, X } from 'lucide-react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { Play, Pause, Square, MapPin, Save, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { MapLibre, Layer, Source } from 'react-map-gl/maplibre'
-import type { GeoJSONSource } from 'maplibre-gl'
+import maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
 import { useAuthStore } from '../stores/authStore'
 import { useFeedStore } from '../stores/feedStore'
 import { buildActivityEvent } from '../nostr/events'
@@ -318,19 +318,18 @@ export default function LiveRecord() {
       // Calculate geohash for the activity (use start point)
       const startPoint = gpsPoints[0]
       const { encode: geohashEncode } = await import('ngeohash')
-      const geohash = geohashEncode(startPoint.latitude, startPoint.longitude, 5) // 5 character precision
+      geohashEncode(startPoint.latitude, startPoint.longitude, 5) // 5 character precision
       
       // Build activity data
       const activityData = {
         title: saveForm.title || `${saveForm.type.charAt(0).toUpperCase() + saveForm.type.slice(1)} Activity`,
         type: saveForm.type,
-        date: new Date(startTimeRef.current || Date.now()).toISOString(),
-        distance: stats.distance,
-        duration: stats.duration,
-        elevationGain: stats.elevationGain,
-        notes: saveForm.notes,
-        geoTags: [geohash],
-        gpxData: trackGeoJSON
+        startedAt: Math.floor((startTimeRef.current || Date.now()) / 1000),
+        finishedAt: Math.floor(Date.now() / 1000),
+        distanceMeters: stats.distance,
+        elapsedSeconds: stats.duration,
+        elevationGainMeters: stats.elevationGain,
+        content: saveForm.notes,
       }
 
       // Build and sign the event
@@ -344,12 +343,12 @@ export default function LiveRecord() {
         createdAt: signedEvent.created_at,
         title: activityData.title,
         type: activityData.type,
-        date: activityData.date,
-        distance: activityData.distance,
-        duration: activityData.duration,
-        elevationGain: activityData.elevationGain,
-        notes: activityData.notes,
-        geoTags: activityData.geoTags,
+        date: new Date((activityData.startedAt) * 1000).toISOString(),
+        distance: activityData.distanceMeters,
+        duration: activityData.elapsedSeconds,
+        elevationGain: activityData.elevationGainMeters,
+        notes: activityData.content,
+        geoTags: [],
         dTag: unsignedEvent.tags.find(tag => tag[0] === 'd')?.[1] || '',
         reactionCount: 0,
         commentCount: 0,
@@ -471,20 +470,39 @@ export default function LiveRecord() {
   }
 
   // Map viewport
-  const [viewState, setViewState] = useState({
-    longitude: -122.4,
-    latitude: 37.8,
-    zoom: 16
-  })
+  const mapContainerRef = useRef<HTMLDivElement>(null)
 
-  // Update map center when current location changes
+  // Initialize map
   useEffect(() => {
-    if (currentLocation && mapRef.current) {
-      setViewState(prev => ({
-        ...prev,
-        longitude: currentLocation.longitude,
-        latitude: currentLocation.latitude
-      }))
+    if (!mapContainerRef.current || mapRef.current) return
+    const map = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style: 'https://tiles.openfreemap.org/styles/liberty',
+      center: [-122.4, 37.8],
+      zoom: 16
+    })
+    map.on('load', () => {
+      map.addSource('track', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addLayer({ id: 'track-line', type: 'line', source: 'track', paint: { 'line-color': '#059669', 'line-width': 4, 'line-opacity': 0.8 } })
+      map.addSource('current-location', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addLayer({ id: 'current-location-circle', type: 'circle', source: 'current-location', paint: { 'circle-radius': 8, 'circle-color': '#059669', 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff' } })
+    })
+    mapRef.current = map
+    return () => { map.remove(); mapRef.current = null }
+  }, [])
+
+  // Update map when location/track changes
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !map.isStyleLoaded()) return
+    if (currentLocation) {
+      map.flyTo({ center: [currentLocation.longitude, currentLocation.latitude], duration: 500 })
+      const locSrc = map.getSource('current-location') as maplibregl.GeoJSONSource | undefined
+      locSrc?.setData({ type: 'FeatureCollection', features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [currentLocation.longitude, currentLocation.latitude] }, properties: {} }] })
+    }
+    if (gpsPoints.length > 1) {
+      const trackSrc = map.getSource('track') as maplibregl.GeoJSONSource | undefined
+      trackSrc?.setData(trackGeoJSON as any)
     }
   }, [currentLocation])
 
@@ -507,60 +525,7 @@ export default function LiveRecord() {
 
       {/* Map */}
       <div className="flex-1 relative">
-        <MapLibre
-          ref={mapRef}
-          {...viewState}
-          onMove={evt => setViewState(evt.viewState)}
-          style={{ width: '100%', height: '100%' }}
-          mapStyle="https://tiles.openfreemap.org/styles/liberty"
-        >
-          {/* Track line */}
-          {gpsPoints.length > 1 && (
-            <Source id="track" type="geojson" data={trackGeoJSON}>
-              <Layer
-                id="track-line"
-                type="line"
-                paint={{
-                  'line-color': '#059669',
-                  'line-width': 4,
-                  'line-opacity': 0.8
-                }}
-              />
-            </Source>
-          )}
-          
-          {/* Current location marker */}
-          {currentLocation && (
-            <Source
-              id="current-location"
-              type="geojson"
-              data={{
-                type: 'FeatureCollection',
-                features: [
-                  {
-                    type: 'Feature',
-                    geometry: {
-                      type: 'Point',
-                      coordinates: [currentLocation.longitude, currentLocation.latitude]
-                    },
-                    properties: {}
-                  }
-                ]
-              }}
-            >
-              <Layer
-                id="current-location-circle"
-                type="circle"
-                paint={{
-                  'circle-radius': 8,
-                  'circle-color': '#059669',
-                  'circle-stroke-width': 2,
-                  'circle-stroke-color': '#ffffff'
-                }}
-              />
-            </Source>
-          )}
-        </MapLibre>
+        <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />
 
         {/* Error overlay */}
         {error && (

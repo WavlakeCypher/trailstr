@@ -73,7 +73,7 @@ export interface CacheState {
   }>
 }
 
-export const useCacheStore = create<CacheState>()((set, get) => ({
+export const useCacheStore = create<CacheState>()((_set, _get) => ({
   isReady: false,
 
   // Cache a nostr event

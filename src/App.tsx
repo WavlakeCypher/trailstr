@@ -14,8 +14,22 @@ import ProfileEdit from './pages/ProfileEdit'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 import { cacheHelpers } from './stores/cacheStore'
+import { useThemeStore } from './stores/themeStore'
 
 function App() {
+  // Initialize theme on app startup
+  const { actualTheme } = useThemeStore()
+  
+  useEffect(() => {
+    // Apply theme immediately
+    const root = window.document.documentElement
+    if (actualTheme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+  }, [actualTheme])
+
   useEffect(() => {
     // Schedule cache cleanup for maintenance
     const cleanupInterval = cacheHelpers.scheduleCleanup()
