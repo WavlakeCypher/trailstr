@@ -177,7 +177,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
     return (
       <button
         disabled
-        className={`flex items-center gap-1 text-gray-400 ${className}`}
+        className={`flex items-center gap-1 text-stone-400 ${className}`}
       >
         <Loader2 className="h-4 w-4 animate-spin" />
         <span className="text-sm">⚡</span>
@@ -194,8 +194,8 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
       <button
         onClick={handleZapClick}
         className={`
-          flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-colors
-          hover:bg-yellow-100 dark:hover:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400
+          flex items-center gap-1 px-2 py-1 rounded-xl text-sm transition-colors
+          hover:bg-amber-500/10 text-amber-400 hover:text-amber-300
           ${className}
         `}
         title="Send sats via Lightning"
@@ -206,11 +206,11 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
 
       {/* Zap Modal */}
       {showZapModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-stone-800/95 backdrop-blur-xl border border-stone-700/50 rounded-2xl p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 className="text-lg font-semibold text-white">
                   ⚡ Send Zap
                 </h3>
                 <button
@@ -218,7 +218,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                     setShowZapModal(false)
                     setZapInvoice(null)
                   }}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                  className="text-stone-400 hover:text-white"
                 >
                   ✕
                 </button>
@@ -228,7 +228,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                 <>
                   {/* Amount Selection */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-2">
                       Amount (sats)
                     </label>
                     <div className="grid grid-cols-3 gap-2 mb-3">
@@ -237,10 +237,10 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                           key={amount}
                           onClick={() => setZapAmount(amount)}
                           className={`
-                            px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                            px-3 py-2 rounded-xl text-sm font-medium transition-colors
                             ${zapAmount === amount
-                              ? 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 border border-yellow-300 dark:border-yellow-700'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/50'
+                              : 'bg-stone-800 border border-stone-600 text-stone-300 hover:bg-stone-700 hover:border-stone-500'
                             }
                           `}
                         >
@@ -252,7 +252,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                       type="number"
                       value={zapAmount}
                       onChange={(e) => setZapAmount(parseInt(e.target.value) || 0)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      className="w-full px-3 py-2 h-12 border border-stone-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-stone-800 text-white placeholder-stone-400"
                       placeholder="Custom amount"
                       min="1"
                     />
@@ -260,13 +260,13 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
 
                   {/* Comment */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-2">
                       Comment (optional)
                     </label>
                     <textarea
                       value={zapComment}
                       onChange={(e) => setZapComment(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                      className="w-full px-3 py-2 border border-stone-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-stone-800 text-white placeholder-stone-400 resize-none"
                       placeholder="Say something nice..."
                       rows={3}
                       maxLength={280}
@@ -277,7 +277,7 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                   <button
                     onClick={initiateZap}
                     disabled={isZapping || zapAmount < 1}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 h-12 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     {isZapping ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -291,12 +291,12 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                 <>
                   {/* Lightning Invoice */}
                   <div className="space-y-4">
-                    <p className="text-center text-gray-600 dark:text-gray-400">
+                    <p className="text-center text-stone-300">
                       Lightning Invoice Created
                     </p>
                     
-                    <div className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 break-all">
+                    <div className="p-3 bg-stone-800/50 border border-stone-700/50 rounded-xl">
+                      <p className="text-xs text-stone-400 mb-2 break-all">
                         {zapInvoice}
                       </p>
                     </div>
@@ -304,20 +304,20 @@ export function ZapButton({ eventId, authorPubkey, className = '' }: ZapButtonPr
                     <div className="flex gap-2">
                       <button
                         onClick={copyInvoice}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 h-12 border border-stone-600 text-stone-300 hover:bg-stone-800 rounded-xl font-medium transition-colors"
                       >
                         Copy Invoice
                       </button>
                       <a
                         href={`lightning:${zapInvoice}`}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2 h-12 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white rounded-xl font-medium transition-all"
                       >
                         <ExternalLink className="h-4 w-4" />
                         Open Wallet
                       </a>
                     </div>
 
-                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                    <p className="text-xs text-stone-500 text-center">
                       Scan the QR code or copy the invoice to your Lightning wallet
                     </p>
                   </div>
