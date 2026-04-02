@@ -2,10 +2,10 @@
 
 ## Phase 1: Project Scaffolding
 - [x] Create GitHub repo `trailstr`
-- [ ] **Task 1:** Vite + React 18 + TypeScript + Tailwind CSS 3 setup
-- [ ] **Task 2:** React Router v6 shell with all placeholder pages (Feed, ActivityDetail, RecordActivity, ImportActivities, TrailExplorer, TrailDetail, CreateTrail, Profile, Settings, Login)
-- [ ] **Task 3:** Layout components (Shell, BottomNav, TopNav) with mobile-first responsive navigation
-- [ ] **Task 4:** Common components (Avatar, BlurhashImage, StarRating, Skeleton)
+- [x] **Task 1:** Vite + React 18 + TypeScript + Tailwind CSS 3 setup
+- [x] **Task 2:** React Router v6 shell with all placeholder pages (Feed, ActivityDetail, RecordActivity, ImportActivities, TrailExplorer, TrailDetail, CreateTrail, Profile, Settings, Login)
+- [x] **Task 3:** Layout components (Shell, BottomNav, TopNav) with mobile-first responsive navigation
+- [x] **Task 4:** Common components (Avatar, BlurhashImage, StarRating, Skeleton)
 
 ## Phase 2: Nostr Auth & Identity
 - [ ] **Task 5:** Nostr client module — relay pool management, subscribe, publish (`src/nostr/client.ts`)
