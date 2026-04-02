@@ -14,13 +14,13 @@
 - [x] **Task 8:** Kind constants + event builder helpers (`src/nostr/kinds.ts`, `src/nostr/events.ts`)
 
 ## Phase 3: Profile
-- [ ] **Task 9:** Profile page — fetch/display kind-0 metadata, avatar, banner, bio, tabs structure
-- [ ] **Task 10:** Profile edit form — update kind-0 metadata and publish
+- [x] **Task 9:** Profile page — fetch/display kind-0 metadata, avatar, banner, bio, tabs structure
+- [x] **Task 10:** Profile edit form — update kind-0 metadata and publish
 
 ## Phase 4: Activity Creation (Manual)
-- [ ] **Task 11:** Zustand stores for feed and trails (`feedStore.ts`, `trailStore.ts`, `relayStore.ts`)
-- [ ] **Task 12:** RecordActivity page — manual form for kind-30531 (title, type, date, distance, duration, elevation, notes)
-- [ ] **Task 13:** Publish activity to relays, optimistic UI
+- [x] **Task 11:** Zustand stores for feed and trails (`feedStore.ts`, `trailStore.ts`, `relayStore.ts`)
+- [x] **Task 12:** RecordActivity page — manual form for kind-30531 (title, type, date, distance, duration, elevation, notes)
+- [x] **Task 13:** Publish activity to relays, optimistic UI
 
 ## Phase 5: Activity Feed
 - [ ] **Task 14:** ActivityCard component (avatar, title, mini map, stats, reaction/comment counts)
