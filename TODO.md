@@ -34,14 +34,14 @@
 - [x] **Task 20:** ActivityDetail page — full map, elevation chart, stats, photos, social section
 
 ## Phase 7: GPS File Import
-- [ ] **Task 21:** GPX parser (`src/components/import/parsers/gpx.ts`)
-- [ ] **Task 22:** FIT parser (`src/components/import/parsers/fit.ts`)
-- [ ] **Task 23:** TCX parser (`src/components/import/parsers/tcx.ts`)
-- [ ] **Task 24:** FileDropZone + ActivityPreviewList components
-- [ ] **Task 25:** ImportActivities page — bulk import flow with progress bar
+- [x] **Task 21:** GPX parser (`src/components/import/parsers/gpx.ts`)
+- [x] **Task 22:** FIT parser (`src/components/import/parsers/fit.ts`)
+- [x] **Task 23:** TCX parser (`src/components/import/parsers/tcx.ts`)
+- [x] **Task 24:** FileDropZone + ActivityPreviewList components
+- [x] **Task 25:** ImportActivities page — bulk import flow with progress bar
 
 ## Phase 8: Social Layer
-- [ ] **Task 26:** ReactionBar — kind-7 reactions with emoji support (🥾👟🔥)
+- [x] **Task 26:** ReactionBar — kind-7 reactions with emoji support (🥾👟🔥)
 - [x] **Task 27:** CommentThread — kind-1 replies with threading
 - [x] **Task 28:** FollowButton — kind-3 contact list management
 - [x] **Task 29:** ZapButton — NIP-57 zap integration (if lightning address present)
