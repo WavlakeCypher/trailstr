@@ -80,7 +80,7 @@ function ReviewItem({
   }
 
   return (
-    <div className="border-b border-gray-100 last:border-b-0 py-6">
+    <div className="border-b border-stone-100 dark:border-stone-700 last:border-b-0 py-6">
       {/* Review Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-3">
@@ -92,12 +92,12 @@ function ReviewItem({
           />
           <div>
             <div className="flex items-center space-x-2">
-              <h4 className="font-medium text-gray-900">{displayName}</h4>
+              <h4 className="font-medium text-stone-900 dark:text-stone-100">{displayName}</h4>
               {profile?.nip05 && (
                 <span className="text-sm text-green-600">✓</span>
               )}
             </div>
-            <div className="flex items-center space-x-3 text-sm text-gray-500">
+            <div className="flex items-center space-x-3 text-sm text-stone-500 dark:text-stone-400">
               <span>{formatDate(review.createdAt)}</span>
               {review.hikedOn && (
                 <>
@@ -119,14 +119,14 @@ function ReviewItem({
             <div className="relative">
               <button
                 onClick={() => setShowActions(!showActions)}
-                className="p-1 text-gray-400 hover:text-gray-600 rounded"
+                className="p-1 text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:text-stone-400 rounded"
               >
                 <MoreHorizontal size={16} />
               </button>
               
               {showActions && (
-                <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-10">
-                  <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                <div className="absolute right-0 top-8 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-md shadow-lg py-1 z-10">
+                  <button className="block w-full text-left px-4 py-2 text-sm text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:bg-stone-800">
                     Edit Review
                   </button>
                   <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
@@ -146,7 +146,7 @@ function ReviewItem({
             <span
               key={condition}
               className={`px-2 py-1 text-xs rounded-full ${
-                CONDITION_COLORS[condition] || 'bg-gray-100 text-gray-800'
+                CONDITION_COLORS[condition] || 'bg-stone-100 dark:bg-stone-700 text-stone-800 dark:text-stone-100'
               }`}
             >
               {CONDITION_LABELS[condition] || condition}
@@ -157,7 +157,7 @@ function ReviewItem({
 
       {/* Review Text */}
       <div className="mb-4">
-        <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+        <p className="text-stone-700 dark:text-stone-300 leading-relaxed whitespace-pre-wrap">
           {displayText}
         </p>
         {isLongText && (
@@ -190,12 +190,12 @@ function ReviewItem({
           authorPubkey={review.authorPubkey}
         />
         
-        <div className="flex items-center space-x-4 text-sm text-gray-500">
-          <button className="flex items-center space-x-1 hover:text-gray-700">
+        <div className="flex items-center space-x-4 text-sm text-stone-500 dark:text-stone-400">
+          <button className="flex items-center space-x-1 hover:text-stone-700 dark:text-stone-300">
             <ThumbsUp size={14} />
             <span>Helpful</span>
           </button>
-          <button className="flex items-center space-x-1 hover:text-gray-700">
+          <button className="flex items-center space-x-1 hover:text-stone-700 dark:text-stone-300">
             <MessageCircle size={14} />
             <span>Reply</span>
           </button>
@@ -288,9 +288,9 @@ export function ReviewList({
   if (reviews.length === 0) {
     return (
       <div className={`text-center py-8 ${className}`}>
-        <Star className="mx-auto mb-3 text-gray-400" size={48} />
-        <h3 className="text-lg font-medium text-gray-700 mb-2">No reviews yet</h3>
-        <p className="text-gray-500">Be the first to share your experience on this trail!</p>
+        <Star className="mx-auto mb-3 text-stone-400 dark:text-stone-500" size={48} />
+        <h3 className="text-lg font-medium text-stone-700 dark:text-stone-300 mb-2">No reviews yet</h3>
+        <p className="text-stone-500 dark:text-stone-400">Be the first to share your experience on this trail!</p>
       </div>
     )
   }
@@ -298,15 +298,15 @@ export function ReviewList({
   return (
     <div className={className}>
       {/* Rating Summary */}
-      <div className="bg-gray-50 rounded-lg p-4 mb-6">
+      <div className="bg-stone-50 dark:bg-stone-800 rounded-lg p-4 mb-6">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-3">
-            <div className="text-3xl font-bold text-gray-900">
+            <div className="text-3xl font-bold text-stone-900 dark:text-stone-100">
               {averageRating.toFixed(1)}
             </div>
             <div>
               <StarRating rating={averageRating} interactive={false} size="lg" />
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-stone-600 dark:text-stone-400 mt-1">
                 Based on {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
               </p>
             </div>
@@ -320,14 +320,14 @@ export function ReviewList({
               
               return (
                 <div key={rating} className="flex items-center space-x-2 text-sm">
-                  <span className="w-8 text-gray-600">{rating}★</span>
-                  <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <span className="w-8 text-stone-600 dark:text-stone-400">{rating}★</span>
+                  <div className="w-20 h-2 bg-stone-200 dark:bg-stone-700 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-forest-400"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
-                  <span className="w-8 text-gray-600 text-xs">{count}</span>
+                  <span className="w-8 text-stone-600 dark:text-stone-400 text-xs">{count}</span>
                 </div>
               )
             })}
@@ -337,14 +337,14 @@ export function ReviewList({
 
       {/* Sort Controls */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
           Reviews ({reviews.length})
         </h3>
         
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-forest-500"
+          className="text-sm border border-stone-300 dark:border-stone-600 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-forest-500"
         >
           <option value="newest">Newest first</option>
           <option value="oldest">Oldest first</option>
@@ -353,7 +353,7 @@ export function ReviewList({
       </div>
 
       {/* Reviews List */}
-      <div className="space-y-0 divide-y divide-gray-100 border-t border-gray-100">
+      <div className="space-y-0 divide-y divide-gray-100 border-t border-stone-100 dark:border-stone-700">
         {sortedReviews.map((review) => (
           <ReviewItem
             key={review.id}
@@ -369,7 +369,7 @@ export function ReviewList({
           <button
             onClick={onLoadMore}
             disabled={isLoading}
-            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50"
+            className="px-4 py-2 border border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300 rounded-md hover:bg-stone-50 dark:bg-stone-800 disabled:opacity-50"
           >
             {isLoading ? (
               <div className="flex items-center space-x-2">

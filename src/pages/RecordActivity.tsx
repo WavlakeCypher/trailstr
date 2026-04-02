@@ -199,254 +199,270 @@ export default function RecordActivity() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 pb-20">
+    <div className="min-h-screen bg-stone-900 pb-20">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 py-4">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handleCancel}
-            className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
-          >
-            ← Cancel
-          </button>
-          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-            Record Activity
-          </h1>
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !formData.title.trim()}
-            className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-colors"
-          >
-            {isSubmitting ? 'Saving...' : 'Save'}
-          </button>
+      <div className="bg-stone-900 px-4 py-6">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center justify-center relative">
+            <button
+              onClick={handleCancel}
+              className="absolute left-0 text-stone-400 hover:text-white transition-colors"
+            >
+              ← Back
+            </button>
+            <h1 className="text-xl font-semibold text-white">
+              Record Activity
+            </h1>
+          </div>
         </div>
       </div>
 
-      <div className="p-4 space-y-6">
-        {/* Live Recording Option */}
-        <div className="bg-gradient-to-r from-forest-500 to-forest-600 rounded-lg p-4 text-white">
-          <h3 className="font-semibold mb-2">Want to track your activity live?</h3>
-          <p className="text-sm text-forest-100 mb-3">
-            Record your GPS track in real-time with live stats and a real-time map.
-          </p>
-          <button
-            onClick={() => navigate('/record/live')}
-            className="bg-white text-forest-600 hover:bg-forest-50 font-medium px-4 py-2 rounded-lg transition-colors"
-          >
-            🏃‍♂️ Start Live Recording
-          </button>
+      <div className="max-w-2xl mx-auto px-4 space-y-6">
+        {/* Featured Live Recording Block */}
+        <div className="bg-gradient-to-r from-emerald-600/20 to-emerald-500/20 border border-emerald-500/50 rounded-2xl p-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/10 to-emerald-500/10 rounded-2xl"></div>
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
+              <h3 className="text-lg font-semibold text-white">Live Recording</h3>
+            </div>
+            <p className="text-stone-300 mb-4 text-sm">
+              Track your adventure in real-time with GPS, live stats, and route mapping for the most accurate activity data.
+            </p>
+            <button
+              onClick={() => navigate('/record/live')}
+              className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-medium px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105"
+            >
+              🏃‍♂️ Start Live Recording
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
         {error && (
-          <div className="p-3 bg-red-100 dark:bg-red-900/50 border border-red-400 rounded-lg">
-            <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+          <div className="bg-red-900/50 border border-red-700/50 rounded-2xl p-4">
+            <p className="text-red-300 text-sm">{error}</p>
           </div>
         )}
 
         {successMessage && (
-          <div className="p-3 bg-green-100 dark:bg-green-900/50 border border-green-400 rounded-lg">
-            <p className="text-green-700 dark:text-green-400 text-sm">{successMessage}</p>
+          <div className="bg-emerald-900/50 border border-emerald-700/50 rounded-2xl p-4">
+            <p className="text-emerald-300 text-sm">{successMessage}</p>
           </div>
         )}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Info */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              Basic Information
-            </h2>
-
-            {/* Title */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Activity Title *
-              </label>
-              <input
-                type="text"
-                value={formData.title}
-                onChange={(e) => updateField('title', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                placeholder="e.g., Morning hike at Bear Mountain"
-                required
-              />
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-wide text-stone-400 font-medium">Basic Information</p>
             </div>
 
-            {/* Activity Type */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Activity Type
-              </label>
-              <select
-                value={formData.type}
-                onChange={(e) => updateField('type', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-              >
-                {ACTIVITY_TYPES.map(type => (
-                  <option key={type.value} value={type.value}>
-                    {type.emoji} {type.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Date and Time */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-6">
+              {/* Title */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                  Date *
+                <label className="block text-sm font-medium text-white mb-3">
+                  Activity Title *
                 </label>
                 <input
-                  type="date"
-                  value={formData.date}
-                  onChange={(e) => updateField('date', e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => updateField('title', e.target.value)}
+                  className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="Morning hike at Bear Mountain"
                   required
                 />
               </div>
 
+              {/* Activity Type - Visual Pills */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                  Start Time
+                <label className="block text-sm font-medium text-white mb-3">
+                  Activity Type
                 </label>
-                <input
-                  type="time"
-                  value={formData.time}
-                  onChange={(e) => updateField('time', e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                />
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {ACTIVITY_TYPES.map(type => (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => updateField('type', type.value)}
+                      className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-all ${
+                        formData.type === type.value
+                          ? 'bg-emerald-600 border-emerald-500 text-white'
+                          : 'bg-stone-800 border-stone-600 text-stone-300 hover:border-stone-500'
+                      }`}
+                    >
+                      <span className="text-lg">{type.emoji}</span>
+                      <span className="text-sm font-medium">{type.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Date and Time */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-white mb-3">
+                    Date *
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => updateField('date', e.target.value)}
+                    className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white mb-3">
+                    Start Time
+                  </label>
+                  <input
+                    type="time"
+                    value={formData.time}
+                    onChange={(e) => updateField('time', e.target.value)}
+                    className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Stats */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              Activity Stats
-            </h2>
-
-            {/* Distance */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Distance (km)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={formData.distance}
-                onChange={(e) => updateField('distance', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                placeholder="e.g., 5.2"
-              />
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-wide text-stone-400 font-medium">Activity Stats</p>
             </div>
 
-            {/* Duration */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Duration (hours)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={formData.duration}
-                onChange={(e) => updateField('duration', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                placeholder="e.g., 2.5"
-              />
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Enter duration in decimal hours (e.g., 2.5 for 2 hours 30 minutes)
-              </p>
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Distance */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-3">
+                  Distance (km)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={formData.distance}
+                  onChange={(e) => updateField('distance', e.target.value)}
+                  className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="5.2"
+                />
+              </div>
 
-            {/* Elevation Gain */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Elevation Gain (m)
-              </label>
-              <input
-                type="number"
-                value={formData.elevationGain}
-                onChange={(e) => updateField('elevationGain', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                placeholder="e.g., 450"
-              />
+              {/* Duration */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-3">
+                  Duration (hours)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={formData.duration}
+                  onChange={(e) => updateField('duration', e.target.value)}
+                  className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="2.5"
+                />
+                <p className="text-xs text-stone-500 mt-2">
+                  Decimal format (2.5 = 2h 30m)
+                </p>
+              </div>
+
+              {/* Elevation Gain */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-3">
+                  Elevation (m)
+                </label>
+                <input
+                  type="number"
+                  value={formData.elevationGain}
+                  onChange={(e) => updateField('elevationGain', e.target.value)}
+                  className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="450"
+                />
+              </div>
             </div>
           </div>
 
           {/* Location */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              Location
-            </h2>
-
-            {/* Start Location */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Start Location
-              </label>
-              <input
-                type="text"
-                value={formData.startLocation}
-                onChange={(e) => updateField('startLocation', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                placeholder="e.g., Bear Mountain State Park"
-              />
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-wide text-stone-400 font-medium">Location</p>
             </div>
 
-            {/* End Location */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                End Location
-              </label>
-              <input
-                type="text"
-                value={formData.endLocation}
-                onChange={(e) => updateField('endLocation', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
-                placeholder="e.g., Summit lookout point"
-              />
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Leave blank if same as start location
-              </p>
+            <div className="space-y-4">
+              {/* Start Location */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-3">
+                  Start Location
+                </label>
+                <input
+                  type="text"
+                  value={formData.startLocation}
+                  onChange={(e) => updateField('startLocation', e.target.value)}
+                  className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="Bear Mountain State Park"
+                />
+              </div>
+
+              {/* End Location */}
+              <div>
+                <label className="block text-sm font-medium text-white mb-3">
+                  End Location
+                </label>
+                <input
+                  type="text"
+                  value={formData.endLocation}
+                  onChange={(e) => updateField('endLocation', e.target.value)}
+                  className="w-full min-h-[48px] bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="Summit lookout point"
+                />
+                <p className="text-xs text-stone-500 mt-2">
+                  Leave blank if same as start location
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Notes */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-              Notes & Description
-            </h2>
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-wide text-stone-400 font-medium">Notes & Description</p>
+            </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-white mb-3">
                 Activity Notes
               </label>
               <textarea
                 value={formData.notes}
                 onChange={(e) => updateField('notes', e.target.value)}
-                rows={4}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 resize-none"
+                rows={6}
+                className="w-full bg-stone-800 border border-stone-600 rounded-xl px-4 py-3 text-white placeholder:text-stone-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none transition-colors resize-none"
                 placeholder="Share details about your adventure - trail conditions, weather, highlights, challenges, or any other memorable moments..."
               />
+              <p className="text-xs text-stone-500 mt-2">
+                Tell your story - what made this adventure special?
+              </p>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               type="button"
               onClick={handleCancel}
-              className="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium py-3 px-4 rounded-lg transition-colors"
+              className="sm:flex-1 bg-transparent border border-stone-600 text-stone-300 hover:text-white hover:border-stone-500 font-medium py-4 px-6 rounded-xl transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !formData.title.trim()}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors"
+              className="sm:flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 disabled:from-stone-600 disabled:to-stone-600 disabled:cursor-not-allowed text-white font-medium py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:transform-none"
             >
-              {isSubmitting ? 'Recording Activity...' : 'Record Activity'}
+              {isSubmitting ? 'Recording Activity...' : 'Save Activity'}
             </button>
           </div>
         </form>

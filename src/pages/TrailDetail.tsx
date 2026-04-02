@@ -41,36 +41,26 @@ export default function TrailDetail() {
     }
   }, [id, fetchTrailById, fetchTrailReviews])
 
-  // Initialize map when trail data loads
   useEffect(() => {
     if (currentTrail && mapContainer.current && !map.current) {
       const coordinates = currentTrail.startCoordinates || [0, 0]
       
-      import('../utils/mapStyle').then(({ loadMapStyle }) => loadMapStyle('https://tiles.openfreemap.org/styles/bright')).then(style => {
-        if (!mapContainer.current) return
-        map.current = new maplibregl.Map({
-          container: mapContainer.current,
-          style,
-          center: [coordinates[0], coordinates[1]],
-          zoom: 13
-        })
+      map.current = new maplibregl.Map({
+        container: mapContainer.current,
+        style: 'https://tiles.openfreemap.org/styles/bright',
+        center: [coordinates[0], coordinates[1]],
+        zoom: 13
+      })
 
-      // Add controls
       map.current.addControl(new maplibregl.NavigationControl(), 'top-right')
 
-      // Add trail marker
-      new maplibregl.Marker({
-        color: '#22c55e'
-      })
+      new maplibregl.Marker({ color: '#22c55e' })
         .setLngLat([coordinates[0], coordinates[1]])
         .addTo(map.current)
 
-      // Add route if available (simplified - in real app would show full track)
       if (currentTrail.routeData) {
-        // TODO: Add route polyline visualization
         console.log('Route data available for visualization:', currentTrail.routeData)
       }
-      })
     }
 
     return () => {
@@ -92,7 +82,6 @@ export default function TrailDetail() {
 
   const handleWishlistToggle = () => {
     setIsWishlisted(!isWishlisted)
-    // TODO: Implement wishlist functionality
   }
 
   const handleShare = async () => {
@@ -104,30 +93,25 @@ export default function TrailDetail() {
           url: window.location.href
         })
       } catch (error) {
-        // Fallback to copying URL
         navigator.clipboard.writeText(window.location.href)
       }
     } else {
-      // Fallback to copying URL
       navigator.clipboard.writeText(window.location.href)
     }
   }
 
   if (isLoadingTrail) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
         <div className="animate-pulse">
-          {/* Hero skeleton */}
-          <div className="h-64 bg-gray-300"></div>
-          
-          {/* Content skeleton */}
+          <div className="h-64 bg-stone-300 dark:bg-stone-700"></div>
           <div className="max-w-4xl mx-auto p-4 space-y-4">
-            <div className="h-8 bg-gray-300 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+            <div className="h-8 bg-stone-300 dark:bg-stone-700 rounded w-3/4"></div>
+            <div className="h-4 bg-stone-300 dark:bg-stone-700 rounded w-1/2"></div>
             <div className="grid grid-cols-3 gap-4">
-              <div className="h-16 bg-gray-300 rounded"></div>
-              <div className="h-16 bg-gray-300 rounded"></div>
-              <div className="h-16 bg-gray-300 rounded"></div>
+              <div className="h-16 bg-stone-300 dark:bg-stone-700 rounded"></div>
+              <div className="h-16 bg-stone-300 dark:bg-stone-700 rounded"></div>
+              <div className="h-16 bg-stone-300 dark:bg-stone-700 rounded"></div>
             </div>
           </div>
         </div>
@@ -137,11 +121,11 @@ export default function TrailDetail() {
 
   if (!currentTrail) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-stone-50 dark:bg-stone-900 flex items-center justify-center">
         <div className="text-center">
-          <Mountain className="mx-auto mb-4 text-gray-400" size={48} />
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Trail not found</h2>
-          <p className="text-gray-500 mb-4">The trail you're looking for doesn't exist or has been removed.</p>
+          <Mountain className="mx-auto mb-4 text-stone-400 dark:text-stone-600" size={48} />
+          <h2 className="text-xl font-semibold text-stone-700 dark:text-stone-300 mb-2">Trail not found</h2>
+          <p className="text-stone-500 dark:text-stone-400 mb-4">The trail you're looking for doesn't exist or has been removed.</p>
           <Link
             to="/trail-explorer"
             className="inline-flex items-center px-4 py-2 bg-forest-500 text-white rounded-md hover:bg-forest-600"
@@ -155,13 +139,13 @@ export default function TrailDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
       {/* Hero Image */}
       <div className="relative h-64 bg-gradient-to-br from-forest-500 to-forest-700">
         {currentTrail.heroPhoto ? (
           <BlurhashImage
             src={currentTrail.heroPhoto}
-            blurhash="LEHV6nWB2yk8pyo0adR*.7kCMdnj" // Default fallback
+            blurhash="LEHV6nWB2yk8pyo0adR*.7kCMdnj"
             alt={currentTrail.name}
             className="w-full h-full object-cover"
           />
@@ -171,10 +155,8 @@ export default function TrailDetail() {
           </div>
         )}
         
-        {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         
-        {/* Back button */}
         <Link
           to="/trail-explorer"
           className="absolute top-4 left-4 p-2 bg-black/30 backdrop-blur-sm text-white rounded-full hover:bg-black/50 transition-colors"
@@ -182,7 +164,6 @@ export default function TrailDetail() {
           <ArrowLeft size={20} />
         </Link>
         
-        {/* Action buttons */}
         <div className="absolute top-4 right-4 flex space-x-2">
           {isAuthenticated && (
             <button
@@ -204,7 +185,6 @@ export default function TrailDetail() {
           </button>
         </div>
 
-        {/* Trail title overlay */}
         <div className="absolute bottom-4 left-4 right-4">
           <h1 className="text-2xl font-bold text-white mb-1">{currentTrail.name}</h1>
           <div className="flex items-center space-x-3 text-white/90">
@@ -228,34 +208,34 @@ export default function TrailDetail() {
       <div className="max-w-4xl mx-auto p-4">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 -mt-8 relative z-10">
-          <div className="bg-white rounded-lg shadow-sm p-4 text-center">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
             <Ruler className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-gray-800">{formatDistance(currentTrail.distance * 1000)}</div>
-            <div className="text-sm text-gray-600">Distance</div>
+            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{formatDistance(currentTrail.distance * 1000)}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Distance</div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-4 text-center">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
             <Mountain className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-gray-800">{formatElevation(currentTrail.elevationGain)}</div>
-            <div className="text-sm text-gray-600">Elevation Gain</div>
+            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{formatElevation(currentTrail.elevationGain)}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Elevation Gain</div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-4 text-center">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
             <Star className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-gray-800">{currentTrail.averageRating.toFixed(1)}</div>
-            <div className="text-sm text-gray-600">Rating</div>
+            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{currentTrail.averageRating.toFixed(1)}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Rating</div>
           </div>
           
-          <div className="bg-white rounded-lg shadow-sm p-4 text-center">
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-4 text-center">
             <Users className="mx-auto mb-2 text-forest-500" size={24} />
-            <div className="text-xl font-bold text-gray-800">{currentTrail.reviewCount}</div>
-            <div className="text-sm text-gray-600">Reviews</div>
+            <div className="text-xl font-bold text-stone-800 dark:text-stone-100">{currentTrail.reviewCount}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-400">Reviews</div>
           </div>
         </div>
 
         {/* Tabs */}
         <div className="mb-6">
-          <nav className="flex space-x-8 border-b border-gray-200">
+          <nav className="flex space-x-8 border-b border-stone-200 dark:border-stone-700">
             {[
               { id: 'overview', label: 'Overview' },
               { id: 'reviews', label: `Reviews (${currentTrail.reviewCount})` },
@@ -266,8 +246,8 @@ export default function TrailDetail() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
-                    ? 'border-forest-500 text-forest-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-forest-500 text-forest-600 dark:text-forest-400'
+                    : 'border-transparent text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-300 hover:border-stone-300 dark:hover:border-stone-600'
                 }`}
               >
                 {tab.label}
@@ -279,26 +259,23 @@ export default function TrailDetail() {
         {/* Tab Content */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
-            {/* Description */}
             {currentTrail.summary && (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">About This Trail</h3>
-                <p className="text-gray-600 leading-relaxed">{currentTrail.summary}</p>
+              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+                <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-3">About This Trail</h3>
+                <p className="text-stone-600 dark:text-stone-400 leading-relaxed">{currentTrail.summary}</p>
               </div>
             )}
 
-            {/* Map */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Map & Route</h3>
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+              <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-3">Map & Route</h3>
               <div className="h-64 rounded-md overflow-hidden">
                 <div ref={mapContainer} className="w-full h-full" />
               </div>
             </div>
 
-            {/* Photos */}
             {currentTrail.photos && currentTrail.photos.length > 0 && (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+              <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+                <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-3 flex items-center">
                   <Camera className="mr-2" size={20} />
                   Photos ({currentTrail.photos.length})
                 </h3>
@@ -306,8 +283,7 @@ export default function TrailDetail() {
               </div>
             )}
 
-            {/* Social Actions */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
               <ReactionBar eventId={currentTrail.id} authorPubkey={currentTrail.authorPubkey} />
             </div>
           </div>
@@ -315,17 +291,14 @@ export default function TrailDetail() {
 
         {activeTab === 'reviews' && (
           <div className="space-y-6">
-            {/* Review Form */}
             <ReviewForm
               trailAuthorPubkey={currentTrail.authorPubkey}
               trailSlug={currentTrail.dTag}
               onSubmit={() => {
-                // Refresh reviews after submission
                 fetchTrailReviews(currentTrail.id)
               }}
             />
 
-            {/* Reviews List */}
             <ReviewList
               reviews={currentTrailReviews.map(review => ({
                 id: review.id,
@@ -337,23 +310,23 @@ export default function TrailDetail() {
                 conditions: review.conditions,
                 images: review.images
               }))}
-              hasMore={false} // TODO: Implement pagination
+              hasMore={false}
               isLoading={false}
             />
           </div>
         )}
 
         {activeTab === 'activities' && (
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-            <Calendar className="mx-auto mb-4 text-gray-400" size={48} />
-            <h3 className="text-lg font-medium text-gray-700 mb-2">No activities yet</h3>
-            <p className="text-gray-500 mb-4">Activities on this trail will appear here.</p>
+          <div className="bg-white dark:bg-stone-800 rounded-lg shadow-sm p-8 text-center">
+            <Calendar className="mx-auto mb-4 text-stone-400 dark:text-stone-600" size={48} />
+            <h3 className="text-lg font-medium text-stone-700 dark:text-stone-300 mb-2">No activities yet</h3>
+            <p className="text-stone-500 dark:text-stone-400 mb-4">Activities on this trail will appear here.</p>
           </div>
         )}
 
         {/* Comments */}
-        <div className="mt-8 bg-white rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Comments</h3>
+        <div className="mt-8 bg-white dark:bg-stone-800 rounded-lg shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-4">Comments</h3>
           <CommentThread eventId={currentTrail.id} authorPubkey={currentTrail.authorPubkey} />
         </div>
       </div>

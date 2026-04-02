@@ -157,9 +157,9 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
   if (!isAuthenticated) {
     return (
-      <div className={`bg-gray-50 border border-gray-200 rounded-lg p-6 text-center ${className}`}>
-        <Star className="mx-auto mb-3 text-gray-400" size={24} />
-        <p className="text-gray-600 mb-3">Sign in to write a review</p>
+      <div className={`bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg p-6 text-center ${className}`}>
+        <Star className="mx-auto mb-3 text-stone-400 dark:text-stone-500" size={24} />
+        <p className="text-stone-600 dark:text-stone-400 mb-3">Sign in to write a review</p>
         <button className="text-forest-600 hover:text-forest-700 font-medium">
           Sign In
         </button>
@@ -168,12 +168,12 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`bg-white border border-gray-200 rounded-lg p-6 ${className}`}>
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Write a Review</h3>
+    <form onSubmit={handleSubmit} className={`bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-lg p-6 ${className}`}>
+      <h3 className="text-lg font-semibold text-stone-800 dark:text-stone-100 mb-4">Write a Review</h3>
 
       {/* Rating */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
           Your Rating *
         </label>
         <div className="flex items-center space-x-1">
@@ -192,7 +192,7 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
               />
             </button>
           ))}
-          <span className="ml-3 text-sm text-gray-600">
+          <span className="ml-3 text-sm text-stone-600 dark:text-stone-400">
             {reviewData.rating > 0 && (
               ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'][reviewData.rating - 1]
             )}
@@ -202,7 +202,7 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
       {/* Review Text */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
           Your Review *
         </label>
         <textarea
@@ -210,18 +210,18 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
           onChange={(e) => setReviewData(prev => ({ ...prev, comment: e.target.value }))}
           rows={4}
           placeholder="Share your experience on this trail..."
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500 resize-none"
+          className="w-full px-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500 resize-none"
           required
         />
       </div>
 
       {/* Hike Date */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
           When did you hike this trail?
         </label>
         <div className="relative">
-          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400 dark:text-stone-500" size={16} />
           <input
             type="date"
             value={reviewData.hikedOn ? reviewData.hikedOn.toISOString().split('T')[0] : ''}
@@ -229,14 +229,14 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
               ...prev, 
               hikedOn: e.target.value ? new Date(e.target.value) : undefined 
             }))}
-            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forest-500"
+            className="w-full pl-10 pr-3 py-2 border border-stone-300 dark:border-stone-600 rounded-md bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
           />
         </div>
       </div>
 
       {/* Trail Conditions */}
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
           Trail Conditions
         </label>
         <div className="flex flex-wrap gap-2">
@@ -252,7 +252,7 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
                 className={`flex items-center space-x-2 px-3 py-1.5 rounded-full border text-sm transition-colors ${
                   isSelected
                     ? 'bg-forest-100 border-forest-300 text-forest-700'
-                    : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                    : 'bg-white border-gray-300 text-gray-600 hover:bg-stone-50 dark:hover:bg-stone-700'
                 }`}
               >
                 <Icon size={14} className={condition.color} />
@@ -265,14 +265,14 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
 
       {/* Photo Upload */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
           Photos (optional)
         </label>
         
-        <label className="block w-full p-4 border-2 border-dashed border-gray-300 rounded-md cursor-pointer hover:bg-gray-50">
+        <label className="block w-full p-4 border-2 border-dashed border-stone-300 dark:border-stone-600 rounded-md cursor-pointer hover:bg-stone-50 dark:hover:bg-stone-700">
           <div className="text-center">
-            <Upload className="mx-auto mb-2 text-gray-400" size={24} />
-            <p className="text-sm text-gray-600">Click to add photos (max 5)</p>
+            <Upload className="mx-auto mb-2 text-stone-400 dark:text-stone-500" size={24} />
+            <p className="text-sm text-stone-600 dark:text-stone-400">Click to add photos (max 5)</p>
           </div>
           <input
             type="file"
@@ -289,8 +289,8 @@ export function ReviewForm({ trailAuthorPubkey, trailSlug, onSubmit, className =
           <div className="mt-3 grid grid-cols-3 gap-2">
             {reviewData.images.map((file, index) => (
               <div key={index} className="relative">
-                <div className="aspect-square bg-gray-200 rounded-md flex items-center justify-center">
-                  <span className="text-xs text-gray-600 text-center px-1">
+                <div className="aspect-square bg-stone-200 dark:bg-stone-700 rounded-md flex items-center justify-center">
+                  <span className="text-xs text-stone-600 dark:text-stone-400 text-center px-1">
                     {file.name}
                   </span>
                 </div>

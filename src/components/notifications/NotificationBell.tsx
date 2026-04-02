@@ -84,8 +84,8 @@ function NotificationItem({ notification, onClick }: NotificationItemProps) {
 
   return (
     <div
-      className={`flex items-start space-x-3 p-3 hover:bg-gray-50 cursor-pointer transition-colors ${
-        !notification.isRead ? 'bg-forest-50 border-l-2 border-l-forest-500' : ''
+      className={`flex items-start space-x-3 p-3 hover:bg-stone-50 dark:hover:bg-stone-700 cursor-pointer transition-colors ${
+        !notification.isRead ? 'bg-forest-50 dark:bg-forest-900/20 border-l-2 border-l-forest-500' : ''
       }`}
       onClick={handleClick}
     >
@@ -99,13 +99,13 @@ function NotificationItem({ notification, onClick }: NotificationItemProps) {
       <div className="flex-1 min-w-0">
         <div className="flex items-center space-x-2 mb-1">
           {getIcon()}
-          <p className="text-sm text-gray-900 truncate">
+          <p className="text-sm text-stone-900 dark:text-stone-100 truncate">
             {getMessage()}
           </p>
         </div>
         
         <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-stone-500 dark:text-stone-400">
             {formatTime(notification.createdAt)}
           </span>
           
@@ -187,7 +187,7 @@ export function NotificationBell() {
       {/* Bell Button */}
       <button
         onClick={handleToggle}
-        className="relative p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
+        className="relative p-2 text-stone-600 dark:text-stone-400 hover:text-stone-800 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-700 rounded-full transition-colors"
       >
         {unreadCount > 0 ? (
           <BellRing className="text-forest-600" size={20} />
@@ -205,10 +205,10 @@ export function NotificationBell() {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-stone-800 rounded-lg shadow-xl border border-stone-200 dark:border-stone-700 z-50 max-h-96 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-100">
-            <h3 className="font-medium text-gray-900">Notifications</h3>
+          <div className="flex items-center justify-between p-4 border-b border-stone-100 dark:border-stone-700">
+            <h3 className="font-medium text-stone-900 dark:text-stone-100">Notifications</h3>
             
             {unreadCount > 0 && (
               <button
@@ -227,15 +227,15 @@ export function NotificationBell() {
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-forest-500"></div>
               </div>
             ) : notifications.length === 0 ? (
-              <div className="text-center p-8 text-gray-500">
-                <Bell className="mx-auto mb-3 text-gray-400" size={32} />
+              <div className="text-center p-8 text-stone-500 dark:text-stone-400">
+                <Bell className="mx-auto mb-3 text-stone-400 dark:text-stone-600" size={32} />
                 <p className="text-sm">No notifications yet</p>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-stone-400 dark:text-stone-500 mt-1">
                   You'll see notifications here when others interact with your content
                 </p>
               </div>
             ) : (
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-stone-100 dark:divide-stone-700">
                 {notifications.slice(0, 20).map((notification) => (
                   <NotificationItem
                     key={notification.id}
@@ -253,7 +253,7 @@ export function NotificationBell() {
 
           {/* Footer */}
           {notifications.length > 0 && (
-            <div className="border-t border-gray-100 p-3">
+            <div className="border-t border-stone-100 dark:border-stone-700 p-3">
               <button className="w-full text-center text-sm text-forest-600 hover:text-forest-700 font-medium">
                 View All Notifications
               </button>
