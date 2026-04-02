@@ -54,20 +54,25 @@ export default function BottomNav() {
   ]
   
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 z-50">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900/95 backdrop-blur-xl border-t border-stone-800 z-50">
       <div className="grid grid-cols-5 h-16">
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
+            className={`flex flex-col items-center justify-center space-y-1 min-h-12 transition-all duration-200 relative ${
               isActive(item.path)
-                ? 'text-forest-600 dark:text-forest-400'
-                : 'text-stone-600 dark:text-stone-400'
+                ? 'text-emerald-500'
+                : 'text-stone-500 hover:text-stone-300'
             }`}
           >
-            {item.icon}
-            <span className="text-xs font-medium">{item.label}</span>
+            {isActive(item.path) && (
+              <div className="absolute inset-0 bg-emerald-500/10 rounded-lg mx-1 shadow-lg shadow-emerald-500/20"></div>
+            )}
+            <div className="relative z-10">
+              {item.icon}
+            </div>
+            <span className="text-xs font-medium relative z-10">{item.label}</span>
           </Link>
         ))}
       </div>

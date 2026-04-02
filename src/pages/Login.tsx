@@ -160,20 +160,25 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-emerald-50 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-emerald-800 dark:text-emerald-400 mb-2">
-            Welcome to TrailStr
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+    <div className="min-h-screen bg-stone-900 flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full mx-auto px-4">
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 rounded-2xl flex items-center justify-center">
+              <span className="text-white font-bold text-2xl">T</span>
+            </div>
+            <h1 className="text-4xl font-bold text-white">
+              TrailStr
+            </h1>
+          </div>
+          <p className="text-stone-400 text-lg">
             Your adventures on the Nostr protocol
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/50 border border-red-400 rounded-lg">
-            <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+          <div className="mb-6 bg-stone-800/50 border border-red-600/50 rounded-2xl p-6">
+            <p className="text-red-400 text-sm">{error}</p>
           </div>
         )}
 

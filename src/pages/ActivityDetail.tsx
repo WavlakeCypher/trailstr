@@ -183,43 +183,45 @@ export default function ActivityDetail() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-stone-900">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link 
-              to="/feed"
-              className="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors"
-            >
-              <ArrowLeft size={20} />
-            </Link>
-            <h1 className="text-xl font-semibold text-stone-900 dark:text-stone-100 truncate">
-              {activity.title}
-            </h1>
-          </div>
+      <div className="sticky top-0 z-10 bg-stone-900/95 backdrop-blur border-b border-stone-700/50">
+        <div className="max-w-2xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Link 
+                to="/feed"
+                className="text-stone-400 hover:text-white transition-colors"
+              >
+                <ArrowLeft size={20} />
+              </Link>
+              <h1 className="text-xl font-semibold text-white truncate">
+                {activity.title}
+              </h1>
+            </div>
 
-          <div className="flex items-center space-x-2">
-            {isOwner && (
-              <>
-                <button className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-                  <Edit size={18} />
-                </button>
-                <button className="p-2 text-stone-600 dark:text-stone-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
-                  <Trash2 size={18} />
-                </button>
-              </>
-            )}
-            <button className="p-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors">
-              <Share size={18} />
-            </button>
+            <div className="flex items-center space-x-2">
+              {isOwner && (
+                <>
+                  <button className="p-2 text-stone-400 hover:text-white transition-colors">
+                    <Edit size={18} />
+                  </button>
+                  <button className="p-2 text-stone-400 hover:text-red-400 transition-colors">
+                    <Trash2 size={18} />
+                  </button>
+                </>
+              )}
+              <button className="p-2 text-stone-400 hover:text-white transition-colors">
+                <Share size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="max-w-2xl mx-auto px-4 space-y-6">
         {/* Activity Header */}
-        <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
+        <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center space-x-3">
               <Avatar 
@@ -229,10 +231,10 @@ export default function ActivityDetail() {
                 size="md"
               />
               <div>
-                <h2 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+                <h2 className="text-lg font-semibold text-white">
                   {userProfile?.display_name || userProfile?.name || 'Anonymous'}
                 </h2>
-                <div className="flex items-center space-x-2 text-sm text-stone-500 dark:text-stone-400">
+                <div className="flex items-center space-x-2 text-sm text-stone-400">
                   <span className="flex items-center space-x-1">
                     <span>{activityTypeIcons[activity.type]}</span>
                     <span>{activityTypeLabels[activity.type]}</span>
@@ -257,28 +259,28 @@ export default function ActivityDetail() {
           </div>
 
           {activity.content && (
-            <div className="prose prose-sm dark:prose-invert max-w-none">
-              <p className="text-stone-700 dark:text-stone-300">{activity.content}</p>
+            <div className="prose prose-sm max-w-none">
+              <p className="text-stone-300">{activity.content}</p>
             </div>
           )}
         </div>
 
         {/* Map and Track */}
         {activity.track && activity.track.points.length > 0 && (
-          <div className="bg-white dark:bg-stone-800 rounded-lg overflow-hidden border border-stone-200 dark:border-stone-700">
-            <div className="p-4 border-b border-stone-200 dark:border-stone-700">
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl overflow-hidden">
+            <div className="p-6 border-b border-stone-700/50">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
+                <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase">
                   Route Map
                 </h3>
                 
                 {/* Color mode toggle */}
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-stone-600 dark:text-stone-400">Color by:</span>
+                  <span className="text-xs text-stone-400">Color by:</span>
                   <select
                     value={mapColorMode}
                     onChange={(e) => setMapColorMode(e.target.value as ColorMode)}
-                    className="text-sm border border-stone-300 dark:border-stone-600 rounded px-2 py-1 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100"
+                    className="text-sm bg-stone-800 border border-stone-600 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-emerald-500"
                   >
                     <option value="default">Default</option>
                     <option value="pace">Pace</option>
@@ -310,31 +312,29 @@ export default function ActivityDetail() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Stats */}
-          <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-            <StatsGrid 
-              metrics={activity.metrics}
-              activityType={activity.type}
+        {/* Stats Grid */}
+        <div>
+          <StatsGrid 
+            metrics={activity.metrics}
+            activityType={activity.type}
+          />
+        </div>
+
+        {/* Elevation Chart */}
+        {activity.track && activity.track.points.length > 0 && (
+          <div className="bg-stone-800/50 border border-stone-700/50 rounded-2xl p-6">
+            <h3 className="text-xs font-semibold tracking-wider text-stone-400 uppercase mb-4">
+              Elevation Profile
+            </h3>
+            <ElevationChart
+              points={activity.track.points}
+              showHeartRate={activity.track.points.some(p => p.heartRate)}
+              highlightIndex={highlightIndex || undefined}
+              onHover={setHighlightIndex}
+              height={200}
             />
           </div>
-
-          {/* Elevation Chart */}
-          {activity.track && activity.track.points.length > 0 && (
-            <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-              <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-100 mb-4">
-                Elevation Profile
-              </h3>
-              <ElevationChart
-                points={activity.track.points}
-                showHeartRate={activity.track.points.some(p => p.heartRate)}
-                highlightIndex={highlightIndex || undefined}
-                onHover={setHighlightIndex}
-                height={200}
-              />
-            </div>
-          )}
-        </div>
+        )}
 
         {/* Photos */}
         {activity.images && activity.images.length > 0 && (

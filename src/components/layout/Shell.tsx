@@ -8,7 +8,7 @@ interface ShellProps {
 
 export default function Shell({ children }: ShellProps) {
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-stone-900">
+    <div className="min-h-screen bg-stone-900">
       {/* Desktop Top Navigation */}
       <TopNav />
       

@@ -1,27 +1,41 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Shell from './components/layout/Shell'
-import Feed from './pages/Feed'
-import ActivityDetail from './pages/ActivityDetail'
-import RecordActivity from './pages/RecordActivity'
-import LiveRecord from './pages/LiveRecord'
-import ImportActivities from './pages/ImportActivities'
-import TrailExplorer from './pages/TrailExplorer'
-import TrailDetail from './pages/TrailDetail'
-import CreateTrail from './pages/CreateTrail'
-import Profile from './pages/Profile'
-import ProfileEdit from './pages/ProfileEdit'
-import Settings from './pages/Settings'
-import Login from './pages/Login'
 import { cacheHelpers } from './stores/cacheStore'
 import { useThemeStore } from './stores/themeStore'
+import Skeleton from './components/common/Skeleton'
+
+// Lazy-loaded route pages
+const Feed = lazy(() => import('./pages/Feed'))
+const ActivityDetail = lazy(() => import('./pages/ActivityDetail'))
+const RecordActivity = lazy(() => import('./pages/RecordActivity'))
+const LiveRecord = lazy(() => import('./pages/LiveRecord'))
+const ImportActivities = lazy(() => import('./pages/ImportActivities'))
+const TrailExplorer = lazy(() => import('./pages/TrailExplorer'))
+const TrailDetail = lazy(() => import('./pages/TrailDetail'))
+const CreateTrail = lazy(() => import('./pages/CreateTrail'))
+const Profile = lazy(() => import('./pages/Profile'))
+const ProfileEdit = lazy(() => import('./pages/ProfileEdit'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Login = lazy(() => import('./pages/Login'))
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen bg-white dark:bg-stone-900 flex items-center justify-center">
+      <div className="w-full max-w-md p-8 space-y-4">
+        <Skeleton className="h-8 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+        <Skeleton className="h-32 w-full" />
+      </div>
+    </div>
+  )
+}
 
 function App() {
-  // Initialize theme on app startup
   const { actualTheme } = useThemeStore()
   
   useEffect(() => {
-    // Apply theme immediately
     const root = window.document.documentElement
     if (actualTheme === 'dark') {
       root.classList.add('dark')
@@ -31,9 +45,7 @@ function App() {
   }, [actualTheme])
 
   useEffect(() => {
-    // Schedule cache cleanup for maintenance
     const cleanupInterval = cacheHelpers.scheduleCleanup()
-    
     return () => {
       clearInterval(cleanupInterval)
     }
@@ -42,20 +54,22 @@ function App() {
   return (
     <Router>
       <Shell>
-        <Routes>
-          <Route path="/" element={<Feed />} />
-          <Route path="/activity/:id" element={<ActivityDetail />} />
-          <Route path="/record" element={<RecordActivity />} />
-          <Route path="/record/live" element={<LiveRecord />} />
-          <Route path="/import" element={<ImportActivities />} />
-          <Route path="/trails" element={<TrailExplorer />} />
-          <Route path="/trail/:id" element={<TrailDetail />} />
-          <Route path="/trail/create" element={<CreateTrail />} />
-          <Route path="/profile/:npub?" element={<Profile />} />
-          <Route path="/profile/edit" element={<ProfileEdit />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Feed />} />
+            <Route path="/activity/:id" element={<ActivityDetail />} />
+            <Route path="/record" element={<RecordActivity />} />
+            <Route path="/record/live" element={<LiveRecord />} />
+            <Route path="/import" element={<ImportActivities />} />
+            <Route path="/trails" element={<TrailExplorer />} />
+            <Route path="/trail/:id" element={<TrailDetail />} />
+            <Route path="/trail/create" element={<CreateTrail />} />
+            <Route path="/profile/:npub?" element={<Profile />} />
+            <Route path="/profile/edit" element={<ProfileEdit />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </Suspense>
       </Shell>
     </Router>
   )

@@ -298,26 +298,26 @@ export default function TrailExplorer() {
   }
 
   return (
-    <div className="relative h-screen overflow-hidden dark:bg-stone-900">
+    <div className="relative h-screen overflow-hidden bg-stone-900">
       {/* Map Container */}
       <div ref={mapContainer} className="w-full h-full" />
 
       {/* Search and Controls Overlay */}
       <div className="absolute top-4 left-4 right-4 z-10 flex gap-4">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-stone-400" size={20} />
           <input
             type="text"
             placeholder="Search trails..."
             value={filter.search}
             onChange={(e) => setFilter(prev => ({ ...prev, search: e.target.value }))}
-            className="w-full pl-10 pr-4 py-3 bg-white dark:bg-stone-800 rounded-lg shadow-lg border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-forest-500"
+            className="w-full pl-12 pr-4 py-3 h-12 bg-stone-800/90 backdrop-blur-sm rounded-2xl border border-stone-700/50 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
           />
         </div>
 
         <button
           onClick={() => setShowSidebar(!showSidebar)}
-          className="px-4 py-3 bg-white dark:bg-stone-800 rounded-lg shadow-lg border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700 flex items-center space-x-2 text-stone-700 dark:text-stone-300"
+          className="px-4 py-3 h-12 bg-stone-800/90 backdrop-blur-sm rounded-2xl border border-stone-700/50 hover:border-emerald-500/30 flex items-center space-x-2 text-stone-300 hover:text-white transition-all"
         >
           <Filter size={20} />
           <span className="hidden sm:inline">Filters</span>
@@ -325,7 +325,7 @@ export default function TrailExplorer() {
 
         <Link
           to="/create-trail"
-          className="px-4 py-3 bg-forest-500 text-white rounded-lg shadow-lg hover:bg-forest-600 flex items-center space-x-2"
+          className="px-4 py-3 h-12 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 rounded-2xl text-white flex items-center space-x-2 transition-all shadow-lg"
         >
           <Plus size={20} />
           <span className="hidden sm:inline">Add Trail</span>
@@ -333,21 +333,21 @@ export default function TrailExplorer() {
       </div>
 
       {/* Sidebar/Bottom Sheet */}
-      <div className={`absolute bg-white dark:bg-stone-800 shadow-xl transition-transform duration-300 z-20 ${
+      <div className={`absolute bg-stone-800/95 backdrop-blur-xl border border-stone-700/50 shadow-2xl transition-transform duration-300 z-20 ${
         showSidebar
           ? 'translate-x-0 translate-y-0'
           : 'lg:-translate-x-full translate-y-full lg:translate-y-0'
-      } bottom-0 left-0 lg:top-20 w-full lg:w-80 h-64 lg:h-[calc(100vh-5rem)] rounded-t-xl lg:rounded-r-xl lg:rounded-t-none`}>
+      } bottom-0 left-0 lg:top-20 w-full lg:w-80 h-64 lg:h-[calc(100vh-5rem)] rounded-t-2xl lg:rounded-r-2xl lg:rounded-t-none`}>
         
         <div className="h-full flex flex-col">
-          <div className="p-4 border-b border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 rounded-t-xl lg:rounded-t-none lg:rounded-tr-xl">
+          <div className="p-6 border-b border-stone-700/50">
             <div className="flex justify-between items-center">
-              <h2 className="font-semibold text-stone-800 dark:text-stone-100">
+              <h2 className="font-semibold text-white">
                 Trails ({filteredTrails.length})
               </h2>
               <button
                 onClick={() => setShowSidebar(false)}
-                className="lg:hidden text-stone-500 dark:text-stone-400"
+                className="lg:hidden text-stone-400 hover:text-white transition-colors"
               >
                 ✕
               </button>
@@ -355,20 +355,20 @@ export default function TrailExplorer() {
           </div>
 
           {/* Filters */}
-          <div className="p-4 border-b border-stone-200 dark:border-stone-700 space-y-4 bg-stone-50 dark:bg-stone-800/50">
+          <div className="p-6 border-b border-stone-700/50 space-y-4">
             <div>
-              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+              <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">
                 Difficulty
               </label>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-2">
                 {difficultyOptions.map(option => (
                   <button
                     key={option.value}
                     onClick={() => toggleFilterValue('difficulty', option.value)}
-                    className={`px-2 py-1 text-xs rounded border ${
+                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
                       filter.difficulty.includes(option.value)
-                        ? 'bg-forest-100 dark:bg-forest-900/30 border-forest-300 dark:border-forest-700 text-forest-800 dark:text-forest-300'
-                        : 'bg-white dark:bg-stone-700 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300'
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-stone-700/50 border border-stone-600 text-stone-300 hover:border-stone-500'
                     }`}
                   >
                     {option.label}
@@ -378,18 +378,18 @@ export default function TrailExplorer() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+              <label className="block text-xs font-semibold tracking-wider text-stone-400 uppercase mb-3">
                 Activity Type
               </label>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-2">
                 {activityTypeOptions.map(option => (
                   <button
                     key={option.value}
                     onClick={() => toggleFilterValue('activityTypes', option.value)}
-                    className={`px-2 py-1 text-xs rounded border ${
+                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all ${
                       filter.activityTypes.includes(option.value)
-                        ? 'bg-forest-100 dark:bg-forest-900/30 border-forest-300 dark:border-forest-700 text-forest-800 dark:text-forest-300'
-                        : 'bg-white dark:bg-stone-700 border-stone-300 dark:border-stone-600 text-stone-700 dark:text-stone-300'
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-stone-700/50 border border-stone-600 text-stone-300 hover:border-stone-500'
                     }`}
                   >
                     {option.label}
