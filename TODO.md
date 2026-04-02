@@ -42,9 +42,9 @@
 
 ## Phase 8: Social Layer
 - [ ] **Task 26:** ReactionBar — kind-7 reactions with emoji support (🥾👟🔥)
-- [ ] **Task 27:** CommentThread — kind-1 replies with threading
-- [ ] **Task 28:** FollowButton — kind-3 contact list management
-- [ ] **Task 29:** ZapButton — NIP-57 zap integration (if lightning address present)
+- [x] **Task 27:** CommentThread — kind-1 replies with threading
+- [x] **Task 28:** FollowButton — kind-3 contact list management
+- [x] **Task 29:** ZapButton — NIP-57 zap integration (if lightning address present)
 
 ## Phase 9: Photo Uploads
 - [ ] **Task 30:** NIP-96 media upload module (`src/nostr/nip96.ts`)

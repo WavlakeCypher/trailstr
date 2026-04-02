@@ -6,9 +6,6 @@ import {
   Edit, 
   Trash2, 
   Share,
-  Heart,
-  MessageCircle,
-  Zap,
   Link2
 } from 'lucide-react'
 import MapView from '../components/map/MapView'
@@ -17,6 +14,10 @@ import ElevationChart from '../components/activity/ElevationChart'
 import StatsGrid from '../components/activity/StatsGrid'
 import PhotoGallery from '../components/activity/PhotoGallery'
 import Avatar from '../components/common/Avatar'
+import { ReactionBar } from '../components/social/ReactionBar'
+import { CommentThread } from '../components/social/CommentThread'
+import { FollowButton } from '../components/social/FollowButton'
+import { ZapButton } from '../components/social/ZapButton'
 import { useAuthStore } from '../stores/authStore'
 import { useFeedStore } from '../stores/feedStore'
 import type { Activity, ActivityType } from '../types/activity'
@@ -245,6 +246,14 @@ export default function ActivityDetail() {
                 </div>
               </div>
             </div>
+            
+            {/* Follow Button */}
+            {!isOwner && (
+              <FollowButton 
+                targetPubkey={activity.authorPubkey}
+                size="md"
+              />
+            )}
           </div>
 
           {activity.content && (
@@ -374,40 +383,34 @@ export default function ActivityDetail() {
 
         {/* Social Section */}
         <div className="bg-white dark:bg-stone-800 rounded-lg p-6 border border-stone-200 dark:border-stone-700">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-stone-900 dark:text-stone-100">
-              Social
-            </h3>
-          </div>
-
-          {/* Social Actions */}
-          <div className="flex items-center space-x-6 pb-4 border-b border-stone-200 dark:border-stone-700">
-            <button className="flex items-center space-x-2 text-stone-600 dark:text-stone-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
-              <Heart size={18} />
-              <span>{activity.reactionCount || 0}</span>
-            </button>
+          <div className="space-y-6">
+            {/* Reaction Bar */}
+            <div>
+              <h4 className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-3">Reactions</h4>
+              <ReactionBar
+                eventId={activity.id}
+                authorPubkey={activity.authorPubkey}
+              />
+            </div>
             
-            <button className="flex items-center space-x-2 text-stone-600 dark:text-stone-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-              <MessageCircle size={18} />
-              <span>{activity.commentCount || 0}</span>
-            </button>
+            {/* Action Buttons */}
+            <div className="flex items-center space-x-4 py-2 border-y border-stone-200 dark:border-stone-700">
+              <ZapButton
+                eventId={activity.id}
+                authorPubkey={activity.authorPubkey}
+              />
+              
+              <button className="flex items-center space-x-2 text-stone-600 dark:text-stone-400 hover:text-forest-600 dark:hover:text-forest-400 transition-colors">
+                <Link2 size={18} />
+                <span>Link to Trail</span>
+              </button>
+            </div>
             
-            <button className="flex items-center space-x-2 text-stone-600 dark:text-stone-400 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
-              <Zap size={18} />
-              <span>Zap</span>
-            </button>
-            
-            <button className="flex items-center space-x-2 text-stone-600 dark:text-stone-400 hover:text-forest-600 dark:hover:text-forest-400 transition-colors">
-              <Link2 size={18} />
-              <span>Link to Trail</span>
-            </button>
-          </div>
-
-          {/* Comments placeholder */}
-          <div className="mt-4">
-            <p className="text-stone-500 dark:text-stone-400 text-sm text-center py-8">
-              Comments and reactions will be loaded here
-            </p>
+            {/* Comment Thread */}
+            <CommentThread
+              eventId={activity.id}
+              authorPubkey={activity.authorPubkey}
+            />
           </div>
         </div>
       </div>
