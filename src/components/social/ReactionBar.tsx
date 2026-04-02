@@ -143,10 +143,10 @@ export function ReactionBar({ eventId, authorPubkey, className = '' }: ReactionB
         {reactions.map(reaction => (
           <span
             key={reaction.emoji}
-            className="flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-sm"
+            className="flex items-center gap-1 px-2 py-1 rounded-full bg-stone-800/50 border border-stone-600 text-sm"
           >
             <span>{reaction.emoji}</span>
-            <span className="text-gray-600 dark:text-gray-400">{reaction.count}</span>
+            <span className="text-stone-400">{reaction.count}</span>
           </span>
         ))}
       </div>
@@ -164,14 +164,14 @@ export function ReactionBar({ eventId, authorPubkey, className = '' }: ReactionB
           className={`
             flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-colors
             ${reaction.reacted
-              ? 'bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700'
-              : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+              ? 'bg-emerald-900/30 border border-emerald-500/50 text-emerald-400'
+              : 'bg-stone-800/50 border border-stone-600 hover:bg-stone-800 hover:border-stone-500 text-stone-300'
             }
             disabled:opacity-50
           `}
         >
           <span>{reaction.emoji}</span>
-          <span className={`${reaction.reacted ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
+          <span className={reaction.reacted ? 'text-emerald-400' : 'text-stone-400'}>
             {reaction.count}
           </span>
         </button>
@@ -187,7 +187,7 @@ export function ReactionBar({ eventId, authorPubkey, className = '' }: ReactionB
             key={emoji}
             onClick={() => addReaction(emoji)}
             disabled={isLoading}
-            className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="p-1 rounded-full hover:bg-stone-800/50 transition-colors disabled:opacity-50"
             title={`React with ${emoji}`}
           >
             <span className="text-lg">{emoji}</span>
@@ -200,21 +200,21 @@ export function ReactionBar({ eventId, authorPubkey, className = '' }: ReactionB
         <button
           onClick={() => setShowEmojiPicker(!showEmojiPicker)}
           disabled={isLoading}
-          className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-stone-800/50 transition-colors disabled:opacity-50"
           title="More reactions"
         >
-          <Plus className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+          <Plus className="h-4 w-4 text-stone-400" />
         </button>
 
         {/* Simple emoji picker */}
         {showEmojiPicker && (
-          <div className="absolute top-full left-0 mt-1 p-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
+          <div className="absolute top-full left-0 mt-1 p-2 bg-stone-800/95 backdrop-blur-xl border border-stone-700/50 rounded-2xl shadow-lg z-10">
             <div className="grid grid-cols-6 gap-1">
               {['😀', '😂', '🤩', '😍', '🤯', '😱', '💪', '👍', '👎', '🙌', '👌', '✊', '🚀', '💯', '⭐', '💝', '🎉', '🎊'].map(emoji => (
                 <button
                   key={emoji}
                   onClick={() => addReaction(emoji)}
-                  className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-lg"
+                  className="p-1 hover:bg-stone-700/50 rounded text-lg"
                 >
                   {emoji}
                 </button>
