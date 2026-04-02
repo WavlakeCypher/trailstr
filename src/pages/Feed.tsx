@@ -144,6 +144,9 @@ export default function Feed() {
           <p className="text-stone-600 dark:text-stone-400 mb-4">
             Sign in to see your activity feed
           </p>
+          <a href="/login" className="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">
+            Sign In
+          </a>
         </div>
       </div>
     )
