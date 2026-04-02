@@ -71,7 +71,7 @@ function CommentItem({
   const maxDepthIndent = Math.min(depth, 4)
 
   return (
-    <div className={`${maxDepthIndent > 0 ? 'ml-6 pl-3 border-l-2 border-stone-200 dark:border-stone-700' : ''}`}>
+    <div className={`${maxDepthIndent > 0 ? 'ml-6 pl-3 border-l-2 border-stone-700/50' : ''}`}>
       <div className="flex items-start space-x-3 py-3">
         <Avatar
           src={comment.profile?.picture}
@@ -81,21 +81,21 @@ function CommentItem({
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-2">
-            <span className="text-sm font-medium text-stone-900 dark:text-stone-100">
+            <span className="text-sm font-medium text-white">
               {comment.profile?.name || comment.pubkey.slice(0, 8) + '...'}
             </span>
-            <span className="text-xs text-stone-500 dark:text-stone-400">
+            <span className="text-xs text-stone-400">
               {formatTimeAgo(comment.createdAt)}
             </span>
           </div>
-          <p className="text-sm text-stone-700 dark:text-stone-300 mt-1 whitespace-pre-wrap break-words">
+          <p className="text-sm text-stone-300 mt-1 whitespace-pre-wrap break-words">
             {comment.content}
           </p>
           <div className="flex items-center space-x-3 mt-1">
             {pubkey && (
               <button
                 onClick={() => setShowReplyInput(!showReplyInput)}
-                className="text-xs text-stone-500 dark:text-stone-400 hover:text-forest-600 dark:hover:text-forest-400 transition-colors"
+                className="text-xs text-stone-400 hover:text-emerald-400 transition-colors"
               >
                 Reply
               </button>
@@ -103,7 +103,7 @@ function CommentItem({
             {comment.replies.length > 0 && (
               <button
                 onClick={() => setCollapsed(!collapsed)}
-                className="flex items-center space-x-1 text-xs text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors"
+                className="flex items-center space-x-1 text-xs text-stone-400 hover:text-stone-300 transition-colors"
               >
                 {collapsed ? <ChevronDown size={12} /> : <ChevronUp size={12} />}
                 <span>{comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}</span>
@@ -120,13 +120,13 @@ function CommentItem({
                 onChange={(e) => setReplyText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleReply()}
                 placeholder="Write a reply..."
-                className="flex-1 text-sm px-3 py-1.5 rounded-full border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500"
+                className="flex-1 text-sm px-3 py-1.5 rounded-xl border border-stone-600 bg-stone-800 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 disabled={isSubmitting}
               />
               <button
                 onClick={handleReply}
                 disabled={isSubmitting || !replyText.trim()}
-                className="p-1.5 rounded-full bg-forest-500 text-white hover:bg-forest-600 disabled:opacity-50 transition-colors"
+                className="p-1.5 rounded-xl bg-emerald-500 text-white hover:bg-emerald-400 disabled:opacity-50 transition-colors"
               >
                 <Send size={14} />
               </button>
@@ -347,13 +347,13 @@ export function CommentThread({ eventId, authorPubkey, className = '' }: Comment
             onChange={(e) => setNewComment(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handlePostTopLevel()}
             placeholder="Write a comment..."
-            className="flex-1 px-4 py-2 rounded-full border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-700 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-forest-500 text-sm"
+            className="flex-1 px-4 py-2 h-12 rounded-xl border border-stone-600 bg-stone-800 text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
             disabled={isSubmitting}
           />
           <button
             onClick={handlePostTopLevel}
             disabled={isSubmitting || !newComment.trim()}
-            className="p-2 rounded-full bg-forest-500 text-white hover:bg-forest-600 disabled:opacity-50 transition-colors"
+            className="p-3 h-12 rounded-xl bg-emerald-500 text-white hover:bg-emerald-400 disabled:opacity-50 transition-colors"
           >
             <Send size={16} />
           </button>
@@ -363,14 +363,14 @@ export function CommentThread({ eventId, authorPubkey, className = '' }: Comment
       {/* Comments */}
       {isLoading ? (
         <div className="text-center py-6">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-forest-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500 mx-auto"></div>
         </div>
       ) : comments.length === 0 ? (
-        <p className="text-stone-500 dark:text-stone-400 text-sm text-center py-6">
+        <p className="text-stone-400 text-sm text-center py-6">
           No comments yet. Be the first to comment!
         </p>
       ) : (
-        <div className="divide-y divide-stone-100 dark:divide-stone-800">
+        <div className="divide-y divide-stone-700/50">
           {comments.map(comment => (
             <CommentItem
               key={comment.id}
