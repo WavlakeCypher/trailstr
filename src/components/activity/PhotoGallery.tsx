@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { X, ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
 import type { ActivityImage } from '../../types/activity'
 import BlurhashImage from '../common/BlurhashImage'
@@ -6,6 +6,7 @@ import BlurhashImage from '../common/BlurhashImage'
 export interface PhotoGalleryProps {
   images: ActivityImage[]
   onPhotoClick?: (image: ActivityImage, index: number) => void
+  onGeotaggedPhotoClick?: (latitude: number, longitude: number, image: ActivityImage) => void
   className?: string
   maxPreview?: number
 }
@@ -13,11 +14,14 @@ export interface PhotoGalleryProps {
 export default function PhotoGallery({ 
   images, 
   onPhotoClick, 
+  onGeotaggedPhotoClick,
   className = '',
   maxPreview = 4 
 }: PhotoGalleryProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+  const lightboxRef = useRef<HTMLDivElement>(null)
 
   if (!images || images.length === 0) {
     return null
@@ -27,6 +31,13 @@ export default function PhotoGallery({
     setCurrentIndex(index)
     setLightboxOpen(true)
     onPhotoClick?.(image, index)
+  }
+
+  const handleGeotaggedClick = (e: React.MouseEvent, image: ActivityImage) => {
+    e.stopPropagation()
+    if (image.latitude && image.longitude && onGeotaggedPhotoClick) {
+      onGeotaggedPhotoClick(image.latitude, image.longitude, image)
+    }
   }
 
   const handlePrevious = () => {
@@ -42,6 +53,48 @@ export default function PhotoGallery({
     if (e.key === 'ArrowRight') handleNext()
     if (e.key === 'Escape') setLightboxOpen(false)
   }
+
+  // Touch handlers for swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      }
+    }
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current || e.changedTouches.length !== 1) return
+
+    const touchEnd = {
+      x: e.changedTouches[0].clientX,
+      y: e.changedTouches[0].clientY
+    }
+
+    const deltaX = touchEnd.x - touchStartRef.current.x
+    const deltaY = touchEnd.y - touchStartRef.current.y
+    const absDeltaX = Math.abs(deltaX)
+    const absDeltaY = Math.abs(deltaY)
+
+    // Only handle horizontal swipes that are more horizontal than vertical
+    if (absDeltaX > 50 && absDeltaX > absDeltaY * 2) {
+      if (deltaX > 0) {
+        handlePrevious()
+      } else {
+        handleNext()
+      }
+    }
+
+    touchStartRef.current = null
+  }
+
+  // Focus lightbox when opened for keyboard navigation
+  useEffect(() => {
+    if (lightboxOpen && lightboxRef.current) {
+      lightboxRef.current.focus()
+    }
+  }, [lightboxOpen])
 
   return (
     <div className={`${className}`}>
@@ -69,9 +122,13 @@ export default function PhotoGallery({
             
             {/* GPS indicator */}
             {image.latitude && image.longitude && (
-              <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white p-1 rounded">
+              <button
+                onClick={(e) => handleGeotaggedClick(e, image)}
+                className="absolute top-2 right-2 bg-black bg-opacity-60 hover:bg-opacity-80 text-white p-1 rounded transition-all duration-200 transform hover:scale-110"
+                title="Show on map"
+              >
                 <MapPin size={12} />
-              </div>
+              </button>
             )}
           </div>
         ))}
@@ -80,9 +137,12 @@ export default function PhotoGallery({
       {/* Lightbox */}
       {lightboxOpen && (
         <div
+          ref={lightboxRef}
           className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center"
           onClick={() => setLightboxOpen(false)}
           onKeyDown={handleKeyDown}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           tabIndex={0}
         >
           {/* Close button */}
@@ -138,12 +198,19 @@ export default function PhotoGallery({
                 
                 {/* GPS coordinates */}
                 {images[currentIndex].latitude && images[currentIndex].longitude && (
-                  <p className="text-xs opacity-75 mt-1 flex items-center space-x-1">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleGeotaggedClick(e, images[currentIndex])
+                    }}
+                    className="text-xs opacity-75 hover:opacity-100 mt-1 flex items-center space-x-1 transition-opacity duration-200"
+                    title="Show on map"
+                  >
                     <MapPin size={12} />
                     <span>
                       {images[currentIndex].latitude!.toFixed(6)}, {images[currentIndex].longitude!.toFixed(6)}
                     </span>
-                  </p>
+                  </button>
                 )}
                 
                 {/* Timestamp */}

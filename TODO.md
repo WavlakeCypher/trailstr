@@ -47,16 +47,16 @@
 - [x] **Task 29:** ZapButton — NIP-57 zap integration (if lightning address present)
 
 ## Phase 9: Photo Uploads
-- [ ] **Task 30:** NIP-96 media upload module (`src/nostr/nip96.ts`)
-- [ ] **Task 31:** Client-side photo resize + blurhash generation
-- [ ] **Task 32:** PhotoGallery component with lightbox + geotagged photo map highlights
+- [x] **Task 30:** NIP-96 media upload module (`src/nostr/nip96.ts`)
+- [x] **Task 31:** Client-side photo resize + blurhash generation
+- [x] **Task 32:** PhotoGallery component with lightbox + geotagged photo map highlights
 
 ## Phase 10: Trail Creation & Explorer
-- [ ] **Task 33:** CreateTrail page — form + polyline drawing tool / GPX upload for route
-- [ ] **Task 34:** Trail events (kind-30530) — publish/edit
-- [ ] **Task 35:** TrailExplorer page — full-screen map with clustered trail markers
-- [ ] **Task 36:** Geohash-based filtering (NIP-52 `g` tag prefix matching) for map viewport
-- [ ] **Task 37:** TrailDetail page — hero image, map, stats, reviews tab, activities tab
+- [x] **Task 33:** CreateTrail page — form + polyline drawing tool / GPX upload for route
+- [x] **Task 34:** Trail events (kind-30530) — publish/edit
+- [x] **Task 35:** TrailExplorer page — full-screen map with clustered trail markers
+- [x] **Task 36:** Geohash-based filtering (NIP-52 `g` tag prefix matching) for map viewport
+- [x] **Task 37:** TrailDetail page — hero image, map, stats, reviews tab, activities tab
 
 ## Phase 11: Trail Reviews
 - [ ] **Task 38:** ReviewForm + ReviewList components
