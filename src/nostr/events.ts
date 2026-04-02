@@ -319,6 +319,19 @@ export function buildProfileEvent(
 }
 
 /**
+ * Build a metadata event (kind 0)
+ */
+export function buildMetadataEvent(metadata: Record<string, any>): Omit<Event, 'id' | 'sig'> {
+  return {
+    kind: KINDS.SET_METADATA,
+    pubkey: '', // Will be filled by signer
+    created_at: Math.floor(Date.now() / 1000),
+    tags: [],
+    content: JSON.stringify(metadata)
+  }
+}
+
+/**
  * Build a contact list event (kind 3) 
  */
 export function buildContactListEvent(

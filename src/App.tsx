@@ -8,6 +8,7 @@ import TrailExplorer from './pages/TrailExplorer'
 import TrailDetail from './pages/TrailDetail'
 import CreateTrail from './pages/CreateTrail'
 import Profile from './pages/Profile'
+import ProfileEdit from './pages/ProfileEdit'
 import Settings from './pages/Settings'
 import Login from './pages/Login'
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/trail/:id" element={<TrailDetail />} />
           <Route path="/trail/create" element={<CreateTrail />} />
           <Route path="/profile/:npub?" element={<Profile />} />
+          <Route path="/profile/edit" element={<ProfileEdit />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/login" element={<Login />} />
         </Routes>

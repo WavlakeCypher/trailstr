@@ -8,10 +8,10 @@
 - [x] **Task 4:** Common components (Avatar, BlurhashImage, StarRating, Skeleton)
 
 ## Phase 2: Nostr Auth & Identity
-- [ ] **Task 5:** Nostr client module — relay pool management, subscribe, publish (`src/nostr/client.ts`)
-- [ ] **Task 6:** Signer abstraction — NIP-07 + nsec with AES-256-GCM encryption (`src/nostr/signer.ts`)
-- [ ] **Task 7:** Auth store (Zustand) + Login page with all 3 auth methods (NIP-07, nsec paste, generate keypair)
-- [ ] **Task 8:** Kind constants + event builder helpers (`src/nostr/kinds.ts`, `src/nostr/events.ts`)
+- [x] **Task 5:** Nostr client module — relay pool management, subscribe, publish (`src/nostr/client.ts`)
+- [x] **Task 6:** Signer abstraction — NIP-07 + nsec with AES-256-GCM encryption (`src/nostr/signer.ts`)
+- [x] **Task 7:** Auth store (Zustand) + Login page with all 3 auth methods (NIP-07, nsec paste, generate keypair)
+- [x] **Task 8:** Kind constants + event builder helpers (`src/nostr/kinds.ts`, `src/nostr/events.ts`)
 
 ## Phase 3: Profile
 - [ ] **Task 9:** Profile page — fetch/display kind-0 metadata, avatar, banner, bio, tabs structure
